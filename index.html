@@ -7,7 +7,7 @@
   <meta name="description" content="I build websites, automation systems, and AI tools — so your team spends less time on repetitive tasks and more time on the work that actually matters." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -190,7 +190,7 @@
       pointer-events: all;
     }
     #mobile-menu a {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Bricolage Grotesque', sans-serif;
       font-size: 2.5rem;
       color: white;
       text-decoration: none;
@@ -258,7 +258,7 @@
       z-index: 2;
     }
     .hero-headline {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Bricolage Grotesque', sans-serif;
       font-weight: 300;
       font-size: clamp(4rem, 10vw, 8rem);
       line-height: 0.9;
@@ -541,7 +541,7 @@
       display: block;
     }
     .section-heading {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Bricolage Grotesque', sans-serif;
       font-weight: 300;
       font-size: clamp(2.5rem, 5vw, 4rem);
       line-height: 1.05;
@@ -632,7 +632,7 @@
       color: var(--purple-light);
     }
     .path-title {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Bricolage Grotesque', sans-serif;
       font-weight: 400;
       font-size: 1.6rem;
       line-height: 1.15;
@@ -704,7 +704,7 @@
       margin-bottom: 0.75rem;
     }
     .service-title {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Bricolage Grotesque', sans-serif;
       font-weight: 400;
       font-size: 1.3rem;
       color: var(--ink);
@@ -759,7 +759,7 @@
       background: rgba(255,255,255,0.07);
     }
     .process-num {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Bricolage Grotesque', sans-serif;
       font-weight: 300;
       font-size: 3.5rem;
       background: var(--grad-purple);
@@ -778,7 +778,7 @@
       margin-bottom: 0.75rem;
     }
     .process-title {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Bricolage Grotesque', sans-serif;
       font-weight: 400;
       font-size: 1.3rem;
       color: white;
@@ -861,7 +861,7 @@
       margin-bottom: 0.5rem;
     }
     .showcase-title {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Bricolage Grotesque', sans-serif;
       font-weight: 400;
       font-size: 1.4rem;
       color: var(--ink);
@@ -922,7 +922,14 @@
       transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
       border: 1px solid rgba(0,0,0,0.08);
     }
+    .proto-card:nth-child(odd) { animation: tileFloat 6s ease-in-out infinite; }
+    .proto-card:nth-child(even) { animation: tileFloat 6s ease-in-out infinite 3s; }
+    @keyframes tileFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
     .proto-card:hover {
+      animation: none;
       transform: translateY(-8px) scale(1.02);
       box-shadow: 0 24px 60px rgba(124,58,237,0.2);
     }
@@ -931,24 +938,34 @@
     }
     .proto-overlay {
       position: absolute; inset: 0;
-      background: linear-gradient(to top, rgba(7,0,20,0.85) 0%, rgba(7,0,20,0.2) 60%, transparent 100%);
+      background: linear-gradient(to top, rgba(7,0,20,0.78) 0%, rgba(7,0,20,0.08) 55%, transparent 100%);
       display: flex; flex-direction: column; justify-content: flex-end;
-      padding: 20px;
-      opacity: 0;
-      transition: opacity 0.3s ease;
+      padding: 18px;
+      transition: background 0.35s ease;
     }
-    .proto-card:hover .proto-overlay { opacity: 1; }
+    .proto-card:hover .proto-overlay {
+      background: linear-gradient(to top, rgba(7,0,20,0.92) 0%, rgba(7,0,20,0.35) 65%, transparent 100%);
+    }
     .proto-name {
       color: white;
-      font-size: 1rem;
-      font-weight: 600;
-      margin-bottom: 4px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      margin-bottom: 0;
+      font-family: 'DM Sans', sans-serif;
+      letter-spacing: 0.01em;
+      transform: translateY(0);
+      transition: transform 0.3s ease, margin-bottom 0.3s ease;
+    }
+    .proto-card:hover .proto-name { margin-bottom: 5px; }
+    .proto-desc {
+      color: rgba(255,255,255,0);
+      font-size: 0.76rem;
+      max-height: 0;
+      overflow: hidden;
+      transition: color 0.3s ease 0.05s, max-height 0.3s ease;
       font-family: 'DM Sans', sans-serif;
     }
-    .proto-desc {
-      color: rgba(255,255,255,0.65);
-      font-size: 0.8rem;
-    }
+    .proto-card:hover .proto-desc { color: rgba(255,255,255,0.65); max-height: 40px; }
     .proto-view {
       position: absolute;
       top: 1rem; right: 1rem;
@@ -1057,7 +1074,7 @@
       transform: translateY(-3px);
     }
     .why-title {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Bricolage Grotesque', sans-serif;
       font-weight: 400;
       font-size: 1.25rem;
       color: white;
@@ -1100,7 +1117,7 @@
       padding: 2rem;
     }
     .cta-headline {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Bricolage Grotesque', sans-serif;
       font-weight: 300;
       font-size: clamp(2.5rem, 6vw, 5rem);
       line-height: 1.05;
@@ -1155,7 +1172,7 @@
 
     /* ── STATS ───────────────────────────────────────────── */
     .stat-num {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Bricolage Grotesque', sans-serif;
       font-weight: 300;
       font-size: 3rem;
       background: var(--grad-purple);
