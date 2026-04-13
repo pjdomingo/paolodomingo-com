@@ -7,7 +7,7 @@
   <meta name="description" content="I build websites, automation systems, and AI tools — so your team spends less time on repetitive tasks and more time on the work that actually matters." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -33,7 +33,7 @@
     html { scroll-behavior: smooth; }
 
     body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-family: 'DM Sans', sans-serif;
       background: var(--white);
       color: var(--ink);
       overflow-x: hidden;
@@ -110,7 +110,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-family: 'DM Sans', sans-serif;
       font-weight: 700;
       font-size: 0.6rem;
       color: white;
@@ -118,7 +118,7 @@
       flex-shrink: 0;
     }
     .nav-name {
-      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-family: 'DM Sans', sans-serif;
       font-weight: 600;
       font-size: 0.9rem;
       color: var(--ink);
@@ -190,11 +190,11 @@
       pointer-events: all;
     }
     #mobile-menu a {
-      font-family: 'Syne', sans-serif;
+      font-family: 'Cormorant Garamond', serif;
       font-size: 2.5rem;
       color: white;
       text-decoration: none;
-      font-weight: 800;
+      font-weight: 600;
     }
     #mobile-menu .close-btn {
       position: absolute;
@@ -204,7 +204,7 @@
       cursor: pointer;
       background: none;
       border: none;
-      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-family: 'DM Sans', sans-serif;
     }
 
     @media (max-width: 768px) {
@@ -257,37 +257,17 @@
       position: relative;
       z-index: 2;
     }
-    .hero-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      border: 1px solid rgba(124,58,237,0.3);
-      color: var(--purple);
-      padding: 0.35rem 0.85rem;
-      border-radius: 100px;
-      font-size: 0.8rem;
-      font-weight: 500;
-      margin-bottom: 1.5rem;
-      background: rgba(124,58,237,0.04);
-    }
-    .hero-eyebrow::before {
-      content: '';
-      width: 7px; height: 7px;
-      background: var(--purple);
-      border-radius: 50%;
-      animation: pulse-dot 2s ease-in-out infinite;
-    }
-    @keyframes pulse-dot {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(0.7); }
-    }
     .hero-headline {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: clamp(3rem, 8vw, 7rem);
-      line-height: 0.95;
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(4rem, 10vw, 8rem);
+      line-height: 0.9;
       color: var(--ink);
       margin-bottom: 1.5rem;
+    }
+    .hero-headline .italic {
+      font-style: italic;
+      font-weight: 300;
     }
     .hero-headline .grad-text {
       background: linear-gradient(90deg, #7c3aed 0%, #c084fc 50%, #7c3aed 100%);
@@ -348,19 +328,125 @@
       color: white;
       transform: translateY(-2px);
     }
-    .hero-pills {
+
+    /* Hero 3D card */
+    .hero-3d-wrap {
+      perspective: 1000px;
+      perspective-origin: 50% 50%;
+      position: relative;
       display: flex;
-      gap: 0.75rem;
-      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      height: 420px;
     }
-    .hero-pill {
-      font-size: 0.8rem;
-      color: var(--muted);
-      background: var(--gray-50);
-      border: 1px solid var(--border);
-      border-radius: 100px;
-      padding: 0.35rem 0.85rem;
-      font-weight: 500;
+    .hero-3d-card {
+      transform-style: preserve-3d;
+      transform: rotateY(-8deg) rotateX(4deg);
+      transition: transform 0.1s linear;
+      width: 340px;
+      background: #0f0a1e;
+      border-radius: 18px;
+      border: 1px solid rgba(124,58,237,0.25);
+      overflow: hidden;
+      box-shadow: 0 30px 80px rgba(124,58,237,0.25), 0 0 60px rgba(124,58,237,0.1);
+      position: relative;
+    }
+    .hero-3d-glow {
+      position: absolute;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(124,58,237,0.2) 0%, transparent 70%);
+      border-radius: 50%;
+      z-index: -1;
+      left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+    .h3d-header {
+      background: linear-gradient(135deg, #7c3aed, #9333ea);
+      height: 44px;
+      display: flex;
+      align-items: center;
+      padding: 0 1rem;
+      gap: 6px;
+    }
+    .h3d-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.35);
+    }
+    .h3d-title {
+      margin-left: 6px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.85);
+      font-family: 'DM Sans', sans-serif;
+      letter-spacing: 0.05em;
+    }
+    .h3d-body {
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .h3d-row {
+      height: 10px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 4px;
+    }
+    .h3d-row:nth-child(1) { width: 100%; }
+    .h3d-row:nth-child(2) { width: 75%; }
+    .h3d-row:nth-child(3) { width: 88%; }
+    .h3d-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      padding: 0 1.25rem 1.25rem;
+    }
+    .h3d-mini-card {
+      background: rgba(124,58,237,0.12);
+      border: 1px solid rgba(124,58,237,0.2);
+      border-radius: 10px;
+      height: 60px;
+    }
+    /* Orbiting particles */
+    .h3d-particle {
+      position: absolute;
+      width: 6px; height: 6px;
+      background: var(--purple-light);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .h3d-p1 { animation: orbit1 6s linear infinite; }
+    .h3d-p2 { animation: orbit2 8s linear infinite; }
+    .h3d-p3 { animation: orbit3 7s linear infinite; }
+    .h3d-p4 { animation: orbit4 9s linear infinite; }
+    .h3d-p5 { animation: orbit5 5s linear infinite; }
+    @keyframes orbit1 {
+      0%   { transform: translate(-180px, -60px); opacity: 0.8; }
+      25%  { transform: translate(0px, -180px); opacity: 0.4; }
+      50%  { transform: translate(180px, -60px); opacity: 0.8; }
+      75%  { transform: translate(0px, 60px); opacity: 0.4; }
+      100% { transform: translate(-180px, -60px); opacity: 0.8; }
+    }
+    @keyframes orbit2 {
+      0%   { transform: translate(160px, -100px); opacity: 0.6; }
+      50%  { transform: translate(-160px, 100px); opacity: 0.3; }
+      100% { transform: translate(160px, -100px); opacity: 0.6; }
+    }
+    @keyframes orbit3 {
+      0%   { transform: translate(-120px, 120px); opacity: 0.5; }
+      50%  { transform: translate(120px, -120px); opacity: 0.9; }
+      100% { transform: translate(-120px, 120px); opacity: 0.5; }
+    }
+    @keyframes orbit4 {
+      0%   { transform: translate(80px, 150px); opacity: 0.7; }
+      50%  { transform: translate(-80px, -150px); opacity: 0.3; }
+      100% { transform: translate(80px, 150px); opacity: 0.7; }
+    }
+    @keyframes orbit5 {
+      0%   { transform: translate(200px, 30px); opacity: 0.4; }
+      50%  { transform: translate(-200px, -30px); opacity: 0.8; }
+      100% { transform: translate(200px, 30px); opacity: 0.4; }
     }
 
     /* Hero visual right */
@@ -369,105 +455,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 380px;
-    }
-    .hero-card-stack {
-      position: relative;
-      width: 320px;
-      animation: heroFloat 6s ease-in-out infinite;
-    }
-    @keyframes heroFloat {
-      0%, 100% { transform: translateY(0) rotate(0deg); }
-      50% { transform: translateY(-14px) rotate(0.5deg); }
-    }
-    .hero-card {
-      background: white;
-      border-radius: 16px;
-      border: 1px solid rgba(124,58,237,0.15);
-      overflow: hidden;
-      box-shadow: 0 20px 60px rgba(124,58,237,0.12), 0 4px 16px rgba(0,0,0,0.06);
-    }
-    .hero-card-back {
-      position: absolute;
-      top: 16px; left: -16px;
-      right: 16px;
-      background: var(--purple-pale);
-      border: 1px solid rgba(124,58,237,0.2);
-      border-radius: 16px;
-      height: 100%;
-      z-index: -1;
-      transform: rotate(-3deg);
-    }
-    .hero-card-header {
-      background: var(--grad-purple);
-      padding: 1rem 1.25rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .hero-card-header span {
-      color: white;
-      font-size: 0.75rem;
-      font-weight: 600;
-      opacity: 0.9;
-    }
-    .hero-card-dot {
-      display: flex; gap: 4px;
-    }
-    .hero-card-dot i {
-      width: 7px; height: 7px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.4);
-      display: block;
-    }
-    .hero-card-body {
-      padding: 1rem 1.25rem;
-    }
-    .hero-card-row {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 0.6rem 0;
-      border-bottom: 1px solid rgba(124,58,237,0.07);
-    }
-    .hero-card-row:last-child { border-bottom: none; }
-    .hero-card-icon {
-      width: 28px; height: 28px;
-      border-radius: 8px;
-      background: var(--grad-purple);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-    .hero-card-icon svg { width: 14px; height: 14px; }
-    .hero-card-label {
-      flex: 1;
-    }
-    .hero-card-label span {
-      display: block;
-      font-size: 0.72rem;
-      font-weight: 600;
-      color: var(--ink);
-    }
-    .hero-card-label small {
-      font-size: 0.65rem;
-      color: var(--muted);
-    }
-    .hero-card-badge {
-      font-size: 0.62rem;
-      font-weight: 600;
-      color: var(--purple);
-      background: var(--purple-pale);
-      padding: 2px 7px;
-      border-radius: 100px;
-    }
-    .hero-glow {
-      position: absolute;
-      width: 300px; height: 300px;
-      background: radial-gradient(circle, rgba(124,58,237,0.15) 0%, transparent 70%);
-      border-radius: 50%;
-      z-index: -2;
+      height: 460px;
     }
 
     /* Floating shapes */
@@ -527,12 +515,10 @@
         padding: 7rem 1.5rem 3rem;
         gap: 2.5rem;
       }
-      .hero-eyebrow { margin-left: auto; margin-right: auto; }
       .hero-sub { margin-left: auto; margin-right: auto; }
       .hero-ctas { justify-content: center; }
-      .hero-pills { justify-content: center; }
       .hero-headline {
-        font-size: clamp(2.5rem, 10vw, 4rem);
+        font-size: clamp(3rem, 12vw, 5rem);
       }
       .hero-visual { display: none; }
     }
@@ -555,10 +541,11 @@
       display: block;
     }
     .section-heading {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: clamp(2rem, 4vw, 3rem);
-      line-height: 1.1;
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      line-height: 1.05;
+      letter-spacing: 0.01em;
       color: var(--ink);
       margin-bottom: 1rem;
     }
@@ -645,9 +632,9 @@
       color: var(--purple-light);
     }
     .path-title {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: 1.5rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 400;
+      font-size: 1.6rem;
       line-height: 1.15;
       margin-bottom: 1rem;
     }
@@ -717,9 +704,9 @@
       margin-bottom: 0.75rem;
     }
     .service-title {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: 1.15rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 400;
+      font-size: 1.3rem;
       color: var(--ink);
       margin-bottom: 0.75rem;
     }
@@ -772,9 +759,9 @@
       background: rgba(255,255,255,0.07);
     }
     .process-num {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: 3rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 3.5rem;
       background: var(--grad-purple);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -791,9 +778,9 @@
       margin-bottom: 0.75rem;
     }
     .process-title {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: 1.15rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 400;
+      font-size: 1.3rem;
       color: white;
       margin-bottom: 0.75rem;
     }
@@ -874,9 +861,9 @@
       margin-bottom: 0.5rem;
     }
     .showcase-title {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: 1.25rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 400;
+      font-size: 1.4rem;
       color: var(--ink);
       margin-bottom: 0.75rem;
       line-height: 1.2;
@@ -922,47 +909,45 @@
     .proto-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: auto;
-      gap: 1rem;
+      gap: 20px;
     }
     .proto-card {
-      border-radius: 14px;
+      border-radius: 16px;
       overflow: hidden;
       text-decoration: none;
       display: block;
-      transition: transform 0.3s, box-shadow 0.3s;
+      aspect-ratio: 4/3;
       position: relative;
-      min-height: 160px;
+      cursor: pointer;
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
+      border: 1px solid rgba(0,0,0,0.08);
     }
     .proto-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 16px 48px rgba(0,0,0,0.15);
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 24px 60px rgba(124,58,237,0.2);
     }
     .proto-thumb {
-      width: 100%; height: 100%;
-      position: absolute;
-      inset: 0;
+      position: absolute; inset: 0;
     }
     .proto-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 60%);
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 1.25rem;
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(7,0,20,0.85) 0%, rgba(7,0,20,0.2) 60%, transparent 100%);
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 20px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
     }
+    .proto-card:hover .proto-overlay { opacity: 1; }
     .proto-name {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: 0.95rem;
       color: white;
-      line-height: 1.2;
-      margin-bottom: 0.25rem;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+      font-family: 'DM Sans', sans-serif;
     }
     .proto-desc {
-      font-size: 0.72rem;
       color: rgba(255,255,255,0.65);
+      font-size: 0.8rem;
     }
     .proto-view {
       position: absolute;
@@ -981,15 +966,69 @@
     .proto-card:nth-child(1) { grid-column: span 2; }
     .proto-card:nth-child(6) { grid-column: span 2; }
     .proto-card:nth-child(8) { grid-column: span 2; }
+
+    /* ── Proto CSS Mockups ── */
+    .proto-aurora { background: #0a0a0a; }
+    .proto-aurora::before { content:''; position:absolute; top:15%; left:10%; right:10%; height:45%; background: linear-gradient(135deg,#1a1a1a,#2a2a2a); border-radius:4px; }
+    .proto-aurora::after { content:''; position:absolute; top:6%; left:8%; right:8%; height:1px; background: rgba(255,255,255,0.2); }
+    .proto-aurora .mock-text { position:absolute; bottom:20%; left:10%; width:40%; height:3px; background:white; box-shadow: 0 8px 0 rgba(255,255,255,0.4), 0 16px 0 rgba(255,255,255,0.2); }
+
+    .proto-aris { background: linear-gradient(160deg, #0d0015 0%, #1a0533 100%); }
+    .proto-aris::before { content:''; position:absolute; top:20%; left:50%; transform:translateX(-50%); width:60%; height:1px; background: rgba(167,139,250,0.3); }
+    .proto-aris::after { content:''; position:absolute; top:30%; left:50%; transform:translateX(-50%); width:45%; height:30px; background: linear-gradient(135deg,rgba(124,58,237,0.6),rgba(167,139,250,0.4)); border-radius:2px; }
+    .proto-aris .mock-text { position:absolute; bottom:25%; left:50%; transform:translateX(-50%); width:30%; height:2px; background:rgba(255,255,255,0.3); box-shadow: 0 7px 0 rgba(255,255,255,0.15); }
+
+    .proto-exec { background: #f8f9fc; display:flex; }
+    .proto-exec::before { content:''; position:absolute; top:0; left:0; width:22%; bottom:0; background:#fff; border-right:1px solid #e5e7eb; }
+    .proto-exec::after { content:''; position:absolute; top:20%; left:3%; width:16%; height:60%; background: repeating-linear-gradient(0deg,#e5e7eb,#e5e7eb 3px,transparent 3px,transparent 14px); }
+    .proto-exec .mock-text { position:absolute; top:10%; left:27%; right:5%; height:12%; background: linear-gradient(90deg,#3b82f6,#6366f1); border-radius:6px; opacity:0.7; }
+
+    .proto-neo { background: #020617; }
+    .proto-neo::before { content:''; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%) rotate(-5deg); width:60%; height:38%; background: linear-gradient(135deg,#1e3a5f,#0d2340); border-radius:8px; border:1px solid rgba(16,185,129,0.3); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+    .proto-neo::after { content:''; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%) rotate(-5deg); width:14%; height:10%; background: linear-gradient(135deg,#10b981,#059669); border-radius:3px; margin-top:-8%; margin-left:-18%; }
+    .proto-neo .mock-text { position:absolute; bottom:15%; left:50%; transform:translateX(-50%); width:50%; height:2px; background:rgba(16,185,129,0.4); box-shadow: 0 6px 0 rgba(16,185,129,0.2); }
+
+    .proto-vanguard { background: #0a0a0a; overflow:hidden; }
+    .proto-vanguard::before { content:''; position:absolute; top:35%; left:-5%; right:-5%; height:2px; background: linear-gradient(90deg, transparent, #fff 30%, #fff 70%, transparent); opacity:0.2; }
+    .proto-vanguard::after { content:''; position:absolute; top:15%; left:5%; width:50%; height:20px; background:white; opacity:0.9; border-radius:1px; }
+    .proto-vanguard .mock-text { position:absolute; bottom:20%; left:5%; width:30%; height:2px; background:rgba(255,255,255,0.3); box-shadow: 0 8px 0 rgba(255,255,255,0.15), 0 16px 0 rgba(255,255,255,0.08); }
+
+    .proto-eco { background: #f5f0eb; }
+    .proto-eco::before { content:''; position:absolute; top:10%; left:10%; right:40%; bottom:30%; background: linear-gradient(160deg,#2d4a1e,#4a7c2f); border-radius:60% 40% 70% 30% / 50% 40% 60% 50%; }
+    .proto-eco::after { content:''; position:absolute; bottom:15%; right:8%; width:35%; height:40%; background:#fff; border-radius:4px; box-shadow:0 4px 16px rgba(0,0,0,0.1); }
+    .proto-eco .mock-text { position:absolute; bottom:22%; right:10%; width:28%; height:2px; background:rgba(45,74,30,0.4); box-shadow: 0 6px 0 rgba(45,74,30,0.2); }
+
+    .proto-bio { background: #f0f9ff; }
+    .proto-bio::before { content:''; position:absolute; top:10%; left:50%; transform:translateX(-50%); width:30%; height:70%; background: linear-gradient(180deg,#0ea5e9 0%,transparent 50%,#0ea5e9 100%); clip-path:ellipse(50% 100% at 50% 50%); opacity:0.15; }
+    .proto-bio::after { content:''; position:absolute; top:15%; right:5%; width:35%; height:60%; background:#fff; border-radius:8px; border:1px solid #bae6fd; box-shadow:0 4px 16px rgba(14,165,233,0.1); }
+    .proto-bio .mock-text { position:absolute; bottom:12%; left:8%; width:40%; height:2px; background:rgba(14,165,233,0.5); box-shadow: 0 6px 0 rgba(14,165,233,0.25), 0 12px 0 rgba(14,165,233,0.1); }
+
+    .proto-vogue { background: #f5f0e8; }
+    .proto-vogue::before { content:'VOGUE'; position:absolute; top:20%; left:50%; transform:translateX(-50%); font-family:serif; font-size:clamp(14px,3vw,22px); font-weight:900; letter-spacing:0.3em; color:#1a1a1a; white-space:nowrap; }
+    .proto-vogue::after { content:''; position:absolute; top:0; left:50%; width:1px; height:100%; background:rgba(0,0,0,0.08); }
+    .proto-vogue .mock-text { position:absolute; bottom:25%; left:10%; width:35%; height:40%; background:linear-gradient(180deg,rgba(26,26,26,0.08),rgba(26,26,26,0.04)); border-radius:2px; }
+
+    .proto-nexus { background: #030712; }
+    .proto-nexus::before { content:''; position:absolute; inset:0; background: repeating-linear-gradient(0deg,rgba(0,255,255,0.03) 0px,transparent 1px,transparent 20px), repeating-linear-gradient(90deg,rgba(0,255,255,0.03) 0px,transparent 1px,transparent 20px); }
+    .proto-nexus::after { content:''; position:absolute; top:20%; left:10%; right:10%; height:3px; background:linear-gradient(90deg,transparent,#00ffff,#ff00ff,transparent); box-shadow: 0 0 20px rgba(0,255,255,0.5); }
+    .proto-nexus .mock-text { position:absolute; bottom:20%; left:10%; width:40%; height:20px; background:linear-gradient(90deg,rgba(0,255,255,0.4),transparent); border-radius:2px; box-shadow: 0 12px 0 rgba(255,0,255,0.2); }
+
+    .proto-aether { background: #0a0800; }
+    .proto-aether::before { content:''; position:absolute; top:0; left:10%; right:10%; height:1px; background:linear-gradient(90deg,transparent,#d4af37,transparent); }
+    .proto-aether::after { content:''; position:absolute; top:20%; left:50%; transform:translateX(-50%); width:50%; height:40%; background:linear-gradient(160deg,#1a1400,#2d2000); border:1px solid rgba(212,175,55,0.3); border-radius:4px; }
+    .proto-aether .mock-text { position:absolute; bottom:18%; left:50%; transform:translateX(-50%); width:35%; height:1px; background:#d4af37; opacity:0.5; box-shadow: 0 8px 0 rgba(212,175,55,0.2); }
+
+    .proto-orion { background: #080808; font-family:monospace; }
+    .proto-orion::before { content:''; position:absolute; inset:10%; background: repeating-linear-gradient(0deg,transparent,transparent 19px,rgba(249,115,22,0.08) 20px); }
+    .proto-orion::after { content:'> SYSTEM ONLINE'; position:absolute; top:15%; left:8%; font-size:9px; letter-spacing:0.1em; color:rgba(249,115,22,0.8); font-family:monospace; }
+    .proto-orion .mock-text { position:absolute; top:30%; left:8%; width:55%; height:1px; background:rgba(249,115,22,0.3); box-shadow: 0 8px 0 rgba(249,115,22,0.2), 0 16px 0 rgba(249,115,22,0.1), 0 24px 0 rgba(249,115,22,0.08), 0 32px 0 rgba(249,115,22,0.05); }
+
     @media (max-width: 768px) {
-      .proto-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      .proto-card:nth-child(1),
-      .proto-card:nth-child(6),
-      .proto-card:nth-child(8) {
-        grid-column: span 1;
-      }
+      .proto-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+      .proto-card:nth-child(1) { grid-column: span 2; }
+      .proto-card:nth-child(6) { grid-column: span 1; }
+      .proto-card:nth-child(8) { grid-column: span 1; }
+      .proto-card { aspect-ratio: 4/3; }
     }
     @media (max-width: 480px) {
       .proto-grid { grid-template-columns: 1fr 1fr; }
@@ -1018,9 +1057,9 @@
       transform: translateY(-3px);
     }
     .why-title {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: 1.1rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 400;
+      font-size: 1.25rem;
       color: white;
       margin-bottom: 0.75rem;
     }
@@ -1061,8 +1100,8 @@
       padding: 2rem;
     }
     .cta-headline {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
       font-size: clamp(2.5rem, 6vw, 5rem);
       line-height: 1.05;
       color: var(--ink);
@@ -1116,9 +1155,9 @@
 
     /* ── STATS ───────────────────────────────────────────── */
     .stat-num {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: 2.5rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 3rem;
       background: var(--grad-purple);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -1174,11 +1213,10 @@
 
     <div class="hero-inner">
       <div class="hero-content">
-        <div class="hero-eyebrow reveal">Available for projects</div>
-        <h1 class="hero-headline reveal reveal-delay-1">
+        <h1 class="hero-headline reveal">
           I help businesses<br>
           do more with<br>
-          <span class="grad-text">less effort.</span>
+          <span class="grad-text italic">less effort.</span>
         </h1>
         <p class="hero-sub reveal reveal-delay-2">
           I build websites, automation systems, and AI tools — so your team spends less time on repetitive tasks and more time on the work that actually matters.
@@ -1187,55 +1225,32 @@
           <a href="#showcase" class="btn-primary magnetic-btn">See My Work</a>
           <a href="mailto:domingopauljohn@gmail.com" class="btn-ghost magnetic-btn">Let's Talk</a>
         </div>
-        <div class="hero-pills reveal reveal-delay-4">
-          <span class="hero-pill">⚡ Delivered in days</span>
-          <span class="hero-pill">🤖 AI-powered</span>
-          <span class="hero-pill">📦 You own everything</span>
-        </div>
       </div>
 
       <div class="hero-visual" aria-hidden="true">
-        <div class="hero-glow"></div>
-        <div class="hero-card-stack reveal reveal-delay-2">
-          <div class="hero-card-back"></div>
-          <div class="hero-card tilt-card">
-            <div class="hero-card-header">
-              <span>Automation Dashboard</span>
-              <div class="hero-card-dot">
-                <i></i><i></i><i></i>
-              </div>
+        <div class="hero-3d-wrap">
+          <div class="hero-3d-glow"></div>
+          <!-- Orbiting particles -->
+          <div class="h3d-particle h3d-p1"></div>
+          <div class="h3d-particle h3d-p2"></div>
+          <div class="h3d-particle h3d-p3"></div>
+          <div class="h3d-particle h3d-p4"></div>
+          <div class="h3d-particle h3d-p5"></div>
+          <div class="hero-3d-card reveal reveal-delay-2" id="hero3dCard">
+            <div class="h3d-header">
+              <div class="h3d-dot"></div>
+              <div class="h3d-dot"></div>
+              <div class="h3d-dot"></div>
+              <span class="h3d-title">Automation Dashboard</span>
             </div>
-            <div class="hero-card-body">
-              <div class="hero-card-row">
-                <div class="hero-card-icon">
-                  <svg viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 1v12M1 7h12" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
-                </div>
-                <div class="hero-card-label">
-                  <span>New Booking</span>
-                  <small>Auto-confirmed · 2 min ago</small>
-                </div>
-                <div class="hero-card-badge">Done</div>
-              </div>
-              <div class="hero-card-row">
-                <div class="hero-card-icon">
-                  <svg viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="1" y="3" width="12" height="8" rx="1.5" stroke="white" stroke-width="1.5"/></svg>
-                </div>
-                <div class="hero-card-label">
-                  <span>Weekly Report</span>
-                  <small>Sent to team · Auto</small>
-                </div>
-                <div class="hero-card-badge">Sent</div>
-              </div>
-              <div class="hero-card-row">
-                <div class="hero-card-icon">
-                  <svg viewBox="0 0 14 14" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5" stroke="white" stroke-width="1.5"/><path d="M7 4v3l2 2" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
-                </div>
-                <div class="hero-card-label">
-                  <span>Reminder Sent</span>
-                  <small>12 patients · Tomorrow</small>
-                </div>
-                <div class="hero-card-badge">Live</div>
-              </div>
+            <div class="h3d-body">
+              <div class="h3d-row"></div>
+              <div class="h3d-row"></div>
+              <div class="h3d-row"></div>
+            </div>
+            <div class="h3d-cards">
+              <div class="h3d-mini-card"></div>
+              <div class="h3d-mini-card"></div>
             </div>
           </div>
         </div>
@@ -1491,8 +1506,10 @@
       <p class="section-sub reveal reveal-delay-2">UI concepts and interactive prototypes built to explore what's possible. Click to explore.</p>
       <div class="proto-grid">
         <!-- 1 - wide -->
-        <a href="#" class="proto-card reveal reveal-delay-1" aria-label="Aurora Studios prototype">
-          <div class="proto-thumb" style="background: linear-gradient(135deg, #0f0f0f, #1a1a2e)"></div>
+        <a href="#" class="proto-card reveal reveal-delay-1" aria-label="Aurora Studios">
+          <div class="proto-thumb proto-aurora">
+            <div class="mock-text"></div>
+          </div>
           <div class="proto-overlay">
             <div class="proto-name">Aurora Studios</div>
             <div class="proto-desc">3D spatial photography interface</div>
@@ -1500,8 +1517,10 @@
           <div class="proto-view">View →</div>
         </a>
         <!-- 2 -->
-        <a href="#" class="proto-card reveal reveal-delay-2" aria-label="Aris Thorne prototype">
-          <div class="proto-thumb" style="background: linear-gradient(135deg, #1a0533, #3b0764)"></div>
+        <a href="#" class="proto-card reveal reveal-delay-2" aria-label="Aris Thorne">
+          <div class="proto-thumb proto-aris">
+            <div class="mock-text"></div>
+          </div>
           <div class="proto-overlay">
             <div class="proto-name">Aris Thorne</div>
             <div class="proto-desc">Cinematic biography portfolio</div>
@@ -1509,17 +1528,21 @@
           <div class="proto-view">View →</div>
         </a>
         <!-- 3 -->
-        <a href="#" class="proto-card reveal reveal-delay-1" aria-label="Executive Dashboard prototype">
-          <div class="proto-thumb" style="background: linear-gradient(135deg, #f0f4ff, #dbeafe)"></div>
-          <div class="proto-overlay" style="background: linear-gradient(to top, rgba(30,30,80,0.7) 0%, transparent 60%)">
+        <a href="#" class="proto-card reveal reveal-delay-1" aria-label="Executive Dashboard">
+          <div class="proto-thumb proto-exec">
+            <div class="mock-text"></div>
+          </div>
+          <div class="proto-overlay">
             <div class="proto-name">Executive Dashboard</div>
             <div class="proto-desc">Glassmorphic SaaS UI concept</div>
           </div>
           <div class="proto-view">View →</div>
         </a>
         <!-- 4 -->
-        <a href="#" class="proto-card reveal reveal-delay-2" aria-label="Neo Bank prototype">
-          <div class="proto-thumb" style="background: linear-gradient(135deg, #020617, #0d1f3c)"></div>
+        <a href="#" class="proto-card reveal reveal-delay-2" aria-label="Neo Bank">
+          <div class="proto-thumb proto-neo">
+            <div class="mock-text"></div>
+          </div>
           <div class="proto-overlay">
             <div class="proto-name">Neo Bank</div>
             <div class="proto-desc">FinTech 3D credit card interface</div>
@@ -1527,8 +1550,10 @@
           <div class="proto-view">View →</div>
         </a>
         <!-- 5 -->
-        <a href="#" class="proto-card reveal reveal-delay-3" aria-label="Vanguard Automotive prototype">
-          <div class="proto-thumb" style="background: linear-gradient(135deg, #0a0a0a, #1c1917)"></div>
+        <a href="#" class="proto-card reveal reveal-delay-3" aria-label="Vanguard Automotive">
+          <div class="proto-thumb proto-vanguard">
+            <div class="mock-text"></div>
+          </div>
           <div class="proto-overlay">
             <div class="proto-name">Vanguard Automotive</div>
             <div class="proto-desc">Kinetic horizontal scroll experience</div>
@@ -1536,8 +1561,10 @@
           <div class="proto-view">View →</div>
         </a>
         <!-- 6 - wide -->
-        <a href="#" class="proto-card reveal reveal-delay-2" aria-label="Eco-Arch prototype">
-          <div class="proto-thumb" style="background: linear-gradient(135deg, #1a2e1a, #365314)"></div>
+        <a href="#" class="proto-card reveal reveal-delay-2" aria-label="Eco-Arch">
+          <div class="proto-thumb proto-eco">
+            <div class="mock-text"></div>
+          </div>
           <div class="proto-overlay">
             <div class="proto-name">Eco-Arch</div>
             <div class="proto-desc">Sustainable architecture studio</div>
@@ -1545,8 +1572,10 @@
           <div class="proto-view">View →</div>
         </a>
         <!-- 7 -->
-        <a href="#" class="proto-card reveal reveal-delay-3" aria-label="BioTech Helix prototype">
-          <div class="proto-thumb" style="background: linear-gradient(135deg, #0c4a6e, #164e63)"></div>
+        <a href="#" class="proto-card reveal reveal-delay-3" aria-label="BioTech Helix">
+          <div class="proto-thumb proto-bio">
+            <div class="mock-text"></div>
+          </div>
           <div class="proto-overlay">
             <div class="proto-name">BioTech Helix</div>
             <div class="proto-desc">WebGL DNA visualization + UI</div>
@@ -1554,8 +1583,10 @@
           <div class="proto-view">View →</div>
         </a>
         <!-- 8 - wide -->
-        <a href="#" class="proto-card reveal reveal-delay-4" aria-label="Vogue Editorial prototype">
-          <div class="proto-thumb" style="background: linear-gradient(135deg, #1c1917, #292524)"></div>
+        <a href="#" class="proto-card reveal reveal-delay-4" aria-label="Vogue Editorial">
+          <div class="proto-thumb proto-vogue">
+            <div class="mock-text"></div>
+          </div>
           <div class="proto-overlay">
             <div class="proto-name">Vogue Editorial</div>
             <div class="proto-desc">Z-axis layered editorial layout</div>
@@ -1563,8 +1594,10 @@
           <div class="proto-view">View →</div>
         </a>
         <!-- 9 -->
-        <a href="#" class="proto-card reveal reveal-delay-2" aria-label="Nexus Gaming prototype">
-          <div class="proto-thumb" style="background: linear-gradient(135deg, #030712, #0f172a)"></div>
+        <a href="#" class="proto-card reveal reveal-delay-2" aria-label="Nexus Gaming">
+          <div class="proto-thumb proto-nexus">
+            <div class="mock-text"></div>
+          </div>
           <div class="proto-overlay">
             <div class="proto-name">Nexus Gaming</div>
             <div class="proto-desc">Cyberpunk XR gaming interface</div>
@@ -1572,8 +1605,10 @@
           <div class="proto-view">View →</div>
         </a>
         <!-- 10 -->
-        <a href="#" class="proto-card reveal reveal-delay-3" aria-label="Aether Estates prototype">
-          <div class="proto-thumb" style="background: linear-gradient(135deg, #1c1400, #2d2000)"></div>
+        <a href="#" class="proto-card reveal reveal-delay-3" aria-label="Aether Estates">
+          <div class="proto-thumb proto-aether">
+            <div class="mock-text"></div>
+          </div>
           <div class="proto-overlay">
             <div class="proto-name">Aether Estates</div>
             <div class="proto-desc">Luxury real estate cinematic site</div>
@@ -1581,8 +1616,10 @@
           <div class="proto-view">View →</div>
         </a>
         <!-- 11 -->
-        <a href="#" class="proto-card reveal reveal-delay-4" aria-label="Orion Aerospace prototype">
-          <div class="proto-thumb" style="background: linear-gradient(135deg, #0a0a0a, #1c1a2e)"></div>
+        <a href="#" class="proto-card reveal reveal-delay-4" aria-label="Orion Aerospace">
+          <div class="proto-thumb proto-orion">
+            <div class="mock-text"></div>
+          </div>
           <div class="proto-overlay">
             <div class="proto-name">Orion Aerospace</div>
             <div class="proto-desc">Terminal aerospace telemetry UI</div>
@@ -1723,6 +1760,54 @@
       card.style.transform = '';
     });
   });
+
+  // ── HERO 3D SCROLL ANIMATION + PARALLAX ──────────────────
+  const heroCard = document.getElementById('hero3dCard');
+  const heroCanvas = document.getElementById('hero-canvas');
+  const heroBlob = document.querySelector('.hero-blob');
+  const heroContent = document.querySelector('.hero-content');
+
+  let rafScheduled = false;
+  let lastScrollY = 0;
+
+  function updateParallax() {
+    const scrolled = lastScrollY;
+    const maxScroll = window.innerHeight;
+    const progress = Math.min(scrolled / maxScroll, 1);
+
+    // 3D card tilt on scroll
+    if (heroCard) {
+      const rotateX = 4 + progress * 20;
+      const rotateY = -8 + progress * 8;
+      const translateZ = -progress * 60;
+      heroCard.style.transform = `rotateY(${rotateY}deg) rotateX(${rotateX}deg) translateZ(${translateZ}px)`;
+    }
+
+    // Parallax: Three.js canvas moves slower
+    if (heroCanvas) {
+      heroCanvas.style.transform = `translateY(${scrolled * 0.3}px)`;
+    }
+
+    // Parallax: blob moves at 0.5x
+    if (heroBlob) {
+      heroBlob.style.transform = `translate(-50%, calc(-50% + ${scrolled * 0.5}px))`;
+    }
+
+    // Parallax: hero content at 0.15x — very subtle
+    if (heroContent) {
+      heroContent.style.transform = `translateY(${scrolled * 0.15}px)`;
+    }
+
+    rafScheduled = false;
+  }
+
+  window.addEventListener('scroll', () => {
+    lastScrollY = window.scrollY;
+    if (!rafScheduled) {
+      rafScheduled = true;
+      requestAnimationFrame(updateParallax);
+    }
+  }, { passive: true });
 
   // ── THREE.JS HERO PARTICLES ───────────────────────────────
   (function initHeroParticles() {
@@ -1995,7 +2080,7 @@
 
       // Label
       ctx.fillStyle = 'rgba(192,132,252,0.9)';
-      ctx.font = '600 11px Plus Jakarta Sans, sans-serif';
+      ctx.font = '600 11px DM Sans, sans-serif';
       ctx.fillText('$' + last.toFixed(2), toX(vis.length - 1) + 8, toY(last) + 4);
 
       offset++;
@@ -2100,7 +2185,7 @@
 
         // Label
         ctx.fillStyle = isActive ? 'white' : 'rgba(255,255,255,0.4)';
-        ctx.font = `600 ${Math.max(8, nodeW * 0.13)}px Plus Jakarta Sans, sans-serif`;
+        ctx.font = `600 ${Math.max(8, nodeW * 0.13)}px DM Sans, sans-serif`;
         ctx.textAlign = 'center';
         ctx.fillText(steps[i].label, pos.x, pos.y + 5);
       });
