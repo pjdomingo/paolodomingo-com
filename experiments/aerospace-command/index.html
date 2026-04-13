@@ -90,7 +90,7 @@
             <div class="sys-warning">THERMAL RADIATOR ALIGNMENT SUB-OPTIMAL</div>
         </div>
 
-        <a href="../portfolio.html" class="back-link">Return to Base</a>
+        <a href="/" class="back-link">Return to Base</a>
     </aside>
 
     <main>
@@ -115,9 +115,26 @@
     <script>
         // Log updating logic
         const btnThrust = document.getElementById('btn-thrust');
+        const btnScan = document.getElementById('btn-scan');
         const logModule = document.getElementById('log-module');
+
         btnThrust.addEventListener('click', () => {
             logModule.innerHTML += `<div class="data-row" style="color:var(--accent)">> PROGRADE BURN ENGAGED</div>`;
+        });
+
+        const scanResponses = [
+            '> INITIATING DEEP SPACE SCAN...',
+            '> SCANNING SECTOR 7-GAMMA...',
+            '> ANOMALY DETECTED AT 2.4 AU',
+            '> SIGNAL STRENGTH: 0.003 nT',
+            '> [DESIGN CONCEPT — NO LIVE DATA]'
+        ];
+        let scanIndex = 0;
+        btnScan.addEventListener('click', () => {
+            const msg = scanResponses[scanIndex % scanResponses.length];
+            const color = msg.includes('DESIGN CONCEPT') ? '#666' : 'var(--accent)';
+            logModule.innerHTML += `<div class="data-row" style="color:${color}">${msg}</div>`;
+            scanIndex++;
         });
 
         // Altitude jitter logic

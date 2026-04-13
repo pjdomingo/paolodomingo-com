@@ -83,7 +83,7 @@
 </head>
 <body>
 
-    <a href="../portfolio.html" class="back-link">Return to Base</a>
+    <a href="/" class="back-link">Return to Base</a>
 
     <div class="crt-bg"></div>
     <div class="scanlines"></div>
@@ -145,6 +145,45 @@
 
         // Run on load
         setTimeout(() => scrambleText(title), 500);
+
+        // Initialize button — boot sequence
+        const bootLines = [
+            "> SYSTEM BOOT INITIATED...",
+            "> LOADING NEURAL LINK DRIVERS...",
+            "> ESTABLISHING METAVERSE UPLINK...",
+            "> CALIBRATING XR HAPTICS...",
+            "> ACCESS GRANTED. WELCOME, OPERATIVE.",
+            "> [THIS IS A DESIGN CONCEPT — NOT A LIVE PRODUCT]"
+        ];
+
+        const initBtn = document.getElementById('init-btn');
+        let booting = false;
+
+        // Create log element
+        const log = document.createElement('div');
+        log.style.cssText = 'margin-top:2rem;text-align:left;font-size:0.85rem;color:var(--accent-alt);min-height:1.2em;max-width:500px;';
+        initBtn.parentElement.appendChild(log);
+
+        initBtn.addEventListener('click', () => {
+            if (booting) return;
+            booting = true;
+            log.innerHTML = '';
+            let i = 0;
+            function nextLine() {
+                if (i >= bootLines.length) { booting = false; return; }
+                const line = document.createElement('div');
+                line.style.opacity = '0';
+                line.style.transition = 'opacity 0.3s';
+                line.textContent = bootLines[i];
+                if (i === bootLines.length - 1) line.style.color = 'var(--accent)';
+                log.appendChild(line);
+                requestAnimationFrame(() => { line.style.opacity = '1'; });
+                i++;
+                setTimeout(nextLine, 400);
+            }
+            nextLine();
+            scrambleText(title);
+        });
 
     </script>
 </body>

@@ -64,6 +64,17 @@
         .back-link { position: fixed; top: 2rem; left: 2rem; color: #fff; text-decoration: none; border: 1px solid rgba(255,255,255,0.2); padding: 0.5rem 1.5rem; border-radius: 30px; transition: background 0.3s, color 0.3s; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.1em; z-index: 100; mix-blend-mode: difference; }
         .back-link:hover { background: #fff; color: #000; }
 
+        #toast {
+            position: fixed; bottom: 2.5rem; left: 50%; transform: translateX(-50%) translateY(20px);
+            background: var(--text-main); color: var(--bg);
+            padding: 1rem 2.5rem; font-weight: 900; font-size: 1rem;
+            text-transform: uppercase; letter-spacing: 0.1em;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            z-index: 999;
+        }
+        #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
         /* Abstract structural grids doing the heavy lifting since we don't have vehicle photos */
         .abstract-block { position: absolute; background: #222; border: 1px solid #333; }
         .b1 { right: -5vw; top: 10vh; width: 40vw; height: 60vh; transform: skewX(-15deg); }
@@ -79,7 +90,7 @@
 </head>
 <body>
 
-    <a href="../portfolio.html" class="back-link">Back to Portfolio</a>
+    <a href="/" class="back-link">Back to Portfolio</a>
     <div class="progress-bar" id="progress"></div>
 
     <div class="scroll-proxy"></div>
@@ -120,7 +131,7 @@
         <!-- Frame 4 -->
         <section style="align-items: center; text-align: center;">
             <h1 style="font-size: 8rem; margin-bottom: 3rem;">Configure Yours.</h1>
-            <a href="#" style="padding: 1.5rem 4rem; background: #fff; color: #000; text-decoration: none; font-weight: 900; font-size: 1.5rem; text-transform: uppercase; letter-spacing: 0.1em;">Reserve</a>
+            <a href="#" id="reserve-btn" style="padding: 1.5rem 4rem; background: #fff; color: #000; text-decoration: none; font-weight: 900; font-size: 1.5rem; text-transform: uppercase; letter-spacing: 0.1em;">Reserve</a>
         </section>
 
     </div>
@@ -161,6 +172,19 @@
             requestAnimationFrame(render);
         }
         render();
+
+        // Toast for Reserve button
+        const reserveBtn = document.getElementById('reserve-btn');
+        const toast = document.getElementById('toast');
+        let toastTimer;
+        reserveBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            clearTimeout(toastTimer);
+            toast.classList.add('show');
+            toastTimer = setTimeout(() => toast.classList.remove('show'), 3500);
+        });
     </script>
+
+    <div id="toast">This is a design concept — not a live product.</div>
 </body>
 </html>
