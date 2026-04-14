@@ -1040,6 +1040,39 @@
     .proto-orion::after { content:'> SYSTEM ONLINE'; position:absolute; top:15%; left:8%; font-size:9px; letter-spacing:0.1em; color:rgba(249,115,22,0.8); font-family:monospace; }
     .proto-orion .mock-text { position:absolute; top:30%; left:8%; width:55%; height:1px; background:rgba(249,115,22,0.3); box-shadow: 0 8px 0 rgba(249,115,22,0.2), 0 16px 0 rgba(249,115,22,0.1), 0 24px 0 rgba(249,115,22,0.08), 0 32px 0 rgba(249,115,22,0.05); }
 
+    .proto-inamo { background: #0d0d0d; overflow:hidden; }
+    .proto-inamo::before { content:'INAMO™'; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-family:'Bricolage Grotesque',sans-serif; font-size:clamp(18px,3.5vw,26px); font-weight:800; letter-spacing:0.15em; color:#b9ff00; text-shadow: 0 0 20px rgba(185,255,0,0.6), 0 0 40px rgba(185,255,0,0.3); white-space:nowrap; }
+    .proto-inamo::after { content:'CORP.'; position:absolute; top:calc(50% + clamp(16px,2.5vw,22px)); left:50%; transform:translateX(-50%); font-family:'DM Sans',sans-serif; font-size:9px; letter-spacing:0.4em; color:rgba(185,255,0,0.5); white-space:nowrap; }
+    .proto-inamo .mock-text { position:absolute; top:15%; left:8%; right:8%; height:1px; background:linear-gradient(90deg,transparent,rgba(185,255,0,0.25),transparent); box-shadow: 0 0 0 rgba(185,255,0,0); animation:none; }
+
+    .proto-dental { background: #f8faff; }
+    .proto-dental::before { content:''; position:absolute; top:12%; left:50%; transform:translateX(-50%); width:30%; height:48%; background: linear-gradient(180deg,#ffffff 0%,#e8f0fe 60%,#c5d8fd 100%); border-radius: 30% 30% 50% 50% / 20% 20% 50% 50%; border:1.5px solid rgba(99,137,245,0.25); box-shadow: 0 8px 24px rgba(99,137,245,0.12); }
+    .proto-dental::after { content:'TomFord Dental'; position:absolute; bottom:20%; left:50%; transform:translateX(-50%); font-family:'DM Sans',sans-serif; font-size:8px; letter-spacing:0.2em; color:rgba(30,60,120,0.5); white-space:nowrap; text-transform:uppercase; }
+    .proto-dental .mock-text { position:absolute; bottom:30%; left:50%; transform:translateX(-50%); width:40%; height:1.5px; background:linear-gradient(90deg,transparent,rgba(99,137,245,0.4),transparent); }
+
+    /* Portfolio badge */
+    .proto-badge {
+      position: absolute;
+      top: 1rem; left: 1rem;
+      background: rgba(185,255,0,0.9);
+      color: #0d0d0d;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 4px;
+      z-index: 2;
+    }
+    .proto-badge.case-study {
+      background: rgba(99,137,245,0.92);
+      color: #fff;
+    }
+
+    /* Span for new portfolio cards */
+    .proto-card:nth-child(12) { grid-column: span 2; }
+
     @media (max-width: 768px) {
       .proto-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
       .proto-card:nth-child(1) { grid-column: span 2; }
@@ -1320,8 +1353,8 @@
           </svg>
           <span class="path-label path-label-dark">Creative & Experimental</span>
           <h3 class="path-title path-title-dark">Creative & Experimental Work</h3>
-          <p class="path-body path-body-dark">UI experiments, 3D interfaces, and interactive prototypes. This is where I push the boundaries of what's possible on the web.</p>
-          <a href="#prototypes" class="path-link path-link-dark">See the Prototypes <span aria-hidden="true">→</span></a>
+          <p class="path-body path-body-dark">UI experiments, 3D interfaces, interactive prototypes — and a few real websites, including a sarcastic corporate parody called INAMO.</p>
+          <a href="#prototypes" class="path-link path-link-dark">See the Work <span aria-hidden="true">→</span></a>
         </div>
       </div>
     </div>
@@ -1518,9 +1551,9 @@
   <!-- PROTOTYPES -->
   <section id="prototypes">
     <div class="section-inner">
-      <span class="eyebrow reveal">Creative Work</span>
-      <h2 class="section-heading reveal reveal-delay-1">Web experiments.</h2>
-      <p class="section-sub reveal reveal-delay-2">UI concepts and interactive prototypes built to explore what's possible. Click to explore.</p>
+      <span class="eyebrow reveal">Experiments & Portfolio</span>
+      <h2 class="section-heading reveal reveal-delay-1">Web experiments & portfolio.</h2>
+      <p class="section-sub reveal reveal-delay-2">UI concepts, interactive prototypes, and real websites I've built. Some are just for fun — some are live.</p>
       <div class="proto-grid">
         <!-- 1 - wide -->
         <a href="/experiments/aurora-studios" target="_blank" class="proto-card reveal reveal-delay-1" aria-label="Aurora Studios">
@@ -1641,6 +1674,30 @@
             <div class="proto-name">Orion Aerospace</div>
             <div class="proto-desc">Terminal aerospace telemetry UI</div>
           </div>
+          <div class="proto-view">View →</div>
+        </a>
+        <!-- 12 - INAMO (wide, live site) -->
+        <a href="https://inamo.lol" target="_blank" class="proto-card reveal reveal-delay-2" aria-label="INAMO Corp">
+          <div class="proto-thumb proto-inamo">
+            <div class="mock-text"></div>
+          </div>
+          <div class="proto-overlay">
+            <div class="proto-name">INAMO Corp.</div>
+            <div class="proto-desc">A satirical fake-corporate website — comic, sarcastic, and absolutely not real. Built for laughs.</div>
+          </div>
+          <div class="proto-badge">Live Site</div>
+          <div class="proto-view">Visit →</div>
+        </a>
+        <!-- 13 - TomFord Dental (case study) -->
+        <a href="https://inamo.lol/proposals/tomford-dental/v1/" target="_blank" class="proto-card reveal reveal-delay-3" aria-label="TomFord Dental Design Study">
+          <div class="proto-thumb proto-dental">
+            <div class="mock-text"></div>
+          </div>
+          <div class="proto-overlay">
+            <div class="proto-name">TomFord Dental</div>
+            <div class="proto-desc">Luxury dental website design study — one of three concepts built for a real clinic pitch</div>
+          </div>
+          <div class="proto-badge case-study">Case Study</div>
           <div class="proto-view">View →</div>
         </a>
       </div>
