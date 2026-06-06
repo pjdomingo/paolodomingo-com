@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Creatives — Paolo Domingo</title>
+  <meta name="description" content="UI experiments, interactive prototypes, and real websites built by Paolo Domingo — web designer and AI engineer based in Manila." />
+  <meta property="og:title" content="Creatives — Paolo Domingo" />
+  <meta property="og:description" content="UI experiments, interactive prototypes, and real websites." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    :root {
+      --yellow: #F5E642;
+      --ink: #0A0A0A;
+      --cream: #F8F6F1;
+      --white: #FFFFFF;
+      --muted: #888888;
+      --border: rgba(10,10,10,0.1);
+      --stripe-w: 72px;
+    }
+
+    body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--ink); overflow-x: hidden; cursor: none; }
+
+    /* ── CURSOR ─────────────────────────────────────── */
+    #cursor-dot { position:fixed; width:8px; height:8px; background:var(--ink); border-radius:50%; pointer-events:none; z-index:99999; transform:translate(-50%,-50%); }
+    #cursor-ring { position:fixed; width:32px; height:32px; border:1.5px solid var(--ink); border-radius:50%; pointer-events:none; z-index:99998; transform:translate(-50%,-50%); transition:width 0.2s,height 0.2s,border-color 0.2s; }
+    @media (pointer:coarse) { #cursor-dot,#cursor-ring{display:none;} body{cursor:auto;} }
+
+    /* ── NAV ─────────────────────────────────────────── */
+    #main-nav {
+      position: sticky; top: 0; z-index: 1000; background: var(--cream);
+      display: flex; align-items: stretch; height: 64px; border-bottom: 2px solid var(--ink);
+    }
+    .nav-logo-block {
+      width: var(--stripe-w); min-width: var(--stripe-w); background: var(--yellow);
+      border-right: 2px solid var(--ink); display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .nav-monogram { font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:1.05rem; color:var(--ink); letter-spacing:-0.04em; text-decoration:none; }
+    .nav-inner { flex:1; display:flex; align-items:center; justify-content:space-between; padding:0 2rem; }
+    .nav-brand { font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:0.95rem; color:var(--ink); text-decoration:none; letter-spacing:-0.01em; }
+    .nav-links { display:flex; align-items:center; gap:2.5rem; list-style:none; }
+    .nav-links a { font-family:'Plus Jakarta Sans',sans-serif; font-size:0.7rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); text-decoration:none; transition:color 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color:var(--ink); }
+    .nav-cta { font-family:'Plus Jakarta Sans',sans-serif; font-size:0.88rem; font-weight:700; color:var(--ink); text-decoration:none; border-bottom:2.5px solid var(--yellow); padding-bottom:1px; text-transform:none !important; letter-spacing:0 !important; }
+    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:4px; background:none; border:none; }
+    .hamburger span { display:block; width:22px; height:2px; background:var(--ink); border-radius:2px; transition:all 0.3s; }
+    #mobile-menu { position:fixed; inset:0; background:var(--yellow); z-index:999; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2.5rem; opacity:0; pointer-events:none; transition:opacity 0.3s; }
+    #mobile-menu.open { opacity:1; pointer-events:all; }
+    #mobile-menu a { font-family:'Plus Jakarta Sans',sans-serif; font-size:2.5rem; font-weight:800; color:var(--ink); text-decoration:none; letter-spacing:-0.03em; }
+    #mobile-menu .close-btn { position:absolute; top:1.5rem; right:1.5rem; font-size:1.5rem; color:var(--ink); cursor:pointer; background:none; border:none; font-family:'DM Sans',sans-serif; }
+    @media (max-width:768px) { .nav-links{display:none;} .hamburger{display:flex;} }
+
+    /* ── HERO ─────────────────────────────────────────── */
+    #hero {
+      min-height: 44vh;
+      display: grid;
+      grid-template-columns: var(--stripe-w) 1fr;
+      border-bottom: 2px solid var(--ink);
+    }
+    .hero-stripe {
+      background: var(--yellow); border-right: 2px solid var(--ink);
+      display: flex; align-items: flex-end; justify-content: center; padding-bottom: 2rem;
+    }
+    .hero-stripe-text {
+      font-family:'Plus Jakarta Sans',sans-serif; font-size:0.55rem; font-weight:700;
+      letter-spacing:0.2em; text-transform:uppercase; color:rgba(10,10,10,0.4);
+      writing-mode:vertical-rl; transform:rotate(180deg);
+    }
+    .hero-main { padding: 3.5rem 3.5rem; display: flex; flex-direction: column; justify-content: flex-end; }
+    .hero-label { font-family:'Plus Jakarta Sans',sans-serif; font-size:0.68rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); margin-bottom:1.5rem; }
+    .hero-h1 {
+      font-family:'Plus Jakarta Sans',sans-serif; font-weight:800;
+      font-size:clamp(3rem,7vw,6.5rem); line-height:0.92; letter-spacing:-0.05em; color:var(--ink); margin-bottom:1.25rem;
+    }
+    .hero-h1 .outlined { display:block; color:var(--yellow); -webkit-text-stroke:2px var(--ink); }
+    .hero-sub { font-family:'DM Sans',sans-serif; font-size:1rem; color:var(--muted); line-height:1.7; max-width:520px; }
+
+    @media (max-width:600px) {
+      #hero { grid-template-columns:40px 1fr; }
+      .hero-main { padding:2.5rem 1.5rem; }
+    }
+
+    /* ── FILTER BAR ───────────────────────────────────── */
+    #filter-bar {
+      border-bottom: 2px solid var(--ink); padding: 0;
+      display: flex; align-items: stretch;
+      background: var(--cream); position: sticky; top: 64px; z-index: 900;
+    }
+    .filter-offset { width: var(--stripe-w); min-width: var(--stripe-w); border-right: 2px solid var(--ink); flex-shrink: 0; }
+    .filter-inner { display: flex; align-items: center; gap: 0; padding: 0; flex: 1; overflow-x: auto; }
+    .filter-btn {
+      font-family:'Plus Jakarta Sans',sans-serif; font-size:0.7rem; font-weight:700;
+      letter-spacing:0.1em; text-transform:uppercase; color:var(--muted);
+      background:none; border:none; border-right:1px solid var(--border);
+      padding:1rem 1.5rem; cursor:pointer; transition:all 0.2s; white-space:nowrap;
+    }
+    .filter-btn:hover { color:var(--ink); background:rgba(245,230,66,0.08); }
+    .filter-btn.active { color:var(--ink); background:var(--yellow); border-color:var(--ink); }
+
+    /* ── GRID ─────────────────────────────────────────── */
+    #grid-section { padding: 3rem 0 6rem; }
+    .grid-inner { padding: 0 2rem 0 calc(var(--stripe-w) + 2rem); }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .c-card {
+      border-radius: 12px; overflow: hidden; position: relative;
+      aspect-ratio: 4/3; display: block; text-decoration: none;
+      border: 1.5px solid var(--border);
+      transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.35s;
+      cursor: pointer;
+    }
+    .c-card:hover { transform: translateY(-6px) scale(1.01); box-shadow: 0 20px 56px rgba(10,10,10,0.14); }
+
+    /* Wide spans */
+    .c-card.wide { grid-column: span 2; aspect-ratio: 16/7; }
+
+    /* Overlay */
+    .c-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(10,10,10,0.82) 0%, rgba(10,10,10,0.05) 55%, transparent 100%);
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 1.25rem 1.5rem; transition: background 0.3s;
+    }
+    .c-card:hover .c-overlay { background: linear-gradient(to top, rgba(10,10,10,0.92) 0%, rgba(10,10,10,0.3) 65%, transparent 100%); }
+
+    .c-badge {
+      position: absolute; top: 0.85rem; left: 0.85rem; z-index: 2;
+      font-family:'Plus Jakarta Sans',sans-serif; font-size:0.6rem; font-weight:700;
+      letter-spacing:0.1em; text-transform:uppercase; padding:0.22rem 0.6rem;
+      border-radius:4px;
+    }
+    .c-badge-exp { background:rgba(245,230,66,0.92); color:var(--ink); }
+    .c-badge-live { background:rgba(10,10,10,0.85); color:var(--yellow); border:1px solid var(--yellow); }
+    .c-badge-case { background:rgba(99,137,245,0.9); color:#fff; }
+
+    .c-view {
+      position: absolute; top: 0.85rem; right: 0.85rem; z-index: 2;
+      width: 30px; height: 30px; border-radius: 50%;
+      background: rgba(245,230,66,0); border: 1.5px solid rgba(255,255,255,0);
+      display: flex; align-items: center; justify-content: center;
+      color: white; transition: all 0.25s;
+    }
+    .c-card:hover .c-view { background: var(--yellow); border-color: var(--yellow); color: var(--ink); }
+
+    .c-name { font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:0.95rem; color:white; margin-bottom:0.15rem; transform:translateY(0); transition:transform 0.3s; }
+    .c-card:hover .c-name { transform:translateY(-3px); }
+    .c-desc { font-family:'DM Sans',sans-serif; font-size:0.75rem; color:rgba(255,255,255,0); max-height:0; overflow:hidden; transition:color 0.3s,max-height 0.3s; }
+    .c-card:hover .c-desc { color:rgba(255,255,255,0.6); max-height:30px; }
+
+    /* ── CSS MOCKUP THUMBNAILS ────────────────────────── */
+    .thumb { position:absolute; inset:0; }
+
+    /* Aurora Studios */
+    .t-aurora { background:#0a0a0a; }
+    .t-aurora::before { content:''; position:absolute; top:8%; left:8%; right:8%; height:1px; background:rgba(255,255,255,0.15); }
+    .t-aurora::after { content:''; position:absolute; top:15%; left:8%; right:8%; bottom:25%; background:linear-gradient(135deg,#1a1a1a,#252525); border-radius:4px; }
+    .t-aurora .m1 { position:absolute; bottom:18%; left:8%; width:35%; height:3px; background:white; box-shadow:0 9px 0 rgba(255,255,255,0.35),0 18px 0 rgba(255,255,255,0.18); }
+
+    /* Aris Thorne */
+    .t-aris { background:linear-gradient(160deg,#0d0015 0%,#1a0533 100%); }
+    .t-aris::before { content:''; position:absolute; top:22%; left:50%; transform:translateX(-50%); width:55%; height:1px; background:rgba(167,139,250,0.3); }
+    .t-aris::after { content:''; position:absolute; top:30%; left:50%; transform:translateX(-50%); width:42%; height:28px; background:linear-gradient(135deg,rgba(124,58,237,0.65),rgba(167,139,250,0.45)); border-radius:3px; }
+    .t-aris .m1 { position:absolute; bottom:22%; left:50%; transform:translateX(-50%); width:28%; height:2px; background:rgba(255,255,255,0.3); box-shadow:0 8px 0 rgba(255,255,255,0.12); }
+
+    /* Executive Dashboard */
+    .t-exec { background:#f8f9fc; }
+    .t-exec::before { content:''; position:absolute; top:0; left:0; width:22%; bottom:0; background:#fff; border-right:1px solid #e5e7eb; }
+    .t-exec::after { content:''; position:absolute; top:18%; left:26%; right:4%; height:14%; background:linear-gradient(90deg,#3b82f6,#6366f1); border-radius:6px; opacity:0.65; }
+    .t-exec .m1 { position:absolute; top:40%; left:26%; right:4%; bottom:15%; background:repeating-linear-gradient(0deg,#f1f3f9,#f1f3f9 3px,transparent 3px,transparent 18px); border-radius:4px; }
+
+    /* Neo Bank */
+    .t-neo { background:#020617; }
+    .t-neo::before { content:''; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%) rotate(-6deg); width:58%; height:36%; background:linear-gradient(135deg,#1e3a5f,#0d2340); border-radius:10px; border:1px solid rgba(16,185,129,0.3); box-shadow:0 20px 40px rgba(0,0,0,0.5); }
+    .t-neo::after { content:''; position:absolute; top:50%; left:32%; transform:translateY(-50%) rotate(-6deg); width:13%; height:9%; background:linear-gradient(135deg,#10b981,#059669); border-radius:3px; }
+    .t-neo .m1 { position:absolute; bottom:14%; left:50%; transform:translateX(-50%); width:45%; height:2px; background:rgba(16,185,129,0.4); box-shadow:0 7px 0 rgba(16,185,129,0.2); }
+
+    /* Vanguard Automotive */
+    .t-van { background:#0a0a0a; overflow:hidden; }
+    .t-van::before { content:''; position:absolute; top:36%; left:-5%; right:-5%; height:2px; background:linear-gradient(90deg,transparent,#fff 30%,#fff 70%,transparent); opacity:0.18; }
+    .t-van::after { content:''; position:absolute; top:14%; left:5%; width:48%; height:18px; background:white; opacity:0.88; border-radius:1px; }
+    .t-van .m1 { position:absolute; bottom:18%; left:5%; width:28%; height:2px; background:rgba(255,255,255,0.3); box-shadow:0 9px 0 rgba(255,255,255,0.15),0 18px 0 rgba(255,255,255,0.07); }
+
+    /* Eco Arch */
+    .t-eco { background:#f5f0eb; }
+    .t-eco::before { content:''; position:absolute; top:8%; left:8%; right:38%; bottom:28%; background:linear-gradient(160deg,#2d4a1e,#4a7c2f); border-radius:60% 40% 70% 30% / 50% 40% 60% 50%; }
+    .t-eco::after { content:''; position:absolute; bottom:12%; right:6%; width:36%; height:42%; background:#fff; border-radius:4px; box-shadow:0 4px 16px rgba(0,0,0,0.1); }
+    .t-eco .m1 { position:absolute; bottom:20%; right:8%; width:26%; height:2px; background:rgba(45,74,30,0.4); box-shadow:0 7px 0 rgba(45,74,30,0.2); }
+
+    /* BioTech Helix */
+    .t-bio { background:#f0f9ff; }
+    .t-bio::before { content:''; position:absolute; top:8%; left:50%; transform:translateX(-50%); width:28%; height:68%; background:linear-gradient(180deg,#0ea5e9 0%,transparent 50%,#0ea5e9 100%); clip-path:ellipse(50% 100% at 50% 50%); opacity:0.12; }
+    .t-bio::after { content:''; position:absolute; top:12%; right:5%; width:34%; height:62%; background:#fff; border-radius:8px; border:1px solid #bae6fd; box-shadow:0 4px 16px rgba(14,165,233,0.1); }
+    .t-bio .m1 { position:absolute; bottom:10%; left:7%; width:38%; height:2px; background:rgba(14,165,233,0.5); box-shadow:0 7px 0 rgba(14,165,233,0.22),0 14px 0 rgba(14,165,233,0.1); }
+
+    /* Vogue Editorial */
+    .t-vogue { background:#f5f0e8; }
+    .t-vogue::before { content:'VOGUE'; position:absolute; top:18%; left:50%; transform:translateX(-50%); font-family:serif; font-size:clamp(13px,3vw,22px); font-weight:900; letter-spacing:0.3em; color:#1a1a1a; white-space:nowrap; }
+    .t-vogue::after { content:''; position:absolute; top:0; left:50%; width:1px; height:100%; background:rgba(0,0,0,0.07); }
+    .t-vogue .m1 { position:absolute; bottom:22%; left:9%; width:34%; height:40%; background:linear-gradient(180deg,rgba(26,26,26,0.08),rgba(26,26,26,0.03)); border-radius:2px; }
+
+    /* Nexus Gaming */
+    .t-nexus { background:#030712; }
+    .t-nexus::before { content:''; position:absolute; inset:0; background:repeating-linear-gradient(0deg,rgba(0,255,255,0.03) 0px,transparent 1px,transparent 20px),repeating-linear-gradient(90deg,rgba(0,255,255,0.03) 0px,transparent 1px,transparent 20px); }
+    .t-nexus::after { content:''; position:absolute; top:20%; left:10%; right:10%; height:3px; background:linear-gradient(90deg,transparent,#00ffff,#ff00ff,transparent); box-shadow:0 0 18px rgba(0,255,255,0.5); }
+    .t-nexus .m1 { position:absolute; bottom:18%; left:10%; width:38%; height:18px; background:linear-gradient(90deg,rgba(0,255,255,0.4),transparent); border-radius:2px; box-shadow:0 12px 0 rgba(255,0,255,0.18); }
+
+    /* Aether Estates */
+    .t-aether { background:#0a0800; }
+    .t-aether::before { content:''; position:absolute; top:0; left:10%; right:10%; height:1px; background:linear-gradient(90deg,transparent,#d4af37,transparent); }
+    .t-aether::after { content:''; position:absolute; top:18%; left:50%; transform:translateX(-50%); width:52%; height:42%; background:linear-gradient(160deg,#1a1400,#2d2000); border:1px solid rgba(212,175,55,0.3); border-radius:4px; }
+    .t-aether .m1 { position:absolute; bottom:16%; left:50%; transform:translateX(-50%); width:32%; height:1px; background:#d4af37; opacity:0.5; box-shadow:0 9px 0 rgba(212,175,55,0.18); }
+
+    /* Orion Aerospace */
+    .t-orion { background:#080808; font-family:monospace; }
+    .t-orion::before { content:''; position:absolute; inset:10%; background:repeating-linear-gradient(0deg,transparent,transparent 19px,rgba(249,115,22,0.07) 20px); }
+    .t-orion::after { content:'> SYSTEM ONLINE'; position:absolute; top:14%; left:8%; font-size:9px; letter-spacing:0.1em; color:rgba(249,115,22,0.8); font-family:monospace; }
+    .t-orion .m1 { position:absolute; top:28%; left:8%; width:52%; height:1px; background:rgba(249,115,22,0.35); box-shadow:0 9px 0 rgba(249,115,22,0.2),0 18px 0 rgba(249,115,22,0.12),0 27px 0 rgba(249,115,22,0.07),0 36px 0 rgba(249,115,22,0.04); }
+
+    /* INAMO Corp */
+    .t-inamo { background:#0d0d0d; overflow:hidden; }
+    .t-inamo::before { content:'INAMO™'; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-family:'Plus Jakarta Sans',sans-serif; font-size:clamp(16px,3.5vw,28px); font-weight:800; letter-spacing:0.12em; color:#b9ff00; text-shadow:0 0 20px rgba(185,255,0,0.6),0 0 40px rgba(185,255,0,0.25); white-space:nowrap; }
+    .t-inamo::after { content:'CORP.'; position:absolute; top:calc(50% + clamp(14px,2.5vw,22px)); left:50%; transform:translateX(-50%); font-family:'DM Sans',sans-serif; font-size:8px; letter-spacing:0.4em; color:rgba(185,255,0,0.45); white-space:nowrap; }
+    .t-inamo .m1 { position:absolute; top:14%; left:8%; right:8%; height:1px; background:linear-gradient(90deg,transparent,rgba(185,255,0,0.2),transparent); }
+
+    /* TomFord Dental */
+    .t-dental { background:#f8faff; }
+    .t-dental::before { content:''; position:absolute; top:10%; left:50%; transform:translateX(-50%); width:28%; height:48%; background:linear-gradient(180deg,#ffffff 0%,#e8f0fe 60%,#c5d8fd 100%); border-radius:30% 30% 50% 50% / 20% 20% 50% 50%; border:1.5px solid rgba(99,137,245,0.22); box-shadow:0 8px 24px rgba(99,137,245,0.1); }
+    .t-dental::after { content:'TomFord Dental'; position:absolute; bottom:18%; left:50%; transform:translateX(-50%); font-family:'DM Sans',sans-serif; font-size:7px; letter-spacing:0.2em; color:rgba(30,60,120,0.45); white-space:nowrap; text-transform:uppercase; }
+    .t-dental .m1 { position:absolute; bottom:28%; left:50%; transform:translateX(-50%); width:38%; height:1.5px; background:linear-gradient(90deg,transparent,rgba(99,137,245,0.4),transparent); }
+
+    /* ── SECTION DIVIDER ──────────────────────────────── */
+    .section-label {
+      padding: 1.25rem 0 1rem calc(var(--stripe-w) + 2rem);
+      border-bottom: 1px solid var(--border); border-top: 1px solid var(--border);
+      margin: 2.5rem 0 1.5rem; display: flex; align-items: center; gap: 0.75rem;
+    }
+    .section-label-text {
+      font-family:'Plus Jakarta Sans',sans-serif; font-size:0.68rem; font-weight:700;
+      letter-spacing:0.14em; text-transform:uppercase; color:var(--muted);
+    }
+    .section-label-count {
+      font-family:'Plus Jakarta Sans',sans-serif; font-size:0.68rem; font-weight:700;
+      color:var(--yellow); background:var(--ink); padding:0.1rem 0.5rem; border-radius:100px;
+    }
+
+    /* ── FOOTER ───────────────────────────────────────── */
+    footer {
+      background:var(--ink); padding:1.5rem 2rem;
+      display:flex; align-items:center; justify-content:space-between;
+      border-top:2px solid rgba(255,255,255,0.08); flex-wrap:wrap; gap:1rem;
+    }
+    .footer-copy { font-family:'DM Sans',sans-serif; font-size:0.8rem; color:rgba(255,255,255,0.3); }
+    .footer-links { display:flex; gap:1.5rem; }
+    .footer-links a { font-family:'DM Sans',sans-serif; font-size:0.8rem; color:rgba(255,255,255,0.4); text-decoration:none; transition:color 0.2s; }
+    .footer-links a:hover { color:var(--yellow); }
+
+    /* ── REVEAL ───────────────────────────────────────── */
+    .reveal { opacity:0; transform:translateY(20px); transition:opacity 0.55s ease,transform 0.55s ease; }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+    .reveal-delay-1 { transition-delay:0.07s; }
+    .reveal-delay-2 { transition-delay:0.14s; }
+    .reveal-delay-3 { transition-delay:0.21s; }
+
+    /* ── RESPONSIVE ───────────────────────────────────── */
+    @media (max-width:900px) { .cards-grid { grid-template-columns:repeat(2,1fr); } .c-card.wide { grid-column:span 2; } }
+    @media (max-width:560px) { .cards-grid { grid-template-columns:1fr 1fr; } .c-card.wide { grid-column:span 2; aspect-ratio:4/3; } .grid-inner { padding:0 1rem 0 calc(40px + 1rem); } }
+  </style>
+</head>
+<body>
+
+  <div id="cursor-dot"></div>
+  <div id="cursor-ring"></div>
+
+  <!-- MOBILE MENU -->
+  <div id="mobile-menu" role="dialog" aria-modal="true">
+    <button class="close-btn" id="menu-close" aria-label="Close">✕</button>
+    <a href="/" onclick="closeMobileMenu()">Home</a>
+    <a href="/creatives/" onclick="closeMobileMenu()">Creatives</a>
+    <a href="mailto:domingopauljohn@gmail.com" onclick="closeMobileMenu()">Contact</a>
+  </div>
+
+  <!-- NAV -->
+  <nav id="main-nav" role="navigation" aria-label="Main navigation">
+    <div class="nav-logo-block">
+      <a href="/" class="nav-monogram" aria-label="Home">PD</a>
+    </div>
+    <div class="nav-inner">
+      <a href="/" class="nav-brand">Paolo Domingo</a>
+      <ul class="nav-links" role="list">
+        <li><a href="/creatives/" class="active">Creatives</a></li>
+        <li><a href="mailto:domingopauljohn@gmail.com" class="nav-cta">Let's work together ↗</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger-btn" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header id="hero" aria-label="Creatives">
+    <div class="hero-stripe" aria-hidden="true">
+      <span class="hero-stripe-text">Design · Code · Experiment</span>
+    </div>
+    <div class="hero-main">
+      <p class="hero-label reveal">Portfolio — UI Experiments &amp; Real Websites</p>
+      <h1 class="hero-h1 reveal">
+        Creative<br>
+        <span class="outlined">work.</span>
+      </h1>
+      <p class="hero-sub reveal">UI concepts, interactive prototypes, and real websites. Some are just for fun — some are live and shipping.</p>
+    </div>
+  </header>
+
+  <!-- FILTER BAR -->
+  <div id="filter-bar">
+    <div class="filter-offset"></div>
+    <div class="filter-inner">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="experiment">UI Experiments</button>
+      <button class="filter-btn" data-filter="live">Live Sites</button>
+    </div>
+  </div>
+
+  <!-- GRID -->
+  <section id="grid-section">
+    <div class="grid-inner">
+
+      <!-- UI EXPERIMENTS label -->
+      <div class="section-label">
+        <span class="section-label-text">UI Experiments</span>
+        <span class="section-label-count">11</span>
+      </div>
+
+      <div class="cards-grid" id="cards-grid">
+
+        <!-- 1 - wide -->
+        <a href="/experiments/aurora-studios" target="_blank" class="c-card wide reveal reveal-delay-1" data-type="experiment" aria-label="Aurora Studios">
+          <div class="thumb t-aurora"><div class="m1"></div></div>
+          <div class="c-overlay">
+            <div class="c-name">Aurora Studios</div>
+            <div class="c-desc">3D spatial photography interface</div>
+          </div>
+          <span class="c-badge c-badge-exp">Experiment</span>
+          <div class="c-view">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </a>
+
+        <!-- 2 -->
+        <a href="/experiments/aris-thorne" target="_blank" class="c-card reveal reveal-delay-2" data-type="experiment" aria-label="Aris Thorne">
+          <div class="thumb t-aris"><div class="m1"></div></div>
+          <div class="c-overlay">
+            <div class="c-name">Aris Thorne</div>
+            <div class="c-desc">Cinematic biography portfolio</div>
+          </div>
+          <span class="c-badge c-badge-exp">Experiment</span>
+          <div class="c-view">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </a>
+
+        <!-- 3 -->
+        <a href="/experiments/executive-dashboard" target="_blank" class="c-card reveal reveal-delay-3" data-type="experiment" aria-label="Executive Dashboard">
+          <div class="thumb t-exec"><div class="m1"></div></div>
+          <div class="c-overlay">
+            <div class="c-name">Executive Dashboard</div>
+            <div class="c-desc">Glassmorphic SaaS UI concept</div>
+          </div>
+          <span class="c-badge c-badge-exp">Experiment</span>
+          <div class="c-view">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </a>
+
+        <!-- 4 -->
+        <a href="/experiments/neo-bank" target="_blank" class="c-card reveal reveal-delay-1" data-type="experiment" aria-label="Neo Bank">
+          <div class="thumb t-neo"><div class="m1"></div></div>
+          <div class="c-overlay">
+            <div class="c-name">Neo Bank</div>
+            <div class="c-desc">FinTech 3D credit card interface</div>
+          </div>
+          <span class="c-badge c-badge-exp">Experiment</span>
+          <div class="c-view">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </a>
+
+        <!-- 5 -->
+        <a href="/experiments/auto-concept" target="_blank" class="c-card reveal reveal-delay-2" data-type="experiment" aria-label="Vanguard Automotive">
+          <div class="thumb t-van"><div class="m1"></div></div>
+          <div class="c-overlay">
+            <div class="c-name">Vanguard Automotive</div>
+            <div class="c-desc">Kinetic horizontal scroll experience</div>
+          </div>
+          <span class="c-badge c-badge-exp">Experiment</span>
+          <div class="c-view">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </a>
+
+        <!-- 6 - wide -->
+        <a href="/experiments/eco-arch" target="_blank" class="c-card wide reveal reveal-delay-1" data-type="experiment" aria-label="Eco-Arch">
+          <div class="thumb t-eco"><div class="m1"></div></div>
+          <div class="c-overlay">
+            <div class="c-name">Eco-Arch</div>
+            <div class="c-desc">Sustainable architecture studio</div>
+          </div>
+          <span class="c-badge c-badge-exp">Experiment</span>
+          <div class="c-view">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </a>
+
+        <!-- 7 -->
+        <a href="/experiments/biotech-core" target="_blank" class="c-card reveal reveal-delay-2" data-type="experiment" aria-label="BioTech Helix">
+          <div class="thumb t-bio"><div class="m1"></div></div>
+          <div class="c-overlay">
+            <div class="c-name">BioTech Helix</div>
+            <div class="c-desc">WebGL DNA visualization + UI</div>
+          </div>
+          <span class="c-badge c-badge-exp">Experiment</span>
+          <div class="c-view">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </a>
+
+        <!-- 8 - wide -->
+        <a href="/experiments/vogue-editorial" target="_blank" class="c-card wide reveal reveal-delay-1" data-type="experiment" aria-label="Vogue Editorial">
+          <div class="thumb t-vogue"><div class="m1"></div></div>
+          <div class="c-overlay">
+            <div class="c-name">Vogue Editorial</div>
+            <div class="c-desc">Z-axis layered editorial layout</div>
+          </div>
+          <span class="c-badge c-badge-exp">Experiment</span>
+          <div class="c-view">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </a>
+
+        <!-- 9 -->
+        <a href="/experiments/nexus-gaming" target="_blank" class="c-card reveal reveal-delay-2" data-type="experiment" aria-label="Nexus Gaming">
+          <div class="thumb t-nexus"><div class="m1"></div></div>
+          <div class="c-overlay">
+            <div class="c-name">Nexus Gaming</div>
+            <div class="c-desc">Cyberpunk XR gaming interface</div>
+          </div>
+          <span class="c-badge c-badge-exp">Experiment</span>
+          <div class="c-view">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </a>
+
+        <!-- 10 -->
+        <a href="/experiments/aether-estates" target="_blank" class="c-card reveal reveal-delay-3" data-type="experiment" aria-label="Aether Estates">
+          <div class="thumb t-aether"><div class="m1"></div></div>
+          <div class="c-overlay">
+            <div class="c-name">Aether Estates</div>
+            <div class="c-desc">Luxury real estate cinematic site</div>
+          </div>
+          <span class="c-badge c-badge-exp">Experiment</span>
+          <div class="c-view">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </a>
+
+        <!-- 11 -->
+        <a href="/experiments/aerospace-command" target="_blank" class="c-card reveal reveal-delay-1" data-type="experiment" aria-label="Orion Aerospace">
+          <div class="thumb t-orion"><div class="m1"></div></div>
+          <div class="c-overlay">
+            <div class="c-name">Orion Aerospace</div>
+            <div class="c-desc">Terminal aerospace telemetry UI</div>
+          </div>
+          <span class="c-badge c-badge-exp">Experiment</span>
+          <div class="c-view">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </a>
+
+      </div>
+
+      <!-- LIVE SITES label -->
+      <div class="section-label">
+        <span class="section-label-text">Live Sites</span>
+        <span class="section-label-count">2</span>
+      </div>
+
+      <div class="cards-grid">
+
+        <!-- INAMO - wide -->
+        <a href="https://inamo.lol" target="_blank" class="c-card wide reveal reveal-delay-1" data-type="live" aria-label="INAMO Corp — live site">
+          <div class="thumb t-inamo"><div class="m1"></div></div>
+          <div class="c-overlay">
+            <div class="c-name">INAMO Corp.</div>
+            <div class="c-desc">A satirical fake-corporate website. Built for laughs. Absolutely not real.</div>
+          </div>
+          <span class="c-badge c-badge-live">Live Site</span>
+          <div class="c-view">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </a>
+
+        <!-- TomFord Dental -->
+        <a href="https://inamo.lol/proposals/tomford-dental/v1/" target="_blank" class="c-card reveal reveal-delay-2" data-type="live" aria-label="TomFord Dental — design study">
+          <div class="thumb t-dental"><div class="m1"></div></div>
+          <div class="c-overlay">
+            <div class="c-name">TomFord Dental</div>
+            <div class="c-desc">Luxury dental website — one of three concepts built for a real clinic pitch</div>
+          </div>
+          <span class="c-badge c-badge-case">Case Study</span>
+          <div class="c-view">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </a>
+
+        <!-- Placeholder - more coming -->
+        <div class="c-card reveal reveal-delay-3" style="background:var(--cream);border:2px dashed var(--border);display:flex;align-items:center;justify-content:center;cursor:default;" data-type="live">
+          <div style="text-align:center;padding:2rem;">
+            <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:1.5rem;font-weight:800;color:rgba(10,10,10,0.12);letter-spacing:-0.04em;margin-bottom:0.5rem;">More soon</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:0.8rem;color:rgba(10,10,10,0.25);">Apps &amp; new sites in progress</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="footer-copy">© Paolo Domingo · 2026</span>
+    <nav class="footer-links" aria-label="Footer navigation">
+      <a href="/">Home</a>
+      <a href="/creatives/">Creatives</a>
+      <a href="mailto:domingopauljohn@gmail.com">Contact</a>
+    </nav>
+  </footer>
+
+  <script>
+    // Cursor
+    const dot = document.getElementById('cursor-dot');
+    const ring = document.getElementById('cursor-ring');
+    let mx=0,my=0,rx=0,ry=0;
+    window.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';});
+    (function anim(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(anim);})();
+    document.querySelectorAll('a,button').forEach(el=>{
+      el.addEventListener('mouseenter',()=>{ring.style.width='44px';ring.style.height='44px';});
+      el.addEventListener('mouseleave',()=>{ring.style.width='32px';ring.style.height='32px';});
+    });
+
+    // Mobile menu
+    const hamburger=document.getElementById('hamburger-btn');
+    const mobileMenu=document.getElementById('mobile-menu');
+    const menuClose=document.getElementById('menu-close');
+    hamburger.addEventListener('click',()=>{mobileMenu.classList.add('open');hamburger.setAttribute('aria-expanded','true');});
+    menuClose.addEventListener('click',closeMobileMenu);
+    function closeMobileMenu(){mobileMenu.classList.remove('open');hamburger.setAttribute('aria-expanded','false');}
+
+    // Filter
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.c-card[data-type]');
+    filterBtns.forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        filterBtns.forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        const f = btn.dataset.filter;
+        cards.forEach(card=>{
+          if(f==='all'||card.dataset.type===f){
+            card.style.display='';
+            card.style.opacity='1';
+          } else {
+            card.style.display='none';
+          }
+        });
+      });
+    });
+
+    // Scroll reveals
+    const reveals=document.querySelectorAll('.reveal');
+    const obs=new IntersectionObserver(entries=>{
+      entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});
+    },{threshold:0.08});
+    reveals.forEach(el=>obs.observe(el));
+  </script>
+</body>
+</html>
