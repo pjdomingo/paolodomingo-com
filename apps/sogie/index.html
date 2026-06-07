@@ -720,9 +720,18 @@
     const sw=W/stripes.length;
     stripes.forEach((s,i)=>{ x.fillStyle=s; x.fillRect(i*sw,0,sw+1,16); });
 
+    // "HAPPY PRIDE 2026" + rainbow pill — drawn as one centered unit (no emoji, avoids mobile width bugs)
+    x.font='700 30px "Plus Jakarta Sans", sans-serif';
+    const prideLabel='HAPPY PRIDE 2026';
+    const ptw=x.measureText(prideLabel).width;
+    const pillW=36, pillH=20, pillGap=12;
+    const prideStartX=(W-(ptw+pillGap+pillW))/2;
+    x.textAlign='left'; x.fillStyle='#FFED00';
+    x.fillText(prideLabel, prideStartX, 110);
+    const pg=x.createLinearGradient(prideStartX+ptw+pillGap,0,prideStartX+ptw+pillGap+pillW,0);
+    stripes.forEach((s,i)=>pg.addColorStop(i/(stripes.length-1),s));
+    x.fillStyle=pg; roundRect(x,prideStartX+ptw+pillGap,93,pillW,pillH,10); x.fill();
     x.textAlign='center';
-    x.fillStyle='#FFED00'; x.font='700 30px "Plus Jakarta Sans", sans-serif';
-    x.fillText('HAPPY PRIDE 2026  🏳️‍🌈', W/2, 110);
 
     x.fillStyle='#fff'; x.font='800 92px "Plus Jakarta Sans", sans-serif';
     x.fillText('I know my', W/2, 230);
@@ -773,16 +782,18 @@
     x.strokeStyle='rgba(255,255,255,0.12)'; x.lineWidth=2;
     x.beginPath(); x.moveTo(120,1010); x.lineTo(W-120,1010); x.stroke();
 
-    x.textAlign='center'; x.fillStyle=grad; x.font='800 58px "Plus Jakarta Sans", sans-serif';
-    x.fillText('Everyone has a SOGIE.', W/2, 1095);
-    x.fillStyle='rgba(255,255,255,0.7)'; x.font='500 38px "DM Sans", sans-serif';
-    x.fillText('What is yours?', W/2, 1150);
+    x.textAlign='center'; x.fillStyle=grad; x.font='800 56px "Plus Jakarta Sans", sans-serif';
+    x.fillText('Everyone has a SOGIE.', W/2, 1088);
+    x.fillStyle='rgba(255,255,255,0.7)'; x.font='500 36px "DM Sans", sans-serif';
+    x.fillText('What is yours?', W/2, 1140);
 
-    x.fillStyle='#FFED00'; x.font='700 28px "Plus Jakarta Sans", sans-serif';
-    x.fillText('See you at Love Laban: Pride PH Festival 2026', W/2, 1230);
+    x.fillStyle='#FFED00'; x.font='700 26px "Plus Jakarta Sans", sans-serif';
+    x.fillText('Love Laban: Pride PH Festival 2026', W/2, 1210);
+    x.fillStyle='rgba(255,255,255,0.65)'; x.font='500 24px "DM Sans", sans-serif';
+    x.fillText('After party: Halxyon Club, Poblacion Makati', W/2, 1250);
 
-    x.fillStyle='rgba(255,255,255,0.45)'; x.font='600 28px "DM Sans", sans-serif';
-    x.fillText('paolodomingo.com/apps/sogie', W/2, 1300);
+    x.fillStyle='rgba(255,255,255,0.38)'; x.font='600 26px "DM Sans", sans-serif';
+    x.fillText('paolodomingo.com/apps/sogie', W/2, 1310);
 
     c.toBlob(b=>{ cardBlob=b; document.getElementById('share-preview').src = URL.createObjectURL(b); }, 'image/png');
   }
