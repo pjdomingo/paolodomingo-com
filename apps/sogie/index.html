@@ -3,19 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Everyone Has a SOGIE — Discover Yours 🏳️‍🌈</title>
-  <meta name="description" content="Everyone has a SOGIE — Sexual Orientation, Gender Identity & Expression. Slide your way along the spectrum, discover yours, and share it. Happy Pride 2026! A free interactive guide by Paolo Domingo." />
+  <title>Everyone Has a SOGIE: Discover Yours 🏳️‍🌈</title>
+  <meta name="description" content="Everyone has a SOGIE: Sexual Orientation, Gender Identity and Expression. Slide your way along the spectrum, discover yours, and share it. Happy Pride 2026. A free interactive guide by Paolo Domingo." />
   <meta name="theme-color" content="#0A0A0A" />
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Everyone Has a SOGIE — Discover Yours 🏳️‍🌈" />
-  <meta property="og:description" content="Yes, even you. SOGIE is a spectrum — slide your way along it and find your spot. Happy Pride 2026!" />
+  <meta property="og:title" content="Everyone Has a SOGIE: Discover Yours 🏳️‍🌈" />
+  <meta property="og:description" content="Yes, even you. SOGIE is a spectrum. Slide your way along it and find your spot. Happy Pride 2026." />
   <meta property="og:url" content="https://paolodomingo.com/apps/sogie/" />
   <meta property="og:image" content="https://paolodomingo.com/apps/sogie/og-cover.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Everyone Has a SOGIE — Discover Yours 🏳️‍🌈" />
-  <meta name="twitter:description" content="SOGIE is a spectrum. Slide your way along it and find your spot. Happy Pride 2026!" />
+  <meta name="twitter:title" content="Everyone Has a SOGIE: Discover Yours 🏳️‍🌈" />
+  <meta name="twitter:description" content="SOGIE is a spectrum. Slide your way along it and find your spot. Happy Pride 2026." />
   <meta name="twitter:image" content="https://paolodomingo.com/apps/sogie/og-cover.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -30,7 +30,6 @@
       --paper: #FBFAF7;
       --muted: #8A8A8A;
       --border: rgba(10,10,10,0.1);
-      /* Pride */
       --red:#E40303; --orange:#FF8C00; --yellow:#FFED00; --green:#008026; --blue:#004DFF; --purple:#750787;
       --accent: #750787;
       --rainbow: linear-gradient(90deg,#E40303,#FF8C00,#FFED00,#008026,#004DFF,#750787);
@@ -39,9 +38,15 @@
     html { -webkit-text-size-adjust: 100%; }
     body {
       font-family: 'DM Sans', sans-serif; background: var(--paper); color: var(--ink);
-      min-height: 100dvh; min-height: 100vh; overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
+      min-height: 100dvh; min-height: 100vh; overflow-x: hidden; -webkit-font-smoothing: antialiased;
     }
+    @media (min-width:760px) {
+      body { background: radial-gradient(900px 500px at 50% -8%, rgba(117,7,135,0.07), transparent 60%), var(--paper); }
+    }
+
+    /* icons */
+    svg.ic { display:block; width:100%; height:100%; }
+    .ic-wrap { display:inline-flex; flex-shrink:0; color: var(--accent); }
 
     /* ── TOP BAR ─────────────────────────────────────── */
     #topbar {
@@ -52,11 +57,10 @@
     }
     .tb-logo { width: 56px; height: 56px; display:flex; align-items:center; justify-content:center; background: var(--ink); color:#fff; text-decoration:none; font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:1rem; letter-spacing:-0.04em; }
     .tb-mid { font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:0.82rem; letter-spacing:-0.01em; }
-    .tb-pride { font-size:0.8rem; font-weight:600; color:var(--muted); display:flex; align-items:center; gap:0.3rem; }
     .tb-flag { width:34px; height:14px; border-radius:3px; background:var(--rainbow); }
 
     /* ── STAGE / SCREENS ─────────────────────────────── */
-    #stage { max-width: 600px; margin: 0 auto; padding: 0 1.25rem; }
+    #stage { max-width: 620px; margin: 0 auto; padding: 0 1.25rem; }
     .screen { display: none; animation: fadeUp 0.5s cubic-bezier(0.22,1,0.36,1); }
     .screen.active { display: block; }
     @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
@@ -67,19 +71,21 @@
     .intro-flag { width: 88px; height: 88px; border-radius: 24px; background: var(--rainbow); margin: 0 auto 1.75rem; box-shadow: 0 18px 50px rgba(117,7,135,0.28); animation: float 4s ease-in-out infinite; }
     @keyframes float { 0%,100%{transform:translateY(0) rotate(-3deg);} 50%{transform:translateY(-10px) rotate(3deg);} }
     .intro-kicker { font-family:'Plus Jakarta Sans',sans-serif; font-size:0.72rem; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:var(--accent); margin-bottom:1rem; }
-    .intro-h1 { font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:clamp(2.6rem,9vw,4rem); line-height:0.98; letter-spacing:-0.045em; margin-bottom:1.1rem; }
+    .intro-h1 { font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:clamp(2.6rem,9vw,4.2rem); line-height:0.98; letter-spacing:-0.045em; margin-bottom:1.1rem; }
     .intro-h1 .grad { background:var(--rainbow); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
-    .intro-sub { font-size:1.05rem; line-height:1.6; color:#444; max-width:420px; margin:0 auto 2rem; }
+    .intro-sub { font-size:1.08rem; line-height:1.65; color:#444; max-width:460px; margin:0 auto 2rem; }
     .intro-chips { display:flex; gap:0.5rem; justify-content:center; flex-wrap:wrap; margin-bottom:2.25rem; }
-    .chip { font-size:0.78rem; font-weight:600; color:#555; background:#fff; border:1px solid var(--border); border-radius:100px; padding:0.45rem 0.9rem; }
+    .chip { display:inline-flex; align-items:center; gap:0.45rem; font-size:0.82rem; font-weight:600; color:#555; background:#fff; border:1px solid var(--border); border-radius:100px; padding:0.5rem 0.95rem; }
+    .chip .ic-wrap { width:16px; height:16px; color:#666; }
 
     /* ── BUTTONS ─────────────────────────────────────── */
     .btn {
       font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:1.05rem;
-      border:none; border-radius:100px; padding:1.1rem 2.4rem; cursor:pointer;
+      border:none; border-radius:100px; padding:1.1rem 2.2rem; cursor:pointer;
       transition: transform 0.18s, box-shadow 0.18s; -webkit-tap-highlight-color:transparent;
-      display:inline-flex; align-items:center; gap:0.5rem; justify-content:center;
+      display:inline-flex; align-items:center; gap:0.55rem; justify-content:center;
     }
+    .btn .ic-wrap { width:20px; height:20px; color:currentColor; }
     .btn-primary { background:var(--ink); color:#fff; box-shadow:0 10px 30px rgba(10,10,10,0.18); }
     .btn-primary:active { transform:scale(0.97); }
     .btn-rainbow { background:var(--rainbow); color:#fff; box-shadow:0 12px 34px rgba(117,7,135,0.32); text-shadow:0 1px 2px rgba(0,0,0,0.18); }
@@ -92,15 +98,20 @@
     #progress-wrap { padding: 1.25rem 0 0.5rem; }
     #progress-meta { display:flex; justify-content:space-between; align-items:center; margin-bottom:0.6rem; }
     #progress-step { font-family:'Plus Jakarta Sans',sans-serif; font-size:0.72rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); }
-    #progress-back { background:none; border:none; font-size:0.78rem; font-weight:600; color:var(--muted); cursor:pointer; padding:0.2rem 0.4rem; }
+    #progress-back { display:inline-flex; align-items:center; gap:0.3rem; background:none; border:none; font-size:0.78rem; font-weight:600; color:var(--muted); cursor:pointer; padding:0.2rem 0.4rem; font-family:'DM Sans',sans-serif; }
+    #progress-back .ic-wrap { width:14px; height:14px; color:var(--muted); }
     #progress-track { height:8px; background:#ececec; border-radius:100px; overflow:hidden; }
     #progress-fill { height:100%; width:0%; background:var(--rainbow); border-radius:100px; transition:width 0.45s cubic-bezier(0.22,1,0.36,1); }
 
-    /* ── QUESTION CARD ───────────────────────────────── */
-    .q { padding: 1.75rem 0 2.5rem; }
-    .q-emoji { font-size:2.6rem; margin-bottom:0.75rem; display:block; }
-    .q-title { font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:clamp(1.5rem,5.5vw,2rem); line-height:1.1; letter-spacing:-0.03em; margin-bottom:0.6rem; }
-    .q-help { font-size:0.95rem; color:#666; line-height:1.55; margin-bottom:1.75rem; }
+    /* ── QUESTION ────────────────────────────────────── */
+    .q { padding: 1.5rem 0 2.5rem; }
+    .q-icon { width:46px; height:46px; color:var(--accent); margin-bottom:0.9rem; }
+    .q-icon .ic { width:46px; height:46px; }
+    .q-title { font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:clamp(1.5rem,5.5vw,2.05rem); line-height:1.1; letter-spacing:-0.03em; margin-bottom:0.6rem; }
+    .q-help { font-size:0.98rem; color:#555; line-height:1.6; margin-bottom:0.9rem; }
+    .learn { display:inline-flex; align-items:center; gap:0.4rem; margin-bottom:1.75rem; font-size:0.85rem; font-weight:600; color:var(--accent); text-decoration:none; }
+    .learn span.lk { border-bottom:1.5px solid currentColor; padding-bottom:1px; }
+    .learn .ic-wrap { width:14px; height:14px; color:currentColor; }
 
     /* Choice cards */
     .choices { display:flex; flex-direction:column; gap:0.7rem; }
@@ -113,129 +124,127 @@
     .choice:active { transform:scale(0.985); }
     .choice:hover { border-color:rgba(117,7,135,0.4); }
     .choice.selected { border-color:var(--accent); background:rgba(117,7,135,0.05); box-shadow:0 0 0 3px rgba(117,7,135,0.12); }
-    .choice-emoji { font-size:1.4rem; flex-shrink:0; }
+    .choice .ic-wrap { width:24px; height:24px; color:var(--accent); }
     .choice-grid { display:grid; grid-template-columns:1fr 1fr; gap:0.7rem; }
-    .choice-grid .choice { flex-direction:column; text-align:center; gap:0.5rem; padding:1.3rem 0.75rem; }
-    .choice-grid .choice-emoji { font-size:1.8rem; }
+    .choice-grid .choice { flex-direction:column; text-align:center; gap:0.6rem; padding:1.3rem 0.75rem; }
+    .swatch { width:30px; height:30px; border-radius:50%; flex-shrink:0; box-shadow:0 0 0 2px #fff, 0 0 0 3px rgba(0,0,0,0.12); }
 
     /* ── SLIDER ──────────────────────────────────────── */
     .slider-block { margin: 0.5rem 0 1.5rem; }
-    .slider-readout {
-      text-align:center; min-height:70px; display:flex; flex-direction:column; align-items:center; justify-content:center; margin-bottom:1.25rem;
-    }
-    .slider-readout-emoji { font-size:2.4rem; line-height:1; margin-bottom:0.35rem; transition:transform 0.2s; }
-    .slider-readout-text { font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:1.25rem; letter-spacing:-0.02em; transition:opacity 0.15s; }
-    .slider-readout-sub { font-size:0.85rem; color:var(--muted); margin-top:0.15rem; }
+    .slider-readout { text-align:center; min-height:74px; display:flex; flex-direction:column; align-items:center; justify-content:center; margin-bottom:1.25rem; }
+    .ro-icon { width:34px; height:34px; color:var(--accent); margin-bottom:0.4rem; }
+    .ro-icon .ic { width:34px; height:34px; }
+    .slider-readout-text { font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:1.3rem; letter-spacing:-0.02em; }
+    .slider-readout-sub { font-size:0.86rem; color:var(--muted); margin-top:0.2rem; }
 
-    .slider-rail-wrap { position:relative; padding: 1.6rem 0 0.25rem; }
+    .slider-rail-wrap { position:relative; padding: 1.7rem 0 0.25rem; }
     input[type="range"].slider {
       -webkit-appearance:none; appearance:none; width:100%; height:14px; border-radius:100px;
       background: var(--rainbow); outline:none; cursor:pointer; margin:0;
     }
     input[type="range"].slider::-webkit-slider-thumb {
       -webkit-appearance:none; appearance:none; width:38px; height:38px; border-radius:50%;
-      background:#fff; border:3px solid var(--ink); cursor:grab;
-      box-shadow:0 4px 14px rgba(0,0,0,0.28); transition:transform 0.12s;
+      background:#fff; border:3px solid var(--ink); cursor:grab; box-shadow:0 4px 14px rgba(0,0,0,0.28); transition:transform 0.12s;
     }
     input[type="range"].slider::-webkit-slider-thumb:active { transform:scale(1.18); cursor:grabbing; }
-    input[type="range"].slider::-moz-range-thumb {
-      width:38px; height:38px; border-radius:50%; background:#fff; border:3px solid var(--ink);
-      cursor:grab; box-shadow:0 4px 14px rgba(0,0,0,0.28);
-    }
+    input[type="range"].slider::-moz-range-thumb { width:38px; height:38px; border-radius:50%; background:#fff; border:3px solid var(--ink); cursor:grab; box-shadow:0 4px 14px rgba(0,0,0,0.28); }
     .slider-ends { display:flex; justify-content:space-between; margin-top:0.85rem; }
-    .slider-end { font-size:0.8rem; font-weight:600; color:#666; max-width:42%; }
+    .slider-end { font-size:0.82rem; font-weight:600; color:#666; max-width:42%; }
     .slider-end.right { text-align:right; }
-    .slider-mid { position:absolute; left:50%; top:0; transform:translateX(-50%); font-size:0.7rem; color:var(--muted); font-weight:600; white-space:nowrap; padding:0.15rem 0.5rem; background:#fff; border:1px solid var(--border); border-radius:100px; }
+    .slider-mid { position:absolute; left:50%; top:0; transform:translateX(-50%); font-size:0.7rem; color:var(--muted); font-weight:600; white-space:nowrap; padding:0.15rem 0.55rem; background:#fff; border:1px solid var(--border); border-radius:100px; }
 
-    .escape {
-      margin-top:1.4rem; display:flex; align-items:center; justify-content:center; gap:0.6rem;
-      background:#fff; border:1.5px dashed var(--border); border-radius:14px; padding:0.85rem 1rem;
-      cursor:pointer; font-size:0.92rem; font-weight:600; color:#555; width:100%;
-      transition:all 0.16s; -webkit-tap-highlight-color:transparent;
-    }
+    .escape { margin-top:1.4rem; display:flex; align-items:center; justify-content:center; gap:0.6rem; background:#fff; border:1.5px dashed var(--border); border-radius:14px; padding:0.85rem 1rem; cursor:pointer; font-size:0.92rem; font-weight:600; color:#555; width:100%; transition:all 0.16s; -webkit-tap-highlight-color:transparent; }
     .escape.on { border-style:solid; border-color:var(--accent); background:rgba(117,7,135,0.06); color:var(--accent); }
-    .escape-check { width:20px; height:20px; border-radius:6px; border:2px solid var(--border); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:0.7rem; color:#fff; }
+    .escape-check { width:20px; height:20px; border-radius:6px; border:2px solid var(--border); display:flex; align-items:center; justify-content:center; flex-shrink:0; color:#fff; }
+    .escape-check .ic-wrap { width:13px; height:13px; color:#fff; opacity:0; }
     .escape.on .escape-check { background:var(--accent); border-color:var(--accent); }
+    .escape.on .escape-check .ic-wrap { opacity:1; }
 
     /* ── TEACHING BEAT ───────────────────────────────── */
-    .teach { padding: 2.5rem 0 3rem; text-align:center; min-height: calc(100dvh - 56px - 80px); display:flex; flex-direction:column; justify-content:center; }
+    .teach { padding: 2.5rem 0 3rem; text-align:center; min-height: calc(100dvh - 56px - 80px); display:flex; flex-direction:column; justify-content:center; align-items:center; }
     .teach-badge { font-family:'Plus Jakarta Sans',sans-serif; font-size:0.72rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent); margin-bottom:1.25rem; }
-    .teach-emoji { font-size:3.4rem; margin-bottom:1rem; }
-    .teach-text { font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:clamp(1.6rem,6vw,2.3rem); line-height:1.15; letter-spacing:-0.03em; margin-bottom:1rem; }
+    .teach-icon { width:60px; height:60px; color:var(--accent); margin-bottom:1.1rem; }
+    .teach-icon .ic { width:60px; height:60px; }
+    .teach-text { font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:clamp(1.6rem,6vw,2.4rem); line-height:1.15; letter-spacing:-0.03em; margin-bottom:1rem; max-width:560px; }
     .teach-text .hl { background:var(--rainbow); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
-    .teach-sub { font-size:1rem; color:#555; line-height:1.6; max-width:420px; margin:0 auto 2.25rem; }
+    .teach-sub { font-size:1.02rem; color:#555; line-height:1.6; max-width:440px; margin:0 auto 2.25rem; }
 
-    /* ── NAV (next/skip) ─────────────────────────────── */
     .q-nav { margin-top: 1.5rem; }
 
     /* ── RESULT ──────────────────────────────────────── */
     #result { padding: 1.5rem 0 3rem; }
-    .res-greet { font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:clamp(1.8rem,7vw,2.6rem); line-height:1.05; letter-spacing:-0.035em; text-align:center; margin-bottom:0.4rem; }
-    .res-greet .grad { background:var(--rainbow); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
-    .res-sub { text-align:center; font-size:1rem; color:#555; margin-bottom:1.75rem; }
+    .res-greet { font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:clamp(1.8rem,7vw,2.7rem); line-height:1.05; letter-spacing:-0.035em; text-align:center; margin-bottom:0.4rem; }
+    .res-sub { text-align:center; font-size:1.02rem; color:#555; margin-bottom:1.75rem; }
 
-    .res-card {
-      background:#fff; border-radius:24px; border:1px solid var(--border);
-      box-shadow:0 20px 60px rgba(10,10,10,0.08); overflow:hidden; margin-bottom:1.5rem;
-    }
+    .res-card { background:#fff; border-radius:24px; border:1px solid var(--border); box-shadow:0 20px 60px rgba(10,10,10,0.08); overflow:hidden; margin-bottom:1.5rem; }
     .res-card-head { padding:1.5rem 1.5rem 1.25rem; border-bottom:1px solid var(--border); position:relative; }
     .res-card-head::before { content:''; position:absolute; top:0; left:0; right:0; height:6px; background:var(--rainbow); }
     .res-card-title { font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:0.72rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); margin-bottom:0.5rem; }
-    .res-summary { font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:1.35rem; line-height:1.25; letter-spacing:-0.02em; }
+    .res-summary { font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:1.4rem; line-height:1.25; letter-spacing:-0.02em; }
 
     .res-spectra { padding:1.5rem; display:flex; flex-direction:column; gap:1.4rem; }
-    .spec { }
-    .spec-top { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:0.5rem; }
-    .spec-label { font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:0.9rem; }
-    .spec-val { font-size:0.82rem; font-weight:600; color:var(--accent); }
+    .spec-top { display:flex; justify-content:space-between; align-items:baseline; gap:1rem; margin-bottom:0.5rem; }
+    .spec-label { font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:0.9rem; white-space:nowrap; }
+    .spec-val { font-size:0.82rem; font-weight:600; color:var(--accent); text-align:right; }
     .spec-bar { position:relative; height:12px; border-radius:100px; background:var(--rainbow); opacity:0.92; }
     .spec-marker { position:absolute; top:50%; width:24px; height:24px; border-radius:50%; background:#fff; border:3px solid var(--ink); transform:translate(-50%,-50%); box-shadow:0 3px 10px rgba(0,0,0,0.25); transition:left 0.6s cubic-bezier(0.22,1,0.36,1); }
     .spec-ends { display:flex; justify-content:space-between; margin-top:0.4rem; font-size:0.72rem; color:var(--muted); font-weight:500; }
 
-    .res-note { padding:1.25rem 1.5rem; background:rgba(117,7,135,0.04); border-top:1px solid var(--border); font-size:0.9rem; line-height:1.55; color:#444; }
+    .res-note { padding:1.25rem 1.5rem; background:rgba(117,7,135,0.04); border-top:1px solid var(--border); font-size:0.92rem; line-height:1.6; color:#444; }
     .res-note b { color:var(--accent); }
 
     /* Pride event card */
     .event-card { background:var(--ink); color:#fff; border-radius:20px; padding:1.5rem; margin-bottom:1.5rem; text-align:center; position:relative; overflow:hidden; }
     .event-card::before { content:''; position:absolute; top:0; left:0; right:0; height:6px; background:var(--rainbow); }
+    .event-icon { width:34px; height:34px; color:var(--yellow); margin:0.25rem auto 0.8rem; }
+    .event-icon .ic { width:34px; height:34px; }
     .event-kicker { font-size:0.7rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--yellow); margin-bottom:0.6rem; }
     .event-title { font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:1.3rem; letter-spacing:-0.02em; margin-bottom:0.5rem; }
-    .event-text { font-size:0.92rem; color:rgba(255,255,255,0.75); line-height:1.55; margin-bottom:1rem; }
-    .event-links { display:flex; flex-direction:column; gap:0.5rem; }
-    .event-link { font-size:0.9rem; font-weight:600; color:var(--ink); background:#fff; border-radius:100px; padding:0.7rem 1rem; text-decoration:none; }
+    .event-text { font-size:0.95rem; color:rgba(255,255,255,0.78); line-height:1.6; margin-bottom:1.1rem; }
+    .event-link { display:inline-flex; align-items:center; gap:0.5rem; font-size:0.92rem; font-weight:600; color:var(--ink); background:#fff; border-radius:100px; padding:0.75rem 1.2rem; text-decoration:none; }
+    .event-link .ic-wrap { width:16px; height:16px; color:var(--ink); }
 
     /* Share */
-    .share-title { text-align:center; font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:1.4rem; letter-spacing:-0.02em; margin-bottom:0.4rem; }
-    .share-sub { text-align:center; font-size:0.92rem; color:#666; margin-bottom:1.25rem; }
-    #share-preview { width:100%; max-width:320px; margin:0 auto 1.25rem; display:block; border-radius:18px; box-shadow:0 16px 44px rgba(10,10,10,0.14); }
-    .share-btns { display:flex; flex-direction:column; gap:0.6rem; max-width:360px; margin:0 auto; }
+    .share-title { text-align:center; font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:1.45rem; letter-spacing:-0.02em; margin-bottom:0.4rem; }
+    .share-sub { text-align:center; font-size:0.95rem; color:#666; margin-bottom:1.25rem; }
+    #share-preview { width:100%; max-width:340px; margin:0 auto 1.25rem; display:block; border-radius:18px; box-shadow:0 16px 44px rgba(10,10,10,0.14); }
+    .share-btns { display:flex; flex-direction:column; gap:0.6rem; max-width:380px; margin:0 auto; }
     .share-row { display:flex; gap:0.6rem; }
     .share-row .btn { flex:1; padding-left:0.5rem; padding-right:0.5rem; font-size:0.95rem; min-width:0; }
     .btn-x { background:#000; color:#fff; }
     .btn-fb { background:#1877F2; color:#fff; }
     .btn-dl { background:#fff; color:var(--ink); border:1.5px solid var(--border); }
 
-    .privacy { text-align:center; font-size:0.8rem; color:var(--muted); margin-top:2rem; line-height:1.5; display:flex; align-items:center; justify-content:center; gap:0.4rem; }
+    .privacy { text-align:center; font-size:0.82rem; color:var(--muted); margin-top:2rem; line-height:1.55; display:flex; align-items:center; justify-content:center; gap:0.4rem; padding:0 1rem; }
+    .privacy .ic-wrap { width:15px; height:15px; color:var(--muted); }
 
     /* ── FOOTER ──────────────────────────────────────── */
     footer { text-align:center; padding:2.5rem 1.25rem 3rem; border-top:1px solid var(--border); margin-top:1rem; }
     .foot-flag { width:48px; height:18px; border-radius:4px; background:var(--rainbow); margin:0 auto 1rem; }
-    .foot-text { font-size:0.85rem; color:var(--muted); line-height:1.6; }
+    .foot-text { font-size:0.88rem; color:var(--muted); line-height:1.7; }
     .foot-text a { color:var(--ink); font-weight:600; text-decoration:none; border-bottom:2px solid var(--yellow); }
-
-    @media (min-width:640px) { .res-summary{font-size:1.5rem;} }
+    .foot-heart { display:inline-flex; width:14px; height:14px; vertical-align:-2px; color:var(--purple); }
 
     .hidden { display:none !important; }
     canvas#card-canvas { display:none; }
+
+    /* ── DESKTOP POLISH ──────────────────────────────── */
+    @media (min-width:760px) {
+      .q { padding: 2.25rem 0 3rem; }
+      .q-help { font-size:1.05rem; }
+      .teach-sub { font-size:1.1rem; }
+      .res-summary { font-size:1.55rem; }
+      .intro-chips .chip { font-size:0.88rem; }
+    }
   </style>
 </head>
 <body>
 
   <!-- TOP BAR -->
   <div id="topbar">
-    <a href="/" class="tb-logo" aria-label="Paolo Domingo — home">PD</a>
+    <a href="/" class="tb-logo" aria-label="Paolo Domingo home">PD</a>
     <span class="tb-mid">Everyone Has a SOGIE</span>
-    <span class="tb-pride"><span class="tb-flag"></span></span>
+    <span class="tb-flag" aria-hidden="true"></span>
   </div>
 
   <div id="stage">
@@ -245,71 +254,68 @@
       <div class="intro-flag"></div>
       <div class="intro-kicker">Happy Pride 2026 🏳️‍🌈</div>
       <h1 class="intro-h1">Everyone has a <span class="grad">SOGIE.</span><br>Even you.</h1>
-      <p class="intro-sub">It's not a label for "other people." It's <b>S</b>exual <b>O</b>rientation, <b>G</b>ender <b>I</b>dentity &amp; <b>E</b>xpression — and every single human has one. Slide your way along the spectrum and find yours.</p>
+      <p class="intro-sub">It is not a label for other people. It stands for <b>S</b>exual <b>O</b>rientation, <b>G</b>ender <b>I</b>dentity and <b>E</b>xpression, and every single human has one. Slide along the spectrum and find yours.</p>
       <div class="intro-chips">
-        <span class="chip">⏱️ 2 minutes</span>
-        <span class="chip">🔒 100% private</span>
-        <span class="chip">🌈 For everyone</span>
+        <span class="chip"><span class="ic-wrap" data-icon="clock"></span> 2 minutes</span>
+        <span class="chip"><span class="ic-wrap" data-icon="lock"></span> 100% private</span>
+        <span class="chip"><span class="ic-wrap" data-icon="globe"></span> For everyone</span>
       </div>
-      <div>
-        <button class="btn btn-rainbow" onclick="start()">Find my SOGIE →</button>
-      </div>
-      <p class="privacy" style="margin-top:1.5rem;">🔒 Nothing you tap ever leaves your phone.</p>
+      <div><button class="btn btn-rainbow" onclick="start()">Find my SOGIE →</button></div>
+      <p class="privacy" style="margin-top:1.5rem;"><span class="ic-wrap" data-icon="lock"></span> Nothing you tap ever leaves your phone.</p>
     </section>
 
     <!-- ════ QUIZ ════ -->
     <section class="screen" id="quiz">
       <div id="progress-wrap">
         <div id="progress-meta">
-          <button id="progress-back" onclick="back()">← Back</button>
+          <button id="progress-back" onclick="back()"><span class="ic-wrap" data-icon="arrowLeft"></span> Back</button>
           <span id="progress-step">Step 1</span>
         </div>
         <div id="progress-track"><div id="progress-fill"></div></div>
       </div>
-      <div id="q-host"><!-- question injected here --></div>
+      <div id="q-host"></div>
     </section>
 
     <!-- ════ RESULT ════ -->
     <section class="screen" id="result">
-      <div class="res-greet" id="res-greet">Happy Pride! <span class="grad">🏳️‍🌈</span></div>
-      <p class="res-sub" id="res-subline">Here's your SOGIE — your spot on the spectrum, today.</p>
+      <div class="res-greet" id="res-greet">Happy Pride!</div>
+      <p class="res-sub" id="res-subline">Here is your SOGIE, your spot on the spectrum today.</p>
 
       <div class="res-card">
         <div class="res-card-head">
           <div class="res-card-title">Your SOGIE summary</div>
-          <div class="res-summary" id="res-summary">—</div>
+          <div class="res-summary" id="res-summary"></div>
         </div>
-        <div class="res-spectra" id="res-spectra"><!-- bars injected --></div>
+        <div class="res-spectra" id="res-spectra"></div>
         <div class="res-note">
-          <b>Remember:</b> these are four <i>separate</i> sliders, and you can move on them over time. SOGIE isn't a box — it's a spectrum. That's the whole point. 💜
+          <b>Remember:</b> these are four separate sliders, and you can shift along them over time. SOGIE is not a box. It is a spectrum. That is the whole point.
         </div>
       </div>
 
       <!-- Event -->
       <div class="event-card">
-        <div class="event-kicker">Don't just take the quiz — show up 🌈</div>
+        <div class="event-icon"><span class="ic-wrap" data-icon="calendar" data-color="#FFED00"></span></div>
+        <div class="event-kicker">Do not just take the quiz. Show up.</div>
         <div class="event-title">Love Laban: Pride PH Festival 2026</div>
         <div class="event-text">June is Pride Month in Manila. March, celebrate, and stand for the SOGIE Equality Bill. Then catch the celebrations at <b>Halxyon Club, Poblacion, Makati.</b></div>
-        <div class="event-links">
-          <a class="event-link" href="https://www.facebook.com/photo.php?fbid=958115633651899&set=a.249146027882200&type=3&ref=embed_post" target="_blank" rel="noopener">See the festival details →</a>
-        </div>
+        <a class="event-link" href="https://www.facebook.com/photo.php?fbid=958115633651899&set=a.249146027882200&type=3&ref=embed_post" target="_blank" rel="noopener">See the festival details <span class="ic-wrap" data-icon="external" data-color="#0A0A0A"></span></a>
       </div>
 
       <!-- Share -->
       <div class="share-title">Share your Pride 🏳️‍🌈</div>
-      <p class="share-sub">Post it. Tag a friend. Remind the world everyone has a SOGIE.</p>
+      <p class="share-sub">Post it. Tag a friend. Remind the world that everyone has a SOGIE.</p>
       <img id="share-preview" alt="Your shareable SOGIE card" />
       <div class="share-btns">
-        <button class="btn btn-rainbow btn-block" id="btn-share" onclick="nativeShare()">📲 Share my card</button>
+        <button class="btn btn-rainbow btn-block" id="btn-share" onclick="nativeShare()"><span class="ic-wrap" data-icon="share" data-color="#fff"></span> Share my card</button>
         <div class="share-row">
           <button class="btn btn-x" onclick="shareX()">𝕏 Post</button>
           <button class="btn btn-fb" onclick="shareFB()">f Share</button>
-          <button class="btn btn-dl" onclick="downloadCard()">⬇ Save</button>
+          <button class="btn btn-dl" onclick="downloadCard()"><span class="ic-wrap" data-icon="download" data-color="#0A0A0A"></span> Save</button>
         </div>
-        <button class="btn btn-ghost btn-block" onclick="restart()" style="margin-top:0.5rem;">↻ Take it again</button>
+        <button class="btn btn-ghost btn-block" onclick="restart()" style="margin-top:0.5rem;"><span class="ic-wrap" data-icon="refresh" data-color="#0A0A0A"></span> Take it again</button>
       </div>
 
-      <p class="privacy">🔒 Your answers stayed on your device. The card was made right here in your browser.</p>
+      <p class="privacy"><span class="ic-wrap" data-icon="lock"></span> Your answers stayed on your device. The card was made right here in your browser.</p>
     </section>
 
   </div>
@@ -317,14 +323,50 @@
   <footer>
     <div class="foot-flag"></div>
     <p class="foot-text">
-      Made with 💜 by <a href="/">Paolo Domingo</a> for Pride 2026.<br>
-      Free, open, and for everyone. Learn more about the <a href="https://en.wikipedia.org/wiki/SOGIE_Equality_Bill" target="_blank" rel="noopener">SOGIE Equality Bill</a>.
+      Made with <span class="foot-heart" data-icon="heart" data-color="#750787"></span> by <a href="/">Paolo Domingo</a> for Pride 2026.<br>
+      Free, open, and for everyone. Learn about the <a href="https://en.wikipedia.org/wiki/SOGIE_Equality_Bill" target="_blank" rel="noopener">SOGIE Equality Bill</a>.
     </p>
   </footer>
 
   <canvas id="card-canvas" width="1080" height="1350"></canvas>
 
   <script>
+  /* ════════════════════════════════════════════════════
+     FLAT ICONS  (stroke, currentColor)
+  ════════════════════════════════════════════════════ */
+  const S = '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">';
+  const ICON = {
+    person:    S+'<circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.6 3.1-5.5 7-5.5s7 1.9 7 5.5"/></svg>',
+    sparkles:  S+'<path d="M12 3.5l1.7 4.3 4.3 1.7-4.3 1.7L12 15.5l-1.7-4.3L6 9.5l4.3-1.7z"/><path d="M18.6 14.4l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/></svg>',
+    heart:     S+'<path d="M12 20.3l-1.4-1.3C5.4 14.3 2.5 11.6 2.5 8.4 2.5 6 4.4 4 6.9 4c1.5 0 2.9.7 3.8 1.9L12 7.4l1.3-1.5C14.2 4.7 15.6 4 17.1 4c2.5 0 4.4 2 4.4 4.4 0 3.2-2.9 5.9-8.1 10.6z"/></svg>',
+    clipboard: S+'<rect x="5.5" y="4" width="13" height="17" rx="2.5"/><path d="M9 4.5V3.6A1.6 1.6 0 0 1 10.6 2h2.8A1.6 1.6 0 0 1 15 3.6v.9"/><path d="M9 11h6M9 15h4"/></svg>',
+    flag:      S+'<path d="M5.5 21V4"/><path d="M5.5 4.6c2.5-1.4 5 1 7.5-.3 2.5-1.3 4.5-.2 5.5.2v9.4c-1 .5-3 1.4-5.5.2-2.5-1.3-5 .9-7.5 2.3"/></svg>',
+    people:    S+'<circle cx="9" cy="8.5" r="3"/><path d="M3.5 20c0-3.1 2.5-4.8 5.5-4.8s5.5 1.7 5.5 4.8"/><path d="M16 6a3 3 0 0 1 0 5.6"/><path d="M17.6 15.4c2 .5 3.4 1.9 3.4 4.6"/></svg>',
+    book:      S+'<path d="M12 6.4C10.5 5 8.4 4.5 5 4.5V18c3.4 0 5.5.5 7 2 1.5-1.5 3.6-2 7-2V4.5c-3.4 0-5.5.5-7 1.9z"/><path d="M12 6.4V20"/></svg>',
+    eye:       S+'<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="2.8"/></svg>',
+    sliders:   S+'<path d="M4 7h7M16 7h4"/><path d="M4 12h2M11 12h9"/><path d="M4 17h10M19 17h1"/><circle cx="13.5" cy="7" r="2"/><circle cx="8.5" cy="12" r="2"/><circle cx="16.5" cy="17" r="2"/></svg>',
+    grid4:     S+'<rect x="3.5" y="3.5" width="7" height="7" rx="1.8"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.8"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.8"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.8"/></svg>',
+    clock:     S+'<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>',
+    lock:      S+'<rect x="5" y="10.5" width="14" height="9.5" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg>',
+    globe:     S+'<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17"/><path d="M12 3.5c2.3 2.4 2.3 14.6 0 17M12 3.5c-2.3 2.4-2.3 14.6 0 17"/></svg>',
+    share:     S+'<circle cx="6" cy="12" r="2.6"/><circle cx="17.5" cy="6" r="2.6"/><circle cx="17.5" cy="18" r="2.6"/><path d="M8.3 10.8l6.9-3.7M8.3 13.2l6.9 3.7"/></svg>',
+    download:  S+'<path d="M12 3.5v11M7.5 10.5l4.5 4.5 4.5-4.5"/><path d="M5 20h14"/></svg>',
+    refresh:   S+'<path d="M3.8 12a8.2 8.2 0 0 1 14-5.8"/><path d="M18.5 2.6v4.2h-4.2"/><path d="M20.2 12a8.2 8.2 0 0 1-14 5.8"/><path d="M5.5 21.4v-4.2h4.2"/></svg>',
+    external:  S+'<path d="M14 4.5h5.5V10"/><path d="M19.5 4.5L11 13"/><path d="M18 14.5V18a1.6 1.6 0 0 1-1.6 1.6H6A1.6 1.6 0 0 1 4.4 18V7.6A1.6 1.6 0 0 1 6 6h3.5"/></svg>',
+    calendar:  S+'<rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/></svg>',
+    check:     S+'<path d="M4 12.5l5 5 11-11"/></svg>',
+    arrowLeft: S+'<path d="M15 5l-7 7 7 7"/></svg>'
+  };
+
+  // paint any element with data-icon
+  function paintIcons(root){
+    (root||document).querySelectorAll('[data-icon]').forEach(el=>{
+      el.innerHTML = ICON[el.getAttribute('data-icon')] || '';
+      const col = el.getAttribute('data-color');
+      if(col) el.style.color = col;
+    });
+  }
+
   /* ════════════════════════════════════════════════════
      STATE
   ════════════════════════════════════════════════════ */
@@ -337,116 +379,112 @@
     color: '#750787'
   };
 
+  const LINK = {
+    identity: 'https://www.apa.org/topics/lgbtq/transgender-people-gender-identity-gender-expression',
+    expression: 'https://transstudent.org/gender/',
+    orientation: 'https://www.apa.org/topics/lgbtq/orientation'
+  };
+
   /* ════════════════════════════════════════════════════
-     QUESTION DEFINITIONS
-     types: slider | choice | teach
+     STEPS
   ════════════════════════════════════════════════════ */
   const STEPS = [
     {
-      type:'teach',
-      emoji:'🎚️',
-      badge:'Quick heads up',
-      text:'SOGIE isn\'t 4 boxes.<br>It\'s <span class="hl">4 sliders.</span>',
-      sub:'You live <i>somewhere</i> on each one — and there are no wrong answers. Only you know your truth. Just drag to where you feel at home. 👇',
-      cta:'Let\'s go →'
+      type:'teach', icon:'sliders', badge:'Quick heads up',
+      text:'SOGIE is not 4 boxes.<br>It is <span class="hl">4 sliders.</span>',
+      sub:'You live somewhere on each one, and there are no wrong answers. Only you know your truth. Just drag to where you feel at home.',
+      cta:'Let us go →'
     },
     {
-      type:'slider', key:'genderIdentity', escapeKey:'giOffScale',
-      emoji:'🪞',
+      type:'slider', key:'genderIdentity', escapeKey:'giOffScale', icon:'person',
       title:'Who do you feel you are inside?',
-      help:'Your gender identity — totally separate from your body or how you look. Drag to where it feels right.',
-      left:'I feel like a woman', mid:'In between / both', right:'I feel like a man',
-      escape:'I\'m beyond this scale (nonbinary, agender, fluid…) 💫',
-      readout: (v,off) => off
-        ? {e:'💫', t:'Beautifully beyond the binary', s:'Your gender lives outside this line — and that\'s valid.'}
-        : v<15 ? {e:'🌸', t:'You feel like a woman', s:''}
-        : v<38 ? {e:'🌷', t:'Woman-leaning', s:'Mostly woman, with your own twist'}
-        : v<62 ? {e:'⚖️', t:'Right in the middle', s:'Both, neither, or somewhere lovely between'}
-        : v<85 ? {e:'🌿', t:'Man-leaning', s:'Mostly man, with your own twist'}
-        : {e:'🌊', t:'You feel like a man', s:''}
+      help:'This is your gender identity: who you know yourself to be on the inside. It has nothing to do with your body or how you dress. Drag to wherever feels true.',
+      learn:{url:LINK.identity, label:'What is gender identity? (APA)'},
+      left:'I feel like a woman', mid:'Both or neither', right:'I feel like a man',
+      escape:'I am beyond this scale (nonbinary, agender, fluid, and more)',
+      readout:(v,off)=> off
+        ? {t:'Beyond the binary', s:'Your gender lives outside this line, and that is valid.'}
+        : v<15 ? {t:'You feel like a woman', s:''}
+        : v<38 ? {t:'Mostly a woman', s:'Woman, with your own twist'}
+        : v<62 ? {t:'Right in the middle', s:'Both, neither, or somewhere lovely between'}
+        : v<85 ? {t:'Mostly a man', s:'Man, with your own twist'}
+        : {t:'You feel like a man', s:''}
     },
     {
-      type:'slider', key:'genderExpression',
-      emoji:'✨',
+      type:'slider', key:'genderExpression', icon:'sparkles',
       title:'How do you like to show up?',
-      help:'Your gender expression — your style, vibe, how you present to the world. This can be totally different from #1!',
-      left:'Soft / feminine', mid:'A mix', right:'Bold / masculine',
-      readout: (v) =>
-          v<15 ? {e:'💅', t:'Soft & feminine', s:'Femme energy all the way'}
-        : v<38 ? {e:'🌺', t:'Leaning feminine', s:''}
-        : v<62 ? {e:'🦋', t:'A beautiful mix', s:'Androgynous — best of all worlds'}
-        : v<85 ? {e:'🧢', t:'Leaning masculine', s:''}
-        : {e:'🔥', t:'Bold & masculine', s:'Masc energy all the way'}
+      help:'This is your gender expression: your style, your vibe, how you present to the world. It can be totally different from how you feel inside. Drag to your everyday look.',
+      learn:{url:LINK.expression, label:'See it on a sliding scale (The Gender Unicorn)'},
+      left:'Soft and feminine', mid:'A mix', right:'Bold and masculine',
+      readout:(v)=>
+          v<15 ? {t:'Soft and feminine', s:'Full femme energy'}
+        : v<38 ? {t:'Leaning feminine', s:''}
+        : v<62 ? {t:'A mix of both', s:'A little of everything'}
+        : v<85 ? {t:'Leaning masculine', s:''}
+        : {t:'Bold and masculine', s:'Full masc energy'}
     },
     {
-      type:'teach',
-      emoji:'🤯',
-      badge:'Plot twist',
+      type:'teach', icon:'grid4', badge:'Plot twist',
       text:'Your body, your gender, your style, and your crushes are <span class="hl">four separate things.</span>',
-      sub:'That\'s why your tito can be a manly man who paints his nails, or a woman who loves women. None of these cancel each other out. Let\'s keep mapping. 🗺️',
-      cta:'Mind = blown →'
+      sub:'That is why your tito can be a manly man who paints his nails, or a woman who loves women. None of these cancel each other out. Let us keep mapping.',
+      cta:'Whoa, okay →'
     },
     {
-      type:'slider', key:'orientation', escapeKey:'ace',
-      emoji:'💘',
+      type:'slider', key:'orientation', escapeKey:'ace', icon:'heart',
       title:'Who are you drawn to?',
-      help:'Your sexual orientation — who gives you butterflies. Slide between "a different gender," "everyone," and "the same gender."',
-      left:'A different gender', mid:'More than one / any', right:'The same gender',
-      escape:'I don\'t really feel that kind of attraction (ace 🖤)',
-      readout: (v,off) => off
-        ? {e:'🖤', t:'You love in your own way', s:'On the asexual spectrum — and that\'s valid.'}
-        : v<15 ? {e:'💞', t:'Drawn to a different gender', s:'Straight / heterosexual vibes'}
-        : v<38 ? {e:'💝', t:'Mostly a different gender', s:'…but open'}
-        : v<62 ? {e:'🌈', t:'Drawn to more than one gender', s:'Bi / pan energy'}
-        : v<85 ? {e:'💖', t:'Mostly the same gender', s:'…but open'}
-        : {e:'❤️‍🔥', t:'Drawn to the same gender', s:'Gay / lesbian vibes'}
+      help:'This is your sexual orientation: who gives you butterflies. Slide between a different gender, everyone, and the same gender as you.',
+      learn:{url:LINK.orientation, label:'What is sexual orientation? (APA)'},
+      left:'A different gender', mid:'More than one', right:'The same gender',
+      escape:'I do not really feel that kind of attraction (asexual)',
+      readout:(v,off)=> off
+        ? {t:'You love in your own way', s:'On the asexual spectrum, and that is valid.'}
+        : v<15 ? {t:'Drawn to a different gender', s:'Often called straight'}
+        : v<38 ? {t:'Mostly a different gender', s:'Mostly, but open'}
+        : v<62 ? {t:'Drawn to more than one gender', s:'Bi or pan energy'}
+        : v<85 ? {t:'Mostly the same gender', s:'Mostly, but open'}
+        : {t:'Drawn to the same gender', s:'Gay or lesbian'}
     },
     {
-      type:'choice', key:'sexAssigned',
-      emoji:'🩺',
+      type:'choice', key:'sexAssigned', icon:'clipboard',
       title:'What did the doctor say at birth?',
-      help:'Your sex assigned at birth — what got written on your birth certificate. (See? Totally separate from everything above.)',
+      help:'This is the sex you were assigned at birth: what got written on your birth certificate. See how it is separate from everything above?',
       grid:true,
       options:[
-        {v:'female', e:'👶', label:'Female'},
-        {v:'male', e:'👶', label:'Male'},
-        {v:'intersex', e:'⭐', label:'Intersex'},
-        {v:'na', e:'🤐', label:'Rather not say'}
+        {v:'female', label:'Female'},
+        {v:'male', label:'Male'},
+        {v:'intersex', label:'Intersex'},
+        {v:'na', label:'Rather not say'}
       ]
     },
     {
-      type:'teach',
-      emoji:'🏳️‍🌈',
-      badge:'The big idea',
+      type:'teach', icon:'flag', badge:'The big idea',
       text:'See? <span class="hl">Everyone has a SOGIE.</span>',
-      sub:'Straight, gay, trans, cis — every human sits somewhere on these sliders. The <b>SOGIE Equality Bill</b> simply says: no one should be discriminated against for theirs.',
+      sub:'Straight, gay, trans, or cis, every human sits somewhere on these sliders. The SOGIE Equality Bill simply says no one should be discriminated against for theirs.',
       cta:'Almost done →'
     },
     {
-      type:'choice', key:'ally',
-      emoji:'🤝',
+      type:'choice', key:'ally', icon:'people',
       title:'How do you show up for the community?',
-      help:'No wrong answer here either — we\'re all on the journey.',
+      help:'No wrong answer here either. We are all on the journey.',
       options:[
-        {v:'member', e:'🏳️‍🌈', label:'I\'m part of the community'},
-        {v:'ally', e:'🤝', label:'Proud ally'},
-        {v:'learning', e:'📚', label:'Here &amp; learning'},
-        {v:'curious', e:'👀', label:'Just curious'}
+        {v:'member', icon:'flag', label:'I am part of the community'},
+        {v:'ally', icon:'people', label:'Proud ally'},
+        {v:'learning', icon:'book', label:'Here and learning'},
+        {v:'curious', icon:'eye', label:'Just curious'}
       ]
     },
     {
-      type:'choice', key:'color',
-      emoji:'🎨',
+      type:'choice', key:'color', icon:'sparkles',
       title:'Pick the color that feels like you',
-      help:'This one\'s just for fun — it\'ll set the vibe of your shareable card.',
+      help:'This one is just for fun. It sets the vibe of your shareable card.',
       grid:true,
       options:[
-        {v:'#E40303', e:'❤️', label:'Red'},
-        {v:'#FF8C00', e:'🧡', label:'Orange'},
-        {v:'#008026', e:'💚', label:'Green'},
-        {v:'#004DFF', e:'💙', label:'Blue'},
-        {v:'#750787', e:'💜', label:'Purple'},
-        {v:'#FF69B4', e:'💗', label:'Pink'}
+        {v:'#E40303', swatch:'#E40303', label:'Red'},
+        {v:'#FF8C00', swatch:'#FF8C00', label:'Orange'},
+        {v:'#008026', swatch:'#008026', label:'Green'},
+        {v:'#004DFF', swatch:'#004DFF', label:'Blue'},
+        {v:'#750787', swatch:'#750787', label:'Purple'},
+        {v:'#FF69B4', swatch:'#FF69B4', label:'Pink'}
       ]
     }
   ];
@@ -465,42 +503,33 @@
     document.getElementById(id).classList.add('active');
     window.scrollTo({top:0,behavior:'instant'});
   }
-
-  function start(){ idx = 0; show('quiz'); render(); }
+  function start(){ idx=0; show('quiz'); render(); }
   function restart(){ window.scrollTo({top:0}); state.sexAssigned=null; state.ally=null; idx=0; show('intro'); }
 
-  function setAccent(c){
-    state.color = c;
-    document.documentElement.style.setProperty('--accent', c);
-  }
+  function setAccent(c){ state.color=c; document.documentElement.style.setProperty('--accent', c); }
 
   function updateProgress(){
-    const pct = Math.round((idx/(STEPS.length))*100);
-    fill.style.width = pct + '%';
+    fill.style.width = Math.round((idx/STEPS.length)*100) + '%';
     stepLabel.textContent = 'Step ' + (idx+1) + ' / ' + STEPS.length;
     backBtn.style.visibility = idx===0 ? 'hidden' : 'visible';
   }
-
   function back(){ if(idx>0){ idx--; render(); } else { show('intro'); } }
-
-  function next(){
-    if(idx < STEPS.length-1){ idx++; render(); }
-    else { finish(); }
-  }
+  function next(){ if(idx<STEPS.length-1){ idx++; render(); } else { finish(); } }
 
   function render(){
     updateProgress();
     const step = STEPS[idx];
-    if(step.type==='teach') return renderTeach(step);
-    if(step.type==='slider') return renderSlider(step);
-    if(step.type==='choice') return renderChoice(step);
+    if(step.type==='teach') renderTeach(step);
+    else if(step.type==='slider') renderSlider(step);
+    else if(step.type==='choice') renderChoice(step);
+    paintIcons(host);
   }
 
   function renderTeach(step){
     host.innerHTML = `
       <div class="teach">
         <div class="teach-badge">${step.badge}</div>
-        <div class="teach-emoji">${step.emoji}</div>
+        <div class="teach-icon"><span class="ic-wrap" data-icon="${step.icon}"></span></div>
         <div class="teach-text">${step.text}</div>
         <div class="teach-sub">${step.sub}</div>
         <div><button class="btn btn-primary" onclick="next()">${step.cta}</button></div>
@@ -512,13 +541,14 @@
     const off = step.escapeKey ? state[step.escapeKey] : false;
     host.innerHTML = `
       <div class="q">
-        <span class="q-emoji">${step.emoji}</span>
+        <div class="q-icon"><span class="ic-wrap" data-icon="${step.icon}"></span></div>
         <h2 class="q-title">${step.title}</h2>
         <p class="q-help">${step.help}</p>
+        ${step.learn ? `<a class="learn" href="${step.learn.url}" target="_blank" rel="noopener"><span class="ic-wrap" data-icon="external"></span><span class="lk">${step.learn.label}</span></a>`:''}
 
         <div class="slider-block">
-          <div class="slider-readout" id="readout">
-            <div class="slider-readout-emoji" id="ro-emoji"></div>
+          <div class="slider-readout">
+            <div class="ro-icon"><span class="ic-wrap" data-icon="${step.icon}"></span></div>
             <div class="slider-readout-text" id="ro-text"></div>
             <div class="slider-readout-sub" id="ro-sub"></div>
           </div>
@@ -532,14 +562,12 @@
           </div>
           ${step.escapeKey ? `
             <div class="escape ${off?'on':''}" id="escape" onclick="toggleEscape('${step.escapeKey}')">
-              <span class="escape-check">${off?'✓':''}</span>
+              <span class="escape-check"><span class="ic-wrap" data-icon="check"></span></span>
               <span>${step.escape}</span>
             </div>`:''}
         </div>
 
-        <div class="q-nav">
-          <button class="btn btn-primary btn-block" onclick="next()">Next →</button>
-        </div>
+        <div class="q-nav"><button class="btn btn-primary btn-block" onclick="next()">Next →</button></div>
       </div>`;
 
     const slider = document.getElementById('slider');
@@ -547,9 +575,6 @@
       const v = +slider.value;
       state[step.key] = v;
       const r = step.readout(v, step.escapeKey ? state[step.escapeKey] : false);
-      const em = document.getElementById('ro-emoji');
-      em.textContent = r.e; em.style.transform='scale(1.15)';
-      setTimeout(()=>em.style.transform='scale(1)',120);
       document.getElementById('ro-text').textContent = r.t;
       document.getElementById('ro-sub').textContent = r.s || '';
     };
@@ -557,37 +582,32 @@
     update();
   }
 
-  function toggleEscape(key){
-    state[key] = !state[key];
-    render();
-  }
+  function toggleEscape(key){ state[key] = !state[key]; render(); }
 
   function renderChoice(step){
     const cur = state[step.key];
-    const opts = step.options.map(o=>`
-      <button class="choice ${cur===o.v?'selected':''}" onclick="pick('${step.key}','${o.v}', ${step.key==='color'})">
-        <span class="choice-emoji">${o.e}</span>
-        <span>${o.label}</span>
-      </button>`).join('');
+    const opts = step.options.map(o=>{
+      let visual='';
+      if(o.swatch) visual = `<span class="swatch" style="background:${o.swatch}"></span>`;
+      else if(o.icon) visual = `<span class="ic-wrap" data-icon="${o.icon}"></span>`;
+      return `<button class="choice ${cur===o.v?'selected':''}" onclick="pick('${step.key}','${o.v}', ${step.key==='color'})">
+        ${visual}<span>${o.label}</span></button>`;
+    }).join('');
     host.innerHTML = `
       <div class="q">
-        <span class="q-emoji">${step.emoji}</span>
+        <div class="q-icon"><span class="ic-wrap" data-icon="${step.icon}"></span></div>
         <h2 class="q-title">${step.title}</h2>
         <p class="q-help">${step.help}</p>
         <div class="choices ${step.grid?'choice-grid':''}">${opts}</div>
-        <div class="q-nav">
-          <button class="btn btn-primary btn-block" id="choice-next" onclick="next()" ${cur?'':'disabled'}>Next →</button>
-        </div>
+        <div class="q-nav"><button class="btn btn-primary btn-block" id="choice-next" onclick="next()" ${cur?'':'disabled'}>Next →</button></div>
       </div>`;
+    paintIcons(host);
   }
 
   function pick(key,val,isColor){
     state[key] = val;
     if(isColor) setAccent(val);
-    // re-render to show selection, then auto-advance shortly
     renderChoice(STEPS[idx]);
-    const btn = document.getElementById('choice-next');
-    if(btn) btn.disabled = false;
     clearTimeout(window._adv);
     window._adv = setTimeout(()=>{ if(state[key]===val) next(); }, 420);
   }
@@ -595,67 +615,54 @@
   /* ════════════════════════════════════════════════════
      RESULT
   ════════════════════════════════════════════════════ */
-  function finish(){
-    fill.style.width='100%';
-    buildResult();
-    show('result');
-  }
+  function finish(){ fill.style.width='100%'; buildResult(); show('result'); paintIcons(document); }
 
-  // ── phrase helpers ──
   function giPhrase(){
     if(state.giOffScale) return 'beyond the binary';
     const v=state.genderIdentity;
-    return v<15?'a woman':v<38?'woman-leaning':v<62?'right in the middle':v<85?'man-leaning':'a man';
+    return v<15?'a woman':v<38?'mostly a woman':v<62?'right in the middle':v<85?'mostly a man':'a man';
   }
   function gePhrase(){
     const v=state.genderExpression;
-    return v<15?'soft & feminine':v<38?'leaning feminine':v<62?'androgynous':v<85?'leaning masculine':'bold & masculine';
+    return v<15?'soft and feminine':v<38?'leaning feminine':v<62?'a mix of both':v<85?'leaning masculine':'bold and masculine';
   }
   function soPhrase(){
-    if(state.ace) return 'on the ace spectrum';
+    if(state.ace) return 'on the asexual spectrum';
     const v=state.orientation;
     return v<15?'drawn to a different gender':v<38?'mostly into a different gender':v<62?'drawn to more than one gender':v<85?'mostly into the same gender':'drawn to the same gender';
   }
 
   function buildResult(){
-    // greeting by ally
     const greetMap = {
-      member: ['Happy Pride, fam! 🏳️‍🌈','You\'re home. Here\'s your spot on the spectrum today.'],
-      ally:   ['Allies make the rainbow brighter 🤝','And yes — you have a SOGIE too. Here it is.'],
-      learning:['Love that you\'re here 📚','You\'re learning, and that matters. Here\'s your SOGIE.'],
-      curious:['Curiosity is the first step 👀','Glad you came. Turns out you have a SOGIE too — here it is.']
+      member:  ['Happy Pride, fam! 🏳️‍🌈','You are home. Here is your spot on the spectrum today.'],
+      ally:    ['Allies make the rainbow brighter','And yes, you have a SOGIE too. Here it is.'],
+      learning:['Love that you are here','You are learning, and that matters. Here is your SOGIE.'],
+      curious: ['Curiosity is the first step','Glad you came. Turns out you have a SOGIE too. Here it is.']
     };
     const g = greetMap[state.ally] || greetMap.curious;
     document.getElementById('res-greet').innerHTML = g[0];
     document.getElementById('res-subline').textContent = g[1];
 
-    // summary sentence
-    const summary = `You're <span style="color:${state.color}">${giPhrase()}</span>, express yourself as <span style="color:${state.color}">${gePhrase()}</span>, and you're <span style="color:${state.color}">${soPhrase()}</span>.`;
-    document.getElementById('res-summary').innerHTML = summary;
+    document.getElementById('res-summary').innerHTML =
+      `You are <span style="color:${state.color}">${giPhrase()}</span>, you express yourself as <span style="color:${state.color}">${gePhrase()}</span>, and you are <span style="color:${state.color}">${soPhrase()}</span>.`;
 
-    // spectra bars
     const bars = [
       {label:'Gender Identity', val: state.giOffScale?50:state.genderIdentity, off:state.giOffScale, left:'Woman', right:'Man', phrase: giPhrase()},
       {label:'Gender Expression', val: state.genderExpression, off:false, left:'Feminine', right:'Masculine', phrase: gePhrase()},
-      {label:'Sexual Orientation', val: state.ace?50:state.orientation, off:state.ace, left:'Diff. gender', right:'Same gender', phrase: soPhrase()}
+      {label:'Sexual Orientation', val: state.ace?50:state.orientation, off:state.ace, left:'Different gender', right:'Same gender', phrase: soPhrase()}
     ];
     document.getElementById('res-spectra').innerHTML = bars.map(b=>`
       <div class="spec">
-        <div class="spec-top">
-          <span class="spec-label">${b.label}</span>
-          <span class="spec-val">${b.phrase}</span>
-        </div>
-        <div class="spec-bar">
-          ${b.off?'':`<div class="spec-marker" style="left:${b.val}%"></div>`}
-        </div>
-        <div class="spec-ends"><span>${b.left}</span>${b.off?'<span>✦ off the scale ✦</span>':''}<span>${b.right}</span></div>
+        <div class="spec-top"><span class="spec-label">${b.label}</span><span class="spec-val">${b.phrase}</span></div>
+        <div class="spec-bar">${b.off?'':`<div class="spec-marker" style="left:${b.val}%"></div>`}</div>
+        <div class="spec-ends"><span>${b.left}</span>${b.off?'<span>off the scale</span>':''}<span>${b.right}</span></div>
       </div>`).join('');
 
     drawCard();
   }
 
   /* ════════════════════════════════════════════════════
-     CANVAS SHARE CARD  (1080 x 1350)
+     CANVAS SHARE CARD (1080 x 1350)
   ════════════════════════════════════════════════════ */
   let cardBlob = null;
   function drawCard(){
@@ -663,144 +670,104 @@
     const x = c.getContext('2d');
     const W=1080, H=1350;
     x.clearRect(0,0,W,H);
+    x.fillStyle = '#0A0A0A'; x.fillRect(0,0,W,H);
 
-    // bg
-    x.fillStyle = '#0A0A0A';
-    x.fillRect(0,0,W,H);
-
-    // soft accent glow
     const glow = x.createRadialGradient(W/2,260,40,W/2,260,700);
     glow.addColorStop(0, hexA(state.color,0.34));
     glow.addColorStop(1, 'rgba(10,10,10,0)');
     x.fillStyle = glow; x.fillRect(0,0,W,H);
 
-    // top rainbow bar
     const stripes=['#E40303','#FF8C00','#FFED00','#008026','#004DFF','#750787'];
     const sw=W/stripes.length;
     stripes.forEach((s,i)=>{ x.fillStyle=s; x.fillRect(i*sw,0,sw+1,16); });
 
-    // kicker
     x.textAlign='center';
-    x.fillStyle = '#FFED00';
-    x.font = '700 30px "Plus Jakarta Sans", sans-serif';
+    x.fillStyle='#FFED00'; x.font='700 30px "Plus Jakarta Sans", sans-serif';
     x.fillText('HAPPY PRIDE 2026  🏳️‍🌈', W/2, 110);
 
-    // headline
-    x.fillStyle = '#fff';
-    x.font = '800 92px "Plus Jakarta Sans", sans-serif';
+    x.fillStyle='#fff'; x.font='800 92px "Plus Jakarta Sans", sans-serif';
     x.fillText('I know my', W/2, 230);
-    // gradient SOGIE
-    const grad = x.createLinearGradient(W/2-200, 0, W/2+200, 0);
+    const grad = x.createLinearGradient(W/2-200,0,W/2+200,0);
     stripes.forEach((s,i)=> grad.addColorStop(i/(stripes.length-1), s));
-    x.fillStyle = grad;
-    x.font = '800 140px "Plus Jakarta Sans", sans-serif';
+    x.fillStyle=grad; x.font='800 140px "Plus Jakarta Sans", sans-serif';
     x.fillText('SOGIE', W/2, 370);
 
-    // summary (wrapped)
-    x.fillStyle = 'rgba(255,255,255,0.92)';
-    x.font = '500 40px "DM Sans", sans-serif';
-    const sentence = `I'm ${giPhrase()}, I express as ${gePhrase()}, and I'm ${soPhrase()}.`;
-    wrapText(x, sentence, W/2, 470, 880, 52);
+    x.fillStyle='rgba(255,255,255,0.92)'; x.font='500 40px "DM Sans", sans-serif';
+    wrapText(x, `I am ${giPhrase()}, I express as ${gePhrase()}, and I am ${soPhrase()}.`, W/2, 470, 880, 52);
 
-    // spectrum bars
-    const bars = [
+    const bars=[
       {label:'GENDER IDENTITY', val: state.giOffScale?null:state.genderIdentity},
       {label:'EXPRESSION', val: state.genderExpression},
       {label:'ORIENTATION', val: state.ace?null:state.orientation}
     ];
-    let by = 660;
+    let by=660;
     bars.forEach(b=>{
-      x.textAlign='left';
-      x.fillStyle='rgba(255,255,255,0.55)';
-      x.font='700 26px "Plus Jakarta Sans", sans-serif';
+      x.textAlign='left'; x.fillStyle='rgba(255,255,255,0.55)'; x.font='700 26px "Plus Jakarta Sans", sans-serif';
       x.fillText(b.label, 120, by-18);
-      // track
       const bx=120, bw=W-240, bh=22, ry=by;
       const tg=x.createLinearGradient(bx,0,bx+bw,0);
       stripes.forEach((s,i)=> tg.addColorStop(i/(stripes.length-1), s));
       x.fillStyle=tg; roundRect(x,bx,ry,bw,bh,11); x.fill();
-      // marker
       if(b.val!==null){
-        const mx = bx + (bw*(b.val/100));
+        const mx=bx+(bw*(b.val/100));
         x.fillStyle='#fff'; x.beginPath(); x.arc(mx,ry+bh/2,26,0,7); x.fill();
         x.lineWidth=6; x.strokeStyle='#0A0A0A'; x.beginPath(); x.arc(mx,ry+bh/2,26,0,7); x.stroke();
       } else {
-        x.textAlign='right'; x.fillStyle='rgba(255,255,255,0.8)';
-        x.font='600 24px "DM Sans", sans-serif'; x.fillText('✦ off the scale ✦', bx+bw, by-18);
+        x.textAlign='right'; x.fillStyle='rgba(255,255,255,0.8)'; x.font='600 24px "DM Sans", sans-serif';
+        x.fillText('off the scale', bx+bw, by-18);
       }
-      by += 110;
+      by+=110;
     });
 
-    // divider
     x.strokeStyle='rgba(255,255,255,0.12)'; x.lineWidth=2;
-    x.beginPath(); x.moveTo(120, 1010); x.lineTo(W-120,1010); x.stroke();
+    x.beginPath(); x.moveTo(120,1010); x.lineTo(W-120,1010); x.stroke();
 
-    // punchline
-    x.textAlign='center';
-    x.fillStyle=grad;
-    x.font='800 58px "Plus Jakarta Sans", sans-serif';
+    x.textAlign='center'; x.fillStyle=grad; x.font='800 58px "Plus Jakarta Sans", sans-serif';
     x.fillText('Everyone has a SOGIE.', W/2, 1095);
-    x.fillStyle='rgba(255,255,255,0.7)';
-    x.font='500 38px "DM Sans", sans-serif';
-    x.fillText('What\'s yours? 🌈', W/2, 1150);
+    x.fillStyle='rgba(255,255,255,0.7)'; x.font='500 38px "DM Sans", sans-serif';
+    x.fillText('What is yours?', W/2, 1150);
 
-    // event
-    x.fillStyle='#FFED00';
-    x.font='700 28px "Plus Jakarta Sans", sans-serif';
+    x.fillStyle='#FFED00'; x.font='700 28px "Plus Jakarta Sans", sans-serif';
     x.fillText('See you at Love Laban: Pride PH Festival 2026', W/2, 1230);
 
-    // watermark
-    x.fillStyle='rgba(255,255,255,0.45)';
-    x.font='600 28px "DM Sans", sans-serif';
+    x.fillStyle='rgba(255,255,255,0.45)'; x.font='600 28px "DM Sans", sans-serif';
     x.fillText('paolodomingo.com/apps/sogie', W/2, 1300);
 
-    // export to preview + blob
-    c.toBlob(b=>{
-      cardBlob = b;
-      const url = URL.createObjectURL(b);
-      document.getElementById('share-preview').src = url;
-    }, 'image/png');
+    c.toBlob(b=>{ cardBlob=b; document.getElementById('share-preview').src = URL.createObjectURL(b); }, 'image/png');
   }
 
-  // helpers
   function hexA(hex,a){ const n=hex.replace('#',''); const r=parseInt(n.substr(0,2),16),g=parseInt(n.substr(2,2),16),b=parseInt(n.substr(4,2),16); return `rgba(${r},${g},${b},${a})`; }
   function roundRect(ctx,x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
   function wrapText(ctx,text,cx,y,maxW,lh){
     const words=text.split(' '); let line=''; const lines=[];
-    for(const w of words){ const test=line+w+' '; if(ctx.measureText(test).width>maxW && line){ lines.push(line.trim()); line=w+' '; } else line=test; }
+    for(const w of words){ const t=line+w+' '; if(ctx.measureText(t).width>maxW && line){ lines.push(line.trim()); line=w+' '; } else line=t; }
     lines.push(line.trim());
     lines.forEach((l,i)=> ctx.fillText(l, cx, y+i*lh));
   }
 
   /* ════════════════════════════════════════════════════
-     SHARE ACTIONS
+     SHARE
   ════════════════════════════════════════════════════ */
   const SHARE_URL = 'https://paolodomingo.com/apps/sogie/';
-  const SHARE_TEXT = 'I just mapped my SOGIE 🏳️‍🌈 Turns out everyone has one — even you. Find yours:';
+  const SHARE_TEXT = 'I just mapped my SOGIE 🏳️‍🌈 Turns out everyone has one, even you. Find yours:';
 
   async function nativeShare(){
     try {
       if(cardBlob && navigator.canShare){
         const file = new File([cardBlob], 'my-sogie.png', {type:'image/png'});
-        if(navigator.canShare({files:[file]})){
-          await navigator.share({ files:[file], text: SHARE_TEXT+' '+SHARE_URL });
-          return;
-        }
+        if(navigator.canShare({files:[file]})){ await navigator.share({ files:[file], text: SHARE_TEXT+' '+SHARE_URL }); return; }
       }
       if(navigator.share){ await navigator.share({ title:'Everyone Has a SOGIE', text:SHARE_TEXT, url:SHARE_URL }); return; }
-      downloadCard();
-      alert('Image saved! Pop it onto your IG / FB / X story 🏳️‍🌈');
-    } catch(e){ /* user cancelled */ }
+      downloadCard(); alert('Image saved. Pop it onto your IG, FB, or X story.');
+    } catch(e){}
   }
   function shareX(){ window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(SHARE_TEXT)+'&url='+encodeURIComponent(SHARE_URL),'_blank'); }
   function shareFB(){ window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(SHARE_URL),'_blank'); }
-  function downloadCard(){
-    if(!cardBlob) return;
-    const a=document.createElement('a'); a.href=URL.createObjectURL(cardBlob); a.download='my-sogie-pride-2026.png'; a.click();
-  }
+  function downloadCard(){ if(!cardBlob) return; const a=document.createElement('a'); a.href=URL.createObjectURL(cardBlob); a.download='my-sogie-pride-2026.png'; a.click(); }
 
-  // init accent
+  // init
   setAccent(state.color);
+  paintIcons(document);
   </script>
 </body>
 </html>
