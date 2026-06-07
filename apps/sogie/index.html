@@ -190,6 +190,11 @@
     .spec-marker { position:absolute; top:50%; width:24px; height:24px; border-radius:50%; background:#fff; border:3px solid var(--ink); transform:translate(-50%,-50%); box-shadow:0 3px 10px rgba(0,0,0,0.25); transition:left 0.6s cubic-bezier(0.22,1,0.36,1); }
     .spec-ends { display:flex; justify-content:space-between; margin-top:0.4rem; font-size:0.72rem; color:var(--muted); font-weight:500; }
 
+    .res-label-section { padding:1.5rem; border-top:1px solid var(--border); text-align:center; background:var(--ink); }
+    .res-label-pre { font-size:0.7rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:rgba(255,255,255,0.45); margin-bottom:0.65rem; }
+    .res-label-word { font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:clamp(1.8rem,5.5vw,2.5rem); letter-spacing:-0.035em; background:var(--rainbow); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; line-height:1.1; margin-bottom:0.5rem; }
+    .res-label-hint { font-size:0.78rem; color:rgba(255,255,255,0.4); line-height:1.55; }
+
     .res-note { padding:1.25rem 1.5rem; background:rgba(117,7,135,0.04); border-top:1px solid var(--border); font-size:0.92rem; line-height:1.6; color:#444; }
     .res-note b { color:var(--accent); }
 
@@ -282,6 +287,11 @@
           <div class="res-summary" id="res-summary"></div>
         </div>
         <div class="res-spectra" id="res-spectra"></div>
+        <div class="res-label-section">
+          <div class="res-label-pre">In everyday terms, people often call this</div>
+          <div class="res-label-word" id="res-label">—</div>
+          <div class="res-label-hint">Labels are maps, not boxes. Use this one if it helps — or don't.</div>
+        </div>
         <div class="res-note">
           <b>Remember:</b> these are four separate sliders, and you can shift along them over time. SOGIE is not a box. It is a spectrum. That is the whole point.
         </div>
@@ -627,6 +637,41 @@
     return v<15?'drawn to a different gender':v<38?'mostly into a different gender':v<62?'drawn to more than one gender':v<85?'mostly into the same gender':'drawn to the same gender';
   }
 
+  function identityLabel(){
+    const giV = state.genderIdentity;
+    const soV = state.orientation;
+    const sex = state.sexAssigned; // 'female','male','intersex','na',null
+
+    // 1. Gender bucket
+    let gb; // 'woman' | 'man' | 'nb'
+    if(state.giOffScale)  gb='nb';
+    else if(giV < 38)     gb='woman';
+    else if(giV < 62)     gb='nb';
+    else                  gb='man';
+
+    // 2. Cis / trans prefix (only for binary genders)
+    let ct='';
+    if(gb==='woman'){ if(sex==='female') ct='cis '; else if(sex==='male') ct='trans '; }
+    if(gb==='man')  { if(sex==='male')   ct='cis '; else if(sex==='female') ct='trans '; }
+
+    // 3. Orientation label
+    let or;
+    if(state.ace)    or='asexual';
+    else if(soV<15)  or='straight';
+    else if(soV<38)  or='mostly straight';
+    else if(soV<62)  or='bisexual';
+    else if(soV<85)  or=(gb==='woman'?'mostly lesbian':gb==='nb'?'mostly queer':'mostly gay');
+    else             or=(gb==='woman'?'lesbian':gb==='nb'?'queer':'gay');
+
+    // 4. Compose
+    if(gb==='nb'){
+      return (or==='asexual')?'asexual nonbinary person':`${or} nonbinary person`;
+    }
+    if(or==='lesbian'){ return ct?`${ct}lesbian`:'lesbian'; }
+    if(state.ace){ return `asexual ${ct}${gb}`; }
+    return `${or} ${ct}${gb}`;
+  }
+
   function buildResult(){
     const greetMap = {
       member:  ['Happy Pride, fam! 🏳️‍🌈','You are home. Here is your spot on the spectrum today.'],
@@ -640,6 +685,8 @@
 
     document.getElementById('res-summary').innerHTML =
       `You are <span style="color:${state.color}">${giPhrase()}</span>, you express yourself as <span style="color:${state.color}">${gePhrase()}</span>, and you are <span style="color:${state.color}">${soPhrase()}</span>.`;
+
+    document.getElementById('res-label').textContent = identityLabel();
 
     const bars = [
       {label:'Gender Identity', val: state.giOffScale?50:state.genderIdentity, off:state.giOffScale, left:'Woman', right:'Man', phrase: giPhrase()},
@@ -690,12 +737,24 @@
     x.fillStyle='rgba(255,255,255,0.92)'; x.font='500 40px "DM Sans", sans-serif';
     wrapText(x, `I am ${giPhrase()}, I express as ${gePhrase()}, and I am ${soPhrase()}.`, W/2, 470, 880, 52);
 
+    // Identity label
+    x.fillStyle='rgba(255,255,255,0.45)'; x.font='600 28px "Plus Jakarta Sans", sans-serif';
+    x.fillText('In everyday terms:', W/2, 580);
+    const lgrad = x.createLinearGradient(W/2-260,0,W/2+260,0);
+    stripes.forEach((s,i)=> lgrad.addColorStop(i/(stripes.length-1), s));
+    const lbl = identityLabel();
+    x.font='800 72px "Plus Jakarta Sans", sans-serif';
+    const lw = x.measureText(lbl).width;
+    const lfSize = lw > 860 ? Math.floor(72 * 860 / lw) : 72;
+    x.fillStyle=lgrad; x.font=`800 ${lfSize}px "Plus Jakarta Sans", sans-serif`;
+    x.fillText(lbl, W/2, 652);
+
     const bars=[
       {label:'GENDER IDENTITY', val: state.giOffScale?null:state.genderIdentity},
       {label:'EXPRESSION', val: state.genderExpression},
       {label:'ORIENTATION', val: state.ace?null:state.orientation}
     ];
-    let by=660;
+    let by=730;
     bars.forEach(b=>{
       x.textAlign='left'; x.fillStyle='rgba(255,255,255,0.55)'; x.font='700 26px "Plus Jakarta Sans", sans-serif';
       x.fillText(b.label, 120, by-18);
