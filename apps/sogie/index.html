@@ -311,7 +311,10 @@
         <img id="share-preview" alt="Your shareable SOGIE card" />
         <div class="share-card-actions">
           <button class="btn btn-rainbow btn-block" id="btn-share" onclick="nativeShare()"><span class="ic-wrap" data-icon="share" data-color="#fff"></span> Share my card</button>
-          <button class="btn btn-dl btn-block" onclick="downloadCard()"><span class="ic-wrap" data-icon="download" data-color="#0A0A0A"></span> Save image</button>
+          <button class="btn btn-dl btn-block" id="btn-save" onclick="downloadCard()"><span class="ic-wrap" data-icon="download" data-color="#0A0A0A"></span> Save image</button>
+          <div id="ig-save-hint" style="display:none; background:#f0f0f0; border-radius:12px; padding:0.75rem 1rem; font-size:0.84rem; color:#444; text-align:center; line-height:1.5;">
+            📸 <b>Long-press the card above</b> then tap <b>Save to Photos</b> — downloads are blocked in the Instagram browser.
+          </div>
         </div>
       </div>
       <p class="share-hint">On mobile, <b>Share my card</b> sends the image directly to X, IG, or FB. On desktop, save it first then upload.</p>
@@ -698,6 +701,13 @@
       </div>`).join('');
 
     drawCard();
+
+    // IG / FB in-app browser: show long-press hint automatically
+    if(isInAppBrowser){
+      document.getElementById('ig-save-hint').style.display='block';
+      const saveBtn=document.getElementById('btn-save');
+      if(saveBtn){ saveBtn.innerHTML='📸 Long-press card to save'; saveBtn.style.opacity='0.55'; saveBtn.style.pointerEvents='none'; }
+    }
   }
 
   /* ════════════════════════════════════════════════════
@@ -795,7 +805,9 @@
     x.fillStyle='rgba(255,255,255,0.38)'; x.font='600 26px "DM Sans", sans-serif';
     x.fillText('paolodomingo.com/apps/sogie', W/2, 1310);
 
-    c.toBlob(b=>{ cardBlob=b; document.getElementById('share-preview').src = URL.createObjectURL(b); }, 'image/png');
+    // Use data URL for preview — blob: URLs don't long-press-save in IG/FB in-app browsers
+    document.getElementById('share-preview').src = c.toDataURL('image/png');
+    c.toBlob(b=>{ cardBlob=b; }, 'image/png');
   }
 
   function hexA(hex,a){ const n=hex.replace('#',''); const r=parseInt(n.substr(0,2),16),g=parseInt(n.substr(2,2),16),b=parseInt(n.substr(4,2),16); return `rgba(${r},${g},${b},${a})`; }
@@ -823,7 +835,19 @@
       downloadCard(); alert('Image saved. Pop it onto your IG, FB, or X story.');
     } catch(e){}
   }
-  function downloadCard(){ if(!cardBlob) return; const a=document.createElement('a'); a.href=URL.createObjectURL(cardBlob); a.download='my-sogie-pride-2026.png'; a.click(); }
+  const isInAppBrowser = /Instagram|FBAN|FBAV|FB_IAB/.test(navigator.userAgent);
+
+  function downloadCard(){
+    if(isInAppBrowser){
+      // In-app browsers block downloads — instruct user to long-press instead
+      document.getElementById('ig-save-hint').style.display='block';
+      document.getElementById('share-preview').style.outline='3px solid #750787';
+      setTimeout(()=>{ document.getElementById('share-preview').style.outline=''; }, 2000);
+      return;
+    }
+    if(!cardBlob) return;
+    const a=document.createElement('a'); a.href=URL.createObjectURL(cardBlob); a.download='my-sogie-pride-2026.png'; a.click();
+  }
 
   // init
   setAccent(state.color);
