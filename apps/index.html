@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Apps — Paolo Domingo</title>
+  <meta name="description" content="Free interactive web apps by Paolo Domingo — built for real people, mobile-first, no sign-up required." />
+  <meta property="og:title" content="Apps — Paolo Domingo" />
+  <meta property="og:description" content="Free interactive web apps. Mobile-first, no sign-up, just open and go." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    :root {
+      --yellow: #F5E642;
+      --ink: #0A0A0A;
+      --cream: #F8F6F1;
+      --muted: #888888;
+      --border: rgba(10,10,10,0.1);
+      --stripe-w: 72px;
+      --rainbow: linear-gradient(90deg,#E40303,#FF8C00,#FFED00,#008026,#004DFF,#750787);
+    }
+
+    body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--ink); overflow-x: hidden; cursor: none; }
+
+    /* ── CURSOR ─────────────────────────────────────── */
+    #cursor-dot { position:fixed; width:8px; height:8px; background:var(--ink); border-radius:50%; pointer-events:none; z-index:99999; transform:translate(-50%,-50%); }
+    #cursor-ring { position:fixed; width:32px; height:32px; border:1.5px solid var(--ink); border-radius:50%; pointer-events:none; z-index:99998; transform:translate(-50%,-50%); transition:width 0.2s,height 0.2s,border-color 0.2s; }
+    @media (pointer:coarse) { #cursor-dot,#cursor-ring{display:none;} body{cursor:auto;} }
+
+    /* ── NAV ─────────────────────────────────────────── */
+    #main-nav { position:sticky; top:0; z-index:1000; background:var(--cream); display:flex; align-items:stretch; height:64px; border-bottom:2px solid var(--ink); }
+    .nav-logo-block { width:var(--stripe-w); min-width:var(--stripe-w); background:var(--yellow); border-right:2px solid var(--ink); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .nav-monogram { font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:1.05rem; color:var(--ink); letter-spacing:-0.04em; text-decoration:none; }
+    .nav-inner { flex:1; display:flex; align-items:center; justify-content:space-between; padding:0 2rem; }
+    .nav-brand { font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:0.95rem; color:var(--ink); text-decoration:none; letter-spacing:-0.01em; }
+    .nav-links { display:flex; align-items:center; gap:2.5rem; list-style:none; }
+    .nav-links a { font-family:'Plus Jakarta Sans',sans-serif; font-size:0.7rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); text-decoration:none; transition:color 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color:var(--ink); }
+    .nav-cta { font-family:'Plus Jakarta Sans',sans-serif; font-size:0.88rem; font-weight:700; color:var(--ink); text-decoration:none; border-bottom:2.5px solid var(--yellow); padding-bottom:1px; text-transform:none !important; letter-spacing:0 !important; }
+    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:4px; background:none; border:none; }
+    .hamburger span { display:block; width:22px; height:2px; background:var(--ink); border-radius:2px; transition:all 0.3s; }
+    #mobile-menu { position:fixed; inset:0; background:var(--yellow); z-index:999; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2.5rem; opacity:0; pointer-events:none; transition:opacity 0.3s; }
+    #mobile-menu.open { opacity:1; pointer-events:all; }
+    #mobile-menu a { font-family:'Plus Jakarta Sans',sans-serif; font-size:2.5rem; font-weight:800; color:var(--ink); text-decoration:none; letter-spacing:-0.03em; }
+    #mobile-menu .close-btn { position:absolute; top:1.5rem; right:1.5rem; font-size:1.5rem; color:var(--ink); cursor:pointer; background:none; border:none; font-family:'DM Sans',sans-serif; }
+    @media (max-width:768px) { .nav-links{display:none;} .hamburger{display:flex;} }
+
+    /* ── HERO ─────────────────────────────────────────── */
+    .hero {
+      display: flex; align-items: stretch; min-height: 260px;
+      border-bottom: 2px solid var(--ink);
+    }
+    .hero-stripe {
+      width: var(--stripe-w); min-width: var(--stripe-w); background: var(--rainbow);
+      border-right: 2px solid var(--ink); flex-shrink: 0;
+    }
+    .hero-body { padding: 3rem 3rem 2.5rem; display: flex; flex-direction: column; justify-content: flex-end; }
+    .hero-kicker { font-family:'Plus Jakarta Sans',sans-serif; font-size:0.7rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); margin-bottom:1rem; }
+    .hero-h1 { font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:clamp(2.8rem,6vw,5rem); line-height:0.95; letter-spacing:-0.045em; margin-bottom:1.25rem; }
+    .hero-sub { font-size:1rem; color:#555; max-width:520px; line-height:1.65; }
+    @media (max-width:600px) { .hero-body { padding: 2rem 1.5rem 2rem; } }
+
+    /* ── GRID ─────────────────────────────────────────── */
+    .grid-wrap { max-width: 1200px; margin: 0 auto; padding: 3rem 2rem 5rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2px; }
+
+    /* ── APP CARD ─────────────────────────────────────── */
+    .app-card {
+      background: var(--cream); border: 1px solid var(--ink); text-decoration: none; color: var(--ink);
+      display: flex; flex-direction: column; transition: background 0.18s;
+      position: relative; overflow: hidden;
+    }
+    .app-card:hover { background: #fff; }
+    .app-card:hover .card-arrow { opacity: 1; transform: translate(0,0); }
+
+    .card-thumb {
+      width: 100%; aspect-ratio: 16/9; border-bottom: 1px solid var(--ink);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800;
+      font-size: 1.1rem; letter-spacing: -0.02em; overflow: hidden; position: relative;
+    }
+
+    /* SOGIE thumb */
+    .t-sogie {
+      background: #0A0A0A;
+    }
+    .t-sogie-inner {
+      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    }
+    .t-sogie-flag {
+      width: 64px; height: 64px; border-radius: 16px;
+      background: linear-gradient(90deg,#E40303,#FF8C00,#FFED00,#008026,#004DFF,#750787);
+      box-shadow: 0 12px 30px rgba(117,7,135,0.4);
+    }
+    .t-sogie-label {
+      color: #fff; font-family:'Plus Jakarta Sans',sans-serif; font-weight:800;
+      font-size:1rem; letter-spacing:-0.03em;
+    }
+    .t-sogie-bars { display:flex; flex-direction:column; gap:5px; width:120px; }
+    .t-sogie-bar { height:5px; border-radius:100px; background:var(--rainbow); }
+
+    .card-body { padding: 1.5rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+    .card-meta { display: flex; align-items: center; gap: 0.5rem; }
+    .card-badge { font-family:'Plus Jakarta Sans',sans-serif; font-size:0.62rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; padding:0.25rem 0.6rem; border-radius:100px; }
+    .badge-free { background: var(--yellow); color: var(--ink); }
+    .badge-pride { background: linear-gradient(90deg,#E40303,#FF8C00,#FFED00,#008026,#004DFF,#750787); color: #fff; }
+    .card-title { font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:1.25rem; letter-spacing:-0.025em; line-height:1.15; }
+    .card-desc { font-size:0.9rem; color:#555; line-height:1.6; flex:1; }
+    .card-footer { display:flex; align-items:center; justify-content:space-between; margin-top:0.75rem; }
+    .card-url { font-family:'Plus Jakarta Sans',sans-serif; font-size:0.72rem; font-weight:600; color:var(--muted); letter-spacing:0.04em; }
+    .card-arrow { font-size:1.1rem; opacity:0; transform:translate(-4px,4px); transition:all 0.2s; }
+
+    /* ── COMING SOON CARD ─────────────────────────────── */
+    .app-card-soon {
+      border: 2px dashed var(--border); background: transparent;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      min-height: 260px; gap: 0.75rem; padding: 2rem;
+      text-align: center;
+    }
+    .soon-icon { font-size: 2rem; opacity: 0.3; }
+    .soon-label { font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:0.9rem; color:var(--muted); }
+    .soon-sub { font-size:0.8rem; color:var(--muted); opacity:0.7; }
+
+    /* ── FOOTER ───────────────────────────────────────── */
+    footer { border-top:2px solid var(--ink); padding:1.75rem 2rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; background:var(--cream); }
+    .footer-copy { font-size:0.82rem; color:var(--muted); }
+    .footer-links { display:flex; gap:1.75rem; }
+    .footer-links a { font-family:'Plus Jakarta Sans',sans-serif; font-size:0.72rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); text-decoration:none; transition:color 0.2s; }
+    .footer-links a:hover { color:var(--ink); }
+  </style>
+</head>
+<body>
+
+  <div id="cursor-dot"></div>
+  <div id="cursor-ring"></div>
+
+  <!-- MOBILE MENU -->
+  <div id="mobile-menu" role="dialog" aria-modal="true">
+    <button class="close-btn" id="menu-close">✕</button>
+    <a href="/" onclick="closeMobileMenu()">Home</a>
+    <a href="/creatives/" onclick="closeMobileMenu()">Creatives</a>
+    <a href="/apps/" onclick="closeMobileMenu()">Apps</a>
+    <a href="mailto:domingopauljohn@gmail.com" onclick="closeMobileMenu()">Contact</a>
+  </div>
+
+  <!-- NAV -->
+  <nav id="main-nav" role="navigation" aria-label="Main navigation">
+    <div class="nav-logo-block">
+      <a href="/" class="nav-monogram" aria-label="Home">PD</a>
+    </div>
+    <div class="nav-inner">
+      <a href="/" class="nav-brand">Paolo Domingo</a>
+      <ul class="nav-links" role="list">
+        <li><a href="/creatives/">Creatives</a></li>
+        <li><a href="/apps/" class="active">Apps</a></li>
+        <li><a href="mailto:domingopauljohn@gmail.com" class="nav-cta">Let's work together ↗</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger-btn" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-stripe" aria-hidden="true"></div>
+    <div class="hero-body">
+      <p class="hero-kicker">Paolo Domingo · Apps</p>
+      <h1 class="hero-h1">Free.<br>For everyone.</h1>
+      <p class="hero-sub">Interactive web apps built for real people. No sign-up, no paywall — just open and go. Mobile-first, always.</p>
+    </div>
+  </section>
+
+  <!-- GRID -->
+  <div class="grid-wrap">
+    <div class="grid">
+
+      <!-- SOGIE App -->
+      <a class="app-card" href="/apps/sogie/">
+        <div class="card-thumb t-sogie">
+          <div class="t-sogie-inner">
+            <div class="t-sogie-flag"></div>
+            <div class="t-sogie-bars">
+              <div class="t-sogie-bar"></div>
+              <div class="t-sogie-bar"></div>
+              <div class="t-sogie-bar"></div>
+            </div>
+            <div class="t-sogie-label">Everyone Has a SOGIE</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-badge badge-pride">Pride 2026</span>
+            <span class="card-badge badge-free">Free</span>
+          </div>
+          <div class="card-title">Everyone Has a SOGIE</div>
+          <div class="card-desc">Slide your way along the spectrum and discover your Sexual Orientation, Gender Identity, and Expression. Shareable card included. Even you have a SOGIE.</div>
+          <div class="card-footer">
+            <span class="card-url">paolodomingo.com/apps/sogie</span>
+            <span class="card-arrow">↗</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Coming soon -->
+      <div class="app-card-soon">
+        <div class="soon-icon">⚙︎</div>
+        <div class="soon-label">More apps on the way</div>
+        <div class="soon-sub">Got an idea? Let's build it.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="footer-copy">© Paolo Domingo · 2026</span>
+    <nav class="footer-links" aria-label="Footer navigation">
+      <a href="/creatives/">Creatives</a>
+      <a href="/apps/">Apps</a>
+      <a href="mailto:domingopauljohn@gmail.com">Contact</a>
+    </nav>
+  </footer>
+
+  <script>
+    // Cursor
+    const dot = document.getElementById('cursor-dot');
+    const ring = document.getElementById('cursor-ring');
+    document.addEventListener('mousemove', e => {
+      dot.style.left = e.clientX + 'px'; dot.style.top = e.clientY + 'px';
+      ring.style.left = e.clientX + 'px'; ring.style.top = e.clientY + 'px';
+    });
+
+    // Mobile menu
+    const hamburger = document.getElementById('hamburger-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuClose = document.getElementById('menu-close');
+    hamburger.addEventListener('click', () => { mobileMenu.classList.add('open'); hamburger.setAttribute('aria-expanded','true'); });
+    menuClose.addEventListener('click', closeMobileMenu);
+    function closeMobileMenu(){ mobileMenu.classList.remove('open'); hamburger.setAttribute('aria-expanded','false'); }
+  </script>
+</body>
+</html>
