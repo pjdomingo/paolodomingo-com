@@ -212,6 +212,10 @@
     /* Share */
     .share-title { text-align:center; font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:1.45rem; letter-spacing:-0.02em; margin-bottom:0.4rem; }
     .share-sub { text-align:center; font-size:0.95rem; color:#666; margin-bottom:1.25rem; }
+    #toast { position:fixed; bottom:2rem; left:50%; transform:translateX(-50%) translateY(150%); background:var(--ink); color:#fff; font-family:'Plus Jakarta Sans',sans-serif; font-weight:600; font-size:0.88rem; padding:0.8rem 1.4rem; border-radius:100px; white-space:nowrap; z-index:999; transition:transform 0.4s cubic-bezier(0.22,1,0.36,1); pointer-events:none; }
+    #toast.show { transform:translateX(-50%) translateY(0); }
+    @media(max-width:440px){ #toast { white-space:normal; text-align:center; max-width:88vw; border-radius:18px; } }
+
     .share-card { background:#fff; border:1px solid var(--border); border-radius:24px; overflow:hidden; box-shadow:0 20px 50px rgba(10,10,10,0.11); margin-bottom:1rem; }
     #share-preview { width:100%; display:block; border-radius:0; box-shadow:none; }
     .share-card-actions { padding:1.1rem 1.1rem 1.25rem; display:flex; flex-direction:column; gap:0.55rem; }
@@ -818,8 +822,46 @@
       downloadCard(); alert('Image saved. Pop it onto your IG, FB, or X story.');
     } catch(e){}
   }
-  function shareX(){ window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(SHARE_TEXT)+'&url='+encodeURIComponent(SHARE_URL),'_blank'); }
-  function shareFB(){ window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(SHARE_URL),'_blank'); }
+  function showToast(msg, duration=4000){
+    let t=document.getElementById('toast');
+    if(!t){ t=document.createElement('div'); t.id='toast'; document.body.appendChild(t); }
+    t.innerHTML=msg; t.classList.add('show');
+    clearTimeout(t._tmr); t._tmr=setTimeout(()=>t.classList.remove('show'), duration);
+  }
+
+  async function copyImageToClipboard(){
+    if(!cardBlob) return false;
+    try {
+      if(navigator.clipboard && window.ClipboardItem){
+        await navigator.clipboard.write([new ClipboardItem({'image/png': cardBlob})]);
+        return true;
+      }
+    } catch(e){}
+    return false;
+  }
+
+  async function shareX(){
+    const copied = await copyImageToClipboard();
+    if(copied){
+      showToast('📋 Image copied! Paste it in your X post (Ctrl+V / ⌘V)');
+    } else {
+      downloadCard();
+      showToast('💾 Image saved! Attach it to your X post');
+    }
+    setTimeout(()=> window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(SHARE_TEXT)+'&url='+encodeURIComponent(SHARE_URL),'_blank'), 600);
+  }
+
+  async function shareFB(){
+    const copied = await copyImageToClipboard();
+    if(copied){
+      showToast('📋 Image copied! Paste it into your Facebook post (Ctrl+V / ⌘V)');
+    } else {
+      downloadCard();
+      showToast('💾 Image saved! Attach it to your Facebook post');
+    }
+    setTimeout(()=> window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(SHARE_URL),'_blank'), 600);
+  }
+
   function downloadCard(){ if(!cardBlob) return; const a=document.createElement('a'); a.href=URL.createObjectURL(cardBlob); a.download='my-sogie-pride-2026.png'; a.click(); }
 
   // init
