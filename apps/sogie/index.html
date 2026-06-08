@@ -223,6 +223,15 @@
     .event-foot { font-size:0.85rem; color:rgba(255,255,255,0.6); line-height:1.55; margin-top:1.1rem; padding-top:1rem; border-top:1px solid rgba(255,255,255,0.12); }
     .event-foot b { color:var(--yellow); }
 
+    /* Support */
+    .support-card { background:rgba(117,7,135,0.05); border:1px solid var(--border); border-radius:18px; padding:1.4rem 1.5rem; margin-bottom:1.75rem; text-align:center; }
+    .support-title { font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:1.05rem; letter-spacing:-0.02em; margin-bottom:0.5rem; }
+    .support-text { font-size:0.9rem; color:#555; line-height:1.6; margin-bottom:1rem; }
+    .support-text b { color:var(--accent); }
+    .support-lines { display:flex; flex-wrap:wrap; gap:0.5rem; justify-content:center; }
+    .support-lines a { font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:0.9rem; color:var(--ink); background:#fff; border:1px solid var(--border); border-radius:100px; padding:0.55rem 1rem; text-decoration:none; transition:border-color 0.15s; }
+    .support-lines a:hover { border-color:var(--accent); }
+
     /* Share */
     .share-title { text-align:center; font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:1.45rem; letter-spacing:-0.02em; margin-bottom:0.4rem; }
     .share-sub { text-align:center; font-size:0.95rem; color:#666; margin-bottom:1.25rem; }
@@ -271,7 +280,7 @@
       <div class="intro-flag"></div>
       <div class="intro-kicker">Happy Pride 2026 🏳️‍🌈</div>
       <h1 class="intro-h1">Everyone has a <span class="grad">SOGIE.</span><br>Even you.</h1>
-      <p class="intro-sub">It is not a label for other people. It stands for <b>S</b>exual <b>O</b>rientation, <b>G</b>ender <b>I</b>dentity and <b>E</b>xpression, and every single human has one. Slide along the spectrum and find yours.</p>
+      <p class="intro-sub">It's not a label for other people. It stands for <b>S</b>exual <b>O</b>rientation, <b>G</b>ender <b>I</b>dentity and <b>E</b>xpression, and every single human has one. Slide along the spectrum and find yours.</p>
       <div style="margin-top:0.5rem;"><button class="btn btn-rainbow" onclick="start()">Find my SOGIE →</button></div>
       <p class="privacy" style="margin-top:1.5rem;"><span class="ic-wrap" data-icon="lock"></span> Nothing you tap ever leaves your phone.</p>
     </section>
@@ -291,7 +300,7 @@
     <!-- ════ RESULT ════ -->
     <section class="screen" id="result">
       <div class="res-greet" id="res-greet">Happy Pride!</div>
-      <p class="res-sub" id="res-subline">Here is your SOGIE, your spot on the spectrum today.</p>
+      <p class="res-sub" id="res-subline">Here's your SOGIE, your spot on the spectrum today.</p>
 
       <div class="res-card">
         <div class="res-card-head">
@@ -302,18 +311,18 @@
         <div class="res-label-section">
           <div class="res-label-pre">Your words, your call</div>
           <div class="res-picker-title">Tap the words that feel like you</div>
-          <p class="res-picker-intro">No one gets to hand you a label here — not even this app. A word only means something if <b>you</b> choose it. Tap whatever helps you understand yourself a little better. Skip the ones that do not fit. This is about knowing yourself, not fitting a box.</p>
+          <p class="res-picker-intro">No one gets to hand you a label here — not even this app. A word only means something if <b>you</b> choose it. Tap whatever helps you understand yourself a little better. Skip the ones that don't fit. It's about knowing yourself, not fitting a box.</p>
           <div class="res-chips" id="res-chips"></div>
           <div class="res-label-hint">Pick any, a few, or none — and it can change tomorrow. Whatever you choose goes on your card. ✨</div>
         </div>
         <div class="res-note">
-          <b>Remember:</b> these are four separate sliders, and you can shift along them over time. SOGIE is not a box. It is a spectrum. That is the whole point.
+          <b>Remember:</b> these are four separate sliders, and you can shift along them over time. SOGIE isn't a box. It's a spectrum. That's the whole point.
         </div>
       </div>
 
       <!-- Event -->
       <div class="event-card">
-        <div class="event-kicker">Do not just take the quiz. Show up.</div>
+        <div class="event-kicker">Don't just take the quiz. Show up.</div>
         <span class="event-flag">This Friday · Fundraiser</span>
         <img class="event-poster" src="independence-slay.jpg" alt="Independence Slay: Pride with Purpose — Friday June 12 at Halxyon Club, Makati" loading="lazy" />
         <div class="event-title">Independence Slay: Pride with Purpose</div>
@@ -324,7 +333,18 @@
           <p>Buy 1 Take 1 cocktails · 10% off all bottles that night</p>
         </div>
         <a class="event-link" href="https://www.facebook.com/photo?fbid=122118805425278349&set=a.122104902963278349" target="_blank" rel="noopener">Reserve your spot <span class="ic-wrap" data-icon="external" data-color="#0A0A0A"></span></a>
-        <div class="event-foot">And it does not stop there — <b>Pride celebrations run all month long</b> at Halxyon, capped by the <b>Pride PH Festival after party on June 27.</b></div>
+        <div class="event-foot">And it doesn't stop there — <b>Pride celebrations run all month long</b> at Halxyon, capped by the <b>Pride PH Festival after party on June 27.</b></div>
+      </div>
+
+      <!-- Support -->
+      <div class="support-card">
+        <div class="support-title">Figuring things out, or having a hard time? 💜</div>
+        <p class="support-text">You're not alone, and there's no rush to label anything. If you ever need someone to talk to, the <b>NCMH Crisis Hotline</b> is free, confidential, and open 24/7 across the Philippines.</p>
+        <div class="support-lines">
+          <a href="tel:1553">Call 1553</a>
+          <a href="tel:09663514518">0966 351 4518</a>
+          <a href="tel:09178998727">0917 899 8727</a>
+        </div>
       </div>
 
       <!-- Share -->
@@ -420,19 +440,19 @@
   const STEPS = [
     {
       type:'teach', icon:'sliders', badge:'Quick heads up',
-      text:'SOGIE is not 4 boxes.<br>It is <span class="hl">4 sliders.</span>',
+      text:'SOGIE isn\'t 4 boxes.<br>It\'s <span class="hl">4 sliders.</span>',
       sub:'You live somewhere on each one, and there are no wrong answers. Only you know your truth. Just drag to where you feel at home.',
-      cta:'Let us go →'
+      cta:'Let\'s go →'
     },
     {
       type:'slider', key:'genderIdentity', escapeKey:'giOffScale', icon:'person',
       title:'Deep down, are you a woman or a man?',
-      help:'This is your gender identity: who you know yourself to be. Not about how you look, dress, or act, and not about being masculine or feminine (that is the very next question). Just: woman, man, both, or neither?',
+      help:'This is your gender identity: who you know yourself to be. Not about how you look, dress, or act, and not about being masculine or feminine (that\'s the very next question). Just: woman, man, both, or neither?',
       learn:{url:LINK.identity, label:'What is gender identity? (APA)'},
-      left:'I am a woman', mid:'Both or neither', right:'I am a man',
-      escape:'I am beyond this scale (nonbinary, agender, fluid, and more)',
+      left:'I\'m a woman', mid:'Both or neither', right:'I\'m a man',
+      escape:'I\'m beyond the binary (nonbinary, agender, fluid, and more)',
       readout:(v,off)=> off
-        ? {t:'Beyond the binary', s:'Your gender lives outside this line, and that is valid.'}
+        ? {t:'Beyond the binary', s:'Your gender is its own thing, and that\'s completely valid.'}
         : v<15 ? {t:'You feel like a woman', s:''}
         : v<38 ? {t:'Mostly a woman', s:'Woman, with your own twist'}
         : v<62 ? {t:'Right in the middle', s:'Both, neither, or somewhere lovely between'}
@@ -444,18 +464,18 @@
       title:'How do you like to show up?',
       help:'This is your gender expression: your style, your vibe, how you present to the world. It can be totally different from how you feel inside. Drag to your everyday look.',
       learn:{url:LINK.expression, label:'See it on a sliding scale (The Gender Unicorn)'},
-      left:'Soft and feminine', mid:'A mix', right:'Bold and masculine',
+      left:'Feminine', mid:'A mix', right:'Masculine',
       readout:(v)=>
-          v<15 ? {t:'Soft and feminine', s:'Full femme energy'}
+          v<15 ? {t:'Very feminine', s:'Full femme energy'}
         : v<38 ? {t:'Leaning feminine', s:''}
-        : v<62 ? {t:'A mix of both', s:'A little of everything'}
+        : v<62 ? {t:'A mix of both', s:'Androgynous, a little of everything'}
         : v<85 ? {t:'Leaning masculine', s:''}
-        : {t:'Bold and masculine', s:'Full masc energy'}
+        : {t:'Very masculine', s:'Full masc energy'}
     },
     {
       type:'teach', icon:'grid4', badge:'Plot twist',
       text:'Your body, your gender, your style, and your crushes are <span class="hl">four separate things.</span>',
-      sub:'That is why your tito can be a manly man who paints his nails, or a woman who loves women. None of these cancel each other out. Let us keep mapping.',
+      sub:'That\'s why your tito can be a manly man who paints his nails, or a woman who loves women. None of these cancel each other out. Let\'s keep mapping.',
       cta:'Whoa, okay →'
     },
     {
@@ -464,9 +484,9 @@
       help:'This is your sexual orientation: who gives you butterflies. Slide between a different gender, everyone, and the same gender as you.',
       learn:{url:LINK.orientation, label:'What is sexual orientation? (APA)'},
       left:'A different gender', mid:'More than one', right:'The same gender',
-      escape:'I do not really feel that kind of attraction (asexual)',
+      escape:'I don\'t really feel that kind of attraction (asexual)',
       readout:(v,off)=> off
-        ? {t:'You love in your own way', s:'On the asexual spectrum, and that is valid.'}
+        ? {t:'You love in your own way', s:'On the asexual spectrum, and that\'s valid.'}
         : v<15 ? {t:'Drawn to a different gender', s:'Often called straight'}
         : v<38 ? {t:'Mostly a different gender', s:'Mostly, but open'}
         : v<62 ? {t:'Drawn to more than one gender', s:'Bi or pan energy'}
@@ -476,7 +496,7 @@
     {
       type:'choice', key:'sexAssigned', icon:'clipboard',
       title:'What did the doctor say at birth?',
-      help:'This is the sex you were assigned at birth: what got written on your birth certificate. See how it is separate from everything above?',
+      help:'This is the sex you were assigned at birth: what got written on your birth certificate. See how it\'s separate from everything above?',
       grid:true,
       options:[
         {v:'female', label:'Female'},
@@ -494,9 +514,9 @@
     {
       type:'choice', key:'ally', icon:'people',
       title:'How do you show up for the community?',
-      help:'No wrong answer here either. We are all on the journey.',
+      help:'No wrong answer here either. We\'re all on the journey.',
       options:[
-        {v:'member', icon:'flag', label:'I am part of the community'},
+        {v:'member', icon:'flag', label:'I\'m part of the community'},
         {v:'ally', icon:'people', label:'Proud ally'},
         {v:'learning', icon:'book', label:'Here and learning'},
         {v:'curious', icon:'eye', label:'Just curious'}
@@ -653,7 +673,7 @@
   }
   function gePhrase(){
     const v=state.genderExpression;
-    return v<15?'soft and feminine':v<38?'leaning feminine':v<62?'a mix of both':v<85?'leaning masculine':'bold and masculine';
+    return v<15?'very feminine':v<38?'leaning feminine':v<62?'a mix of both':v<85?'leaning masculine':'very masculine';
   }
   function soPhrase(){
     if(state.ace) return 'on the asexual spectrum';
@@ -711,9 +731,9 @@
 
   function buildResult(){
     const greetMap = {
-      member:  ['Happy Pride, fam! 🏳️‍🌈','You are home. Here is your spot on the spectrum today.'],
+      member:  ['Happy Pride, fam! 🏳️‍🌈','You\'re home. Here\'s your spot on the spectrum today.'],
       ally:    ['Allies make the rainbow brighter','And yes, you have a SOGIE too. Here it is.'],
-      learning:['Love that you are here','You are learning, and that matters. Here is your SOGIE.'],
+      learning:['Love that you\'re here','You\'re learning, and that matters. Here\'s your SOGIE.'],
       curious: ['Curiosity is the first step','Glad you came. Turns out you have a SOGIE too. Here it is.']
     };
     const g = greetMap[state.ally] || greetMap.curious;
@@ -721,20 +741,20 @@
     document.getElementById('res-subline').textContent = g[1];
 
     document.getElementById('res-summary').innerHTML =
-      `You are <span style="color:${state.color}">${giPhrase()}</span>, you express yourself as <span style="color:${state.color}">${gePhrase()}</span>, and you are <span style="color:${state.color}">${soPhrase()}</span>.`;
+      `You're <span style="color:${state.color}">${giPhrase()}</span>, you express yourself as <span style="color:${state.color}">${gePhrase()}</span>, and you're <span style="color:${state.color}">${soPhrase()}</span>.`;
 
     renderChips();
 
     const bars = [
-      {label:'Gender Identity', val: state.giOffScale?50:state.genderIdentity, off:state.giOffScale, left:'Woman', right:'Man', phrase: giPhrase()},
+      {label:'Gender Identity', val: state.giOffScale?50:state.genderIdentity, off:state.giOffScale, offLabel:'beyond the binary', left:'Woman', right:'Man', phrase: giPhrase()},
       {label:'Gender Expression', val: state.genderExpression, off:false, left:'Feminine', right:'Masculine', phrase: gePhrase()},
-      {label:'Sexual Orientation', val: state.ace?50:state.orientation, off:state.ace, left:'Different gender', right:'Same gender', phrase: soPhrase()}
+      {label:'Sexual Orientation', val: state.ace?50:state.orientation, off:state.ace, offLabel:'its own kind', left:'Different gender', right:'Same gender', phrase: soPhrase()}
     ];
     document.getElementById('res-spectra').innerHTML = bars.map(b=>`
       <div class="spec">
         <div class="spec-top"><span class="spec-label">${b.label}</span><span class="spec-val">${b.phrase}</span></div>
         <div class="spec-bar">${b.off?'':`<div class="spec-marker" style="left:${b.val}%"></div>`}</div>
-        <div class="spec-ends"><span>${b.left}</span>${b.off?'<span>off the scale</span>':''}<span>${b.right}</span></div>
+        <div class="spec-ends"><span>${b.left}</span>${b.off?`<span>${b.offLabel}</span>`:''}<span>${b.right}</span></div>
       </div>`).join('');
 
     drawCard();
@@ -790,7 +810,7 @@
     // Summary sentence — wraps to a variable number of lines, so everything below flows from it
     x.textAlign='center'; x.fillStyle='rgba(255,255,255,0.92)'; x.font='500 38px "DM Sans", sans-serif';
     const sumTop=458, sumLh=50;
-    const nLines = wrapText(x, `I am ${giPhrase()}, I express as ${gePhrase()}, and I am ${soPhrase()}.`, W/2, sumTop, 904, sumLh);
+    const nLines = wrapText(x, `I'm ${giPhrase()}, I express as ${gePhrase()}, and I'm ${soPhrase()}.`, W/2, sumTop, 904, sumLh);
     const sumBottom = sumTop + (nLines-1)*sumLh;
 
     // Self-chosen words — only drawn if the person actually picked some. Their call, not ours.
@@ -811,9 +831,9 @@
     }
 
     const bars=[
-      {label:'GENDER IDENTITY', val: state.giOffScale?null:state.genderIdentity},
+      {label:'GENDER IDENTITY', val: state.giOffScale?null:state.genderIdentity, offLabel:'beyond the binary'},
       {label:'EXPRESSION', val: state.genderExpression},
-      {label:'ORIENTATION', val: state.ace?null:state.orientation}
+      {label:'ORIENTATION', val: state.ace?null:state.orientation, offLabel:'its own kind'}
     ];
     let by = Math.min(labelY + 78, 756); // flow below label, but never crowd the divider at 1010
     bars.forEach(b=>{
@@ -829,7 +849,7 @@
         x.lineWidth=6; x.strokeStyle='#0A0A0A'; x.beginPath(); x.arc(mx,ry+bh/2,26,0,7); x.stroke();
       } else {
         x.textAlign='right'; x.fillStyle='rgba(255,255,255,0.8)'; x.font='600 24px "DM Sans", sans-serif';
-        x.fillText('off the scale', bx+bw, by-18);
+        x.fillText(b.offLabel||'its own kind', bx+bw, by-18);
       }
       by+=110;
     });
@@ -840,7 +860,7 @@
     x.textAlign='center'; x.fillStyle=grad; x.font='800 56px "Plus Jakarta Sans", sans-serif';
     x.fillText('Everyone has a SOGIE.', W/2, 1088);
     x.fillStyle='rgba(255,255,255,0.7)'; x.font='500 36px "DM Sans", sans-serif';
-    x.fillText('What is yours?', W/2, 1140);
+    x.fillText('What\'s yours?', W/2, 1140);
 
     x.fillStyle='#FFED00'; x.font='700 26px "Plus Jakarta Sans", sans-serif';
     x.fillText('Pride fundraiser · Fri June 12 · Halxyon Makati', W/2, 1210);
