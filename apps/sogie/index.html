@@ -160,6 +160,13 @@
     .escape.on .escape-check { background:var(--accent); border-color:var(--accent); }
     .escape.on .escape-check .ic-wrap { opacity:1; }
 
+    /* live word hints under a slider */
+    .slider-hints { margin-top:1.4rem; text-align:center; min-height:62px; }
+    .slider-hints-label { font-size:0.68rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-bottom:0.5rem; }
+    .slider-hints-row { display:flex; flex-wrap:wrap; gap:0.4rem; justify-content:center; }
+    .hint-pill { font-family:'Plus Jakarta Sans',sans-serif; font-size:0.8rem; font-weight:600; color:#555; background:#fff; border:1px solid var(--border); border-radius:100px; padding:0.35rem 0.8rem; animation:hintPop 0.25s ease; }
+    @keyframes hintPop { from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);} }
+
     /* ── TEACHING BEAT ───────────────────────────────── */
     .teach { padding: 2.5rem 0 3rem; text-align:center; min-height: calc(100dvh - 56px - 80px); display:flex; flex-direction:column; justify-content:center; align-items:center; }
     .teach-badge { font-family:'Plus Jakarta Sans',sans-serif; font-size:0.72rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent); margin-bottom:1.25rem; }
@@ -201,6 +208,12 @@
     .res-chip.suggested { border-color:rgba(255,255,255,0.5); border-style:dashed; }
     .res-chip.selected { color:var(--ink); background:var(--rainbow); border-color:transparent; font-weight:700; }
     .res-chip .sg-dot { position:absolute; top:-3px; right:-3px; font-size:0.6rem; }
+    .res-chip.custom.selected { background:#fff; }
+    .res-custom { display:flex; gap:0.5rem; justify-content:center; max-width:360px; margin:0 auto 1rem; }
+    .res-custom-input { flex:1; min-width:0; background:rgba(255,255,255,0.08); border:1.5px solid rgba(255,255,255,0.18); border-radius:100px; padding:0.55rem 1rem; color:#fff; font-family:'DM Sans',sans-serif; font-size:0.86rem; }
+    .res-custom-input::placeholder { color:rgba(255,255,255,0.4); }
+    .res-custom-input:focus { outline:none; border-color:rgba(255,255,255,0.55); }
+    .res-custom-add { background:#fff; color:var(--ink); border:none; border-radius:100px; padding:0.55rem 1.1rem; font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:0.86rem; cursor:pointer; -webkit-tap-highlight-color:transparent; }
     .res-label-hint { font-size:0.78rem; color:rgba(255,255,255,0.45); line-height:1.55; }
 
     .res-note { padding:1.25rem 1.5rem; background:rgba(117,7,135,0.04); border-top:1px solid var(--border); font-size:0.92rem; line-height:1.6; color:#444; }
@@ -315,6 +328,10 @@
           <div class="res-picker-title">Tap the words that feel like you</div>
           <p class="res-picker-intro">No one gets to hand you a label here — not even this app. A word only means something if <b>you</b> choose it. Pick as many as fit — your gender, your romantic side, and your sexual side can each have their own word. Skip anything that doesn't. It's about knowing yourself, not fitting a box.</p>
           <div class="res-chips" id="res-chips"></div>
+          <div class="res-custom">
+            <input id="custom-word" class="res-custom-input" placeholder="Don't see your word? Add it…" maxlength="24" autocomplete="off" onkeydown="if(event.key==='Enter'){event.preventDefault();addCustomWord();}" />
+            <button class="res-custom-add" onclick="addCustomWord()">Add</button>
+          </div>
           <div class="res-label-hint">Pick any, a few, or none — and it can change tomorrow. Whatever you choose goes on your card. ✨</div>
         </div>
         <div class="res-note">
@@ -471,6 +488,7 @@
       learn:{url:LINK.identity, label:'What is gender identity? (APA)'},
       left:'I\'m a woman', mid:'Both or neither', right:'I\'m a man',
       escape:'I\'m beyond the binary (nonbinary, agender, fluid, and more)',
+      hintWords:(v,off)=> off?['Nonbinary','Genderfluid','Agender']:v<38?['Woman','Trans woman','Cis woman']:v<62?['Nonbinary','Genderfluid']:['Man','Trans man','Cis man'],
       readout:(v,off)=> off
         ? {t:'Beyond the binary', s:'Your gender is its own thing, and that\'s completely valid.'}
         : v<15 ? {t:'You feel like a woman', s:''}
@@ -505,6 +523,7 @@
       learn:{url:LINK.orientation, label:'What is sexual orientation? (APA)'},
       left:'A different gender', mid:'More than one', right:'The same gender',
       escape:'I don\'t really feel that kind of attraction (asexual)',
+      hintWords:(v,off)=> off?['Asexual','Demisexual','Aromantic']:v<38?['Straight']:v<62?['Bisexual','Pansexual','Queer']:['Gay','Lesbian','Queer'],
       readout:(v,off)=> off
         ? {t:'You love in your own way', s:'On the asexual spectrum, and that\'s valid.'}
         : v<15 ? {t:'Drawn to a different gender', s:'Often called straight'}
@@ -531,6 +550,13 @@
         {v:'intersex', label:'Intersex'},
         {v:'na', label:'Rather not say'}
       ]
+    },
+    {
+      type:'teach', icon:'person', badge:'Worth saying',
+      text:'Being trans isn\'t about <span class="hl">surgery.</span>',
+      sub:'If your gender doesn\'t match the sex on your birth certificate, you\'re trans — full stop. Living that truth can be personal, social, legal, and/or medical, and none of those steps are required to be "really" trans. No surgery, no hormones, no paperwork needed. Your identity is valid exactly as it is.',
+      learn:{url:LINK.identity, label:'What it means to be transgender (APA)'},
+      cta:'Noted →'
     },
     {
       type:'teach', icon:'flag', badge:'The big idea',
@@ -642,6 +668,7 @@
               <span class="escape-check"><span class="ic-wrap" data-icon="check"></span></span>
               <span>${step.escape}</span>
             </div>`:''}
+          ${step.hintWords ? `<div class="slider-hints" id="slider-hints"></div>`:''}
         </div>
 
         <div class="q-nav"><button class="btn btn-primary btn-block" onclick="next()">Next →</button></div>
@@ -651,12 +678,22 @@
     const update = ()=>{
       const v = +slider.value;
       state[step.key] = v;
-      const r = step.readout(v, step.escapeKey ? state[step.escapeKey] : false);
+      const off2 = step.escapeKey ? state[step.escapeKey] : false;
+      const r = step.readout(v, off2);
       document.getElementById('ro-text').textContent = r.t;
       document.getElementById('ro-sub').textContent = r.s || '';
+      if(step.hintWords) renderHints(step.hintWords(v, off2));
     };
     slider.addEventListener('input', update);
     update();
+  }
+
+  function renderHints(words){
+    const el = document.getElementById('slider-hints');
+    if(!el) return;
+    el.innerHTML = (words && words.length)
+      ? `<div class="slider-hints-label">Words people might use</div><div class="slider-hints-row">${words.map(w=>`<span class="hint-pill">${w}</span>`).join('')}</div>`
+      : '';
   }
 
   function toggleEscape(key){ state[key] = !state[key]; render(); }
@@ -743,10 +780,14 @@
   function renderChips(){
     const sug = suggestWords();
     const host = document.getElementById('res-chips');
-    host.innerHTML = WORD_CLOUD.map(w=>{
+    // built-in words, plus any custom words the person added (not in the cloud)
+    const custom = state.pickedWords.filter(w=>!WORD_CLOUD.includes(w));
+    const all = WORD_CLOUD.concat(custom);
+    host.innerHTML = all.map(w=>{
       const sel = state.pickedWords.includes(w);
       const isSug = sug.includes(w);
-      return `<button class="res-chip ${sel?'selected':''} ${(isSug&&!sel)?'suggested':''}" onclick="toggleWord('${w}')">${w}${(isSug&&!sel)?'<span class="sg-dot">✨</span>':''}</button>`;
+      const isCustom = !WORD_CLOUD.includes(w);
+      return `<button class="res-chip ${sel?'selected':''} ${(isSug&&!sel)?'suggested':''} ${isCustom?'custom':''}" onclick="toggleWord('${w}')">${w}${(isSug&&!sel)?'<span class="sg-dot">✨</span>':''}</button>`;
     }).join('');
   }
 
@@ -754,6 +795,21 @@
     const i = state.pickedWords.indexOf(w);
     if(i>=0) state.pickedWords.splice(i,1);
     else state.pickedWords.push(w);
+    renderChips();
+    drawCard();
+  }
+
+  function addCustomWord(){
+    const input = document.getElementById('custom-word');
+    if(!input) return;
+    // strip characters that could break the inline handler or inject markup
+    let w = (input.value||'').replace(/[<>"'`]/g,'').replace(/\s+/g,' ').trim().slice(0,24);
+    if(!w){ input.value=''; return; }
+    // case-insensitive: select an existing cloud word, or add the new custom one
+    const cloudMatch = WORD_CLOUD.find(c=>c.toLowerCase()===w.toLowerCase());
+    const target = cloudMatch || w;
+    if(!state.pickedWords.some(p=>p.toLowerCase()===target.toLowerCase())) state.pickedWords.push(target);
+    input.value='';
     renderChips();
     drawCard();
   }
