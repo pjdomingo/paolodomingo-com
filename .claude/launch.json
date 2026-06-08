@@ -3,9 +3,10 @@
   "configurations": [
     {
       "name": "paolo-site",
-      "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "7821"],
-      "port": 7821
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["serve.js"],
+      "port": 7821,
+      "autoPort": true
     }
   ]
 }

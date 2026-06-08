@@ -191,9 +191,15 @@
     .spec-ends { display:flex; justify-content:space-between; margin-top:0.4rem; font-size:0.72rem; color:var(--muted); font-weight:500; }
 
     .res-label-section { padding:1.5rem; border-top:1px solid var(--border); text-align:center; background:var(--ink); }
-    .res-label-pre { font-size:0.7rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:rgba(255,255,255,0.45); margin-bottom:0.65rem; }
-    .res-label-word { font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:clamp(1.8rem,5.5vw,2.5rem); letter-spacing:-0.035em; background:var(--rainbow); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; line-height:1.1; margin-bottom:0.5rem; }
-    .res-label-hint { font-size:0.78rem; color:rgba(255,255,255,0.4); line-height:1.55; }
+    .res-label-pre { font-size:0.7rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:rgba(255,255,255,0.45); margin-bottom:0.35rem; }
+    .res-picker-title { font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:1.15rem; letter-spacing:-0.02em; color:#fff; margin-bottom:1rem; }
+    .res-chips { display:flex; flex-wrap:wrap; gap:0.5rem; justify-content:center; margin-bottom:1rem; }
+    .res-chip { font-family:'Plus Jakarta Sans',sans-serif; font-weight:600; font-size:0.86rem; color:rgba(255,255,255,0.85); background:rgba(255,255,255,0.08); border:1.5px solid rgba(255,255,255,0.18); border-radius:100px; padding:0.5rem 0.95rem; cursor:pointer; transition:all 0.15s; -webkit-tap-highlight-color:transparent; position:relative; }
+    .res-chip:hover { border-color:rgba(255,255,255,0.4); }
+    .res-chip.suggested { border-color:rgba(255,255,255,0.5); border-style:dashed; }
+    .res-chip.selected { color:var(--ink); background:var(--rainbow); border-color:transparent; font-weight:700; }
+    .res-chip .sg-dot { position:absolute; top:-3px; right:-3px; font-size:0.6rem; }
+    .res-label-hint { font-size:0.78rem; color:rgba(255,255,255,0.45); line-height:1.55; }
 
     .res-note { padding:1.25rem 1.5rem; background:rgba(117,7,135,0.04); border-top:1px solid var(--border); font-size:0.92rem; line-height:1.6; color:#444; }
     .res-note b { color:var(--accent); }
@@ -286,9 +292,10 @@
         </div>
         <div class="res-spectra" id="res-spectra"></div>
         <div class="res-label-section">
-          <div class="res-label-pre" id="res-label-pre">In everyday terms, people often call this</div>
-          <div class="res-label-word" id="res-label">—</div>
-          <div class="res-label-hint">Labels are maps, not boxes. Use this one if it helps — or don't.</div>
+          <div class="res-label-pre">Your words, your call</div>
+          <div class="res-picker-title">Tap the words that feel like you</div>
+          <div class="res-chips" id="res-chips"></div>
+          <div class="res-label-hint">Your sliders are just a map — <b>you</b> choose the words. Pick any, a few, or none. They go on your card.</div>
         </div>
         <div class="res-note">
           <b>Remember:</b> these are four separate sliders, and you can shift along them over time. SOGIE is not a box. It is a spectrum. That is the whole point.
@@ -381,7 +388,8 @@
     orientation: 50, ace: false,
     sexAssigned: null,
     ally: null,
-    color: '#750787'
+    color: '#750787',
+    pickedWords: []
   };
 
   const LINK = {
@@ -509,7 +517,7 @@
     window.scrollTo({top:0,behavior:'instant'});
   }
   function start(){ idx=0; show('quiz'); render(); }
-  function restart(){ window.scrollTo({top:0}); state.sexAssigned=null; state.ally=null; idx=0; show('intro'); }
+  function restart(){ window.scrollTo({top:0}); state.sexAssigned=null; state.ally=null; state.pickedWords=[]; idx=0; show('intro'); }
 
   function setAccent(c){ state.color=c; document.documentElement.style.setProperty('--accent', c); }
 
@@ -637,51 +645,52 @@
     return v<15?'drawn to a different gender':v<38?'mostly into a different gender':v<62?'drawn to more than one gender':v<85?'mostly into the same gender':'drawn to the same gender';
   }
 
-  function identityLabel(){
-    const giV = state.genderIdentity;
-    const soV = state.orientation;
-    const sex = state.sexAssigned; // 'female','male','intersex','na',null
+  /* The full cloud of words people can choose from. Nobody is assigned a label —
+     the sliders only nudge a couple of gentle suggestions; the person picks. */
+  const WORD_CLOUD = [
+    'Woman','Man','Cis woman','Cis man','Trans woman','Trans man',
+    'Nonbinary','Genderfluid','Agender',
+    'Lesbian','Gay','Bisexual','Pansexual','Queer','Asexual','Straight','Questioning'
+  ];
 
-    // 1. Gender bucket
-    let gb; // 'woman' | 'man' | 'nb'
+  // Soft suggestions only — used to gently highlight, never to pre-select.
+  function suggestWords(){
+    const giV=state.genderIdentity, soV=state.orientation, sex=state.sexAssigned;
+    const s=[];
+    let gb;
     if(state.giOffScale)  gb='nb';
-    else if(giV < 38)     gb='woman';
-    else if(giV < 62)     gb='nb';
+    else if(giV<38)       gb='woman';
+    else if(giV<62)       gb='nb';
     else                  gb='man';
 
-    // 2. Cis / trans prefix (only for binary genders)
-    let ct='';
-    if(gb==='woman'){ if(sex==='female') ct='cis '; else if(sex==='male') ct='trans '; }
-    if(gb==='man')  { if(sex==='male')   ct='cis '; else if(sex==='female') ct='trans '; }
+    if(gb==='nb')          s.push('Nonbinary');
+    else if(gb==='woman')  s.push(sex==='male'?'Trans woman':sex==='female'?'Cis woman':'Woman');
+    else                   s.push(sex==='female'?'Trans man':sex==='male'?'Cis man':'Man');
 
-    // 3. Orientation label
-    let or;
-    if(state.ace)    or='asexual';
-    else if(soV<15)  or='straight';
-    else if(soV<38)  or='mostly straight';
-    else if(soV<62)  or='bisexual';
-    else if(soV<85)  or=(gb==='woman'?'mostly lesbian':gb==='nb'?'mostly queer':'mostly gay');
-    else             or=(gb==='woman'?'lesbian':gb==='nb'?'queer':'gay');
+    if(state.ace)          s.push('Asexual');
+    else if(soV<38)        s.push('Straight');
+    else if(soV<62)        s.push('Bisexual');
+    else                   s.push(gb==='woman'?'Lesbian':gb==='man'?'Gay':'Queer');
 
-    // 4. Compose
-    let text;
-    if(gb==='nb'){
-      text = (or==='asexual')?'asexual nonbinary person':`${or} nonbinary person`;
-    } else if(or==='lesbian'){
-      text = ct?`${ct}lesbian`:'lesbian';
-    } else if(state.ace){
-      text = `asexual ${ct}${gb}`;
-    } else {
-      text = `${or} ${ct}${gb}`;
-    }
+    return s;
+  }
 
-    // 5. Confidence — only state a label firmly when the sliders sit near the ends.
-    // A fuzzy mid-slider answer should never brand someone with a hard verdict.
-    const genderConfident = state.giOffScale || giV < 15 || giV > 85;
-    const orientConfident = state.ace || soV < 15 || soV > 85 || (soV >= 38 && soV < 62);
-    const confident = genderConfident && orientConfident;
+  function renderChips(){
+    const sug = suggestWords();
+    const host = document.getElementById('res-chips');
+    host.innerHTML = WORD_CLOUD.map(w=>{
+      const sel = state.pickedWords.includes(w);
+      const isSug = sug.includes(w);
+      return `<button class="res-chip ${sel?'selected':''} ${(isSug&&!sel)?'suggested':''}" onclick="toggleWord('${w}')">${w}${(isSug&&!sel)?'<span class="sg-dot">✨</span>':''}</button>`;
+    }).join('');
+  }
 
-    return { text, confident };
+  function toggleWord(w){
+    const i = state.pickedWords.indexOf(w);
+    if(i>=0) state.pickedWords.splice(i,1);
+    else state.pickedWords.push(w);
+    renderChips();
+    drawCard();
   }
 
   function buildResult(){
@@ -698,11 +707,7 @@
     document.getElementById('res-summary').innerHTML =
       `You are <span style="color:${state.color}">${giPhrase()}</span>, you express yourself as <span style="color:${state.color}">${gePhrase()}</span>, and you are <span style="color:${state.color}">${soPhrase()}</span>.`;
 
-    const lab = identityLabel();
-    document.getElementById('res-label').textContent = lab.text;
-    document.getElementById('res-label-pre').textContent = lab.confident
-      ? 'In everyday terms, people often call this'
-      : 'You might relate to a word like';
+    renderChips();
 
     const bars = [
       {label:'Gender Identity', val: state.giOffScale?50:state.genderIdentity, off:state.giOffScale, left:'Woman', right:'Man', phrase: giPhrase()},
@@ -772,19 +777,22 @@
     const nLines = wrapText(x, `I am ${giPhrase()}, I express as ${gePhrase()}, and I am ${soPhrase()}.`, W/2, sumTop, 904, sumLh);
     const sumBottom = sumTop + (nLines-1)*sumLh;
 
-    // Identity label — lead-in adapts to confidence; position flows below the summary
-    const lab = identityLabel();
-    const preY = sumBottom + 64;
-    x.fillStyle='rgba(255,255,255,0.45)'; x.font='600 28px "Plus Jakarta Sans", sans-serif';
-    x.fillText(lab.confident ? 'In everyday terms:' : 'You might relate to:', W/2, preY);
-    const lgrad = x.createLinearGradient(W/2-260,0,W/2+260,0);
-    stripes.forEach((s,i)=> lgrad.addColorStop(i/(stripes.length-1), s));
-    const labelY = preY + 64;
-    x.font='800 70px "Plus Jakarta Sans", sans-serif';
-    const lw = x.measureText(lab.text).width;
-    const lfSize = lw > 820 ? Math.floor(70 * 820 / lw) : 70;
-    x.fillStyle=lgrad; x.font=`800 ${lfSize}px "Plus Jakarta Sans", sans-serif`;
-    x.fillText(lab.text, W/2, labelY);
+    // Self-chosen words — only drawn if the person actually picked some. Their call, not ours.
+    let labelY = sumBottom;
+    if(state.pickedWords && state.pickedWords.length){
+      const preY = sumBottom + 64;
+      x.fillStyle='rgba(255,255,255,0.45)'; x.font='600 28px "Plus Jakarta Sans", sans-serif';
+      x.fillText('I call myself', W/2, preY);
+      const lgrad = x.createLinearGradient(W/2-260,0,W/2+260,0);
+      stripes.forEach((s,i)=> lgrad.addColorStop(i/(stripes.length-1), s));
+      labelY = preY + 64;
+      const labText = state.pickedWords.join('   ·   ');
+      x.font='800 64px "Plus Jakarta Sans", sans-serif';
+      const lw = x.measureText(labText).width;
+      const lfSize = lw > 880 ? Math.floor(64 * 880 / lw) : 64;
+      x.fillStyle=lgrad; x.font=`800 ${lfSize}px "Plus Jakarta Sans", sans-serif`;
+      x.fillText(labText, W/2, labelY);
+    }
 
     const bars=[
       {label:'GENDER IDENTITY', val: state.giOffScale?null:state.genderIdentity},
