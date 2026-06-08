@@ -268,6 +268,15 @@
     .foot-dpa b { color:var(--ink); }
     .foot-heart { display:inline-flex; width:14px; height:14px; vertical-align:-2px; color:var(--purple); }
 
+    /* humble support line */
+    .foot-support { max-width:420px; margin:1.25rem auto 0; font-size:0.78rem; line-height:1.65; color:var(--muted); }
+    .foot-coffee-link { background:none; border:none; padding:0; font:inherit; color:var(--ink); font-weight:600; border-bottom:1.5px solid var(--yellow); cursor:pointer; -webkit-tap-highlight-color:transparent; }
+    .foot-qr { margin:1rem auto 0; max-width:190px; background:#fff; border:1px solid var(--border); border-radius:14px; padding:0.9rem; animation:footQr 0.3s ease; }
+    .foot-qr[hidden] { display:none; }
+    @keyframes footQr { from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+    .foot-qr img { width:100%; display:block; border-radius:8px; }
+    .foot-qr span { display:block; margin-top:0.5rem; font-size:0.72rem; color:var(--muted); }
+
     .hidden { display:none !important; }
     canvas#card-canvas { display:none; }
 
@@ -412,6 +421,13 @@
     <p class="foot-dpa">
       <b>Data Privacy.</b> This app collects, stores, and transmits nothing. Every answer lives only on your device and is never sent to any server — there are no accounts, no cookies, and no tracking. Your shareable card is generated right inside your browser. In keeping with the Data Privacy Act of 2012 (RA 10173), no personal data is processed or retained.
     </p>
+    <p class="foot-support">
+      This app is free and always will be. If it helped, you can <button class="foot-coffee-link" id="foot-coffee" onclick="toggleFootCoffee()" aria-expanded="false" aria-controls="foot-qr">buy me a coffee ☕</button>.
+    </p>
+    <div class="foot-qr" id="foot-qr" hidden>
+      <img src="/apps/gcash-qr.jpg" alt="GCash QR for Paolo Domingo" loading="lazy" onerror="this.style.display='none'" />
+      <span>Scan with GCash 💙 Salamat!</span>
+    </div>
   </footer>
 
   <canvas id="card-canvas" width="1080" height="1350"></canvas>
@@ -1029,6 +1045,15 @@
     }
     if(!cardBlob) return;
     const a=document.createElement('a'); a.href=URL.createObjectURL(cardBlob); a.download='my-sogie-pride-2026.png'; a.click();
+  }
+
+  // humble "buy me a coffee" reveal in the footer
+  function toggleFootCoffee(){
+    const qr = document.getElementById('foot-qr');
+    const btn = document.getElementById('foot-coffee');
+    const open = qr.hasAttribute('hidden');
+    if(open){ qr.removeAttribute('hidden'); btn.setAttribute('aria-expanded','true'); qr.scrollIntoView({behavior:'smooth', block:'center'}); }
+    else { qr.setAttribute('hidden',''); btn.setAttribute('aria-expanded','false'); }
   }
 
   // init
