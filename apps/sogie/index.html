@@ -286,7 +286,7 @@
         </div>
         <div class="res-spectra" id="res-spectra"></div>
         <div class="res-label-section">
-          <div class="res-label-pre">In everyday terms, people often call this</div>
+          <div class="res-label-pre" id="res-label-pre">In everyday terms, people often call this</div>
           <div class="res-label-word" id="res-label">—</div>
           <div class="res-label-hint">Labels are maps, not boxes. Use this one if it helps — or don't.</div>
         </div>
@@ -402,10 +402,10 @@
     },
     {
       type:'slider', key:'genderIdentity', escapeKey:'giOffScale', icon:'person',
-      title:'Who do you feel you are inside?',
-      help:'This is your gender identity: who you know yourself to be on the inside. It has nothing to do with your body or how you dress. Drag to wherever feels true.',
+      title:'Deep down, are you a woman or a man?',
+      help:'This is your gender identity: who you know yourself to be. Not about how you look, dress, or act, and not about being masculine or feminine (that is the very next question). Just: woman, man, both, or neither?',
       learn:{url:LINK.identity, label:'What is gender identity? (APA)'},
-      left:'I feel like a woman', mid:'Both or neither', right:'I feel like a man',
+      left:'I am a woman', mid:'Both or neither', right:'I am a man',
       escape:'I am beyond this scale (nonbinary, agender, fluid, and more)',
       readout:(v,off)=> off
         ? {t:'Beyond the binary', s:'Your gender lives outside this line, and that is valid.'}
@@ -664,12 +664,24 @@
     else             or=(gb==='woman'?'lesbian':gb==='nb'?'queer':'gay');
 
     // 4. Compose
+    let text;
     if(gb==='nb'){
-      return (or==='asexual')?'asexual nonbinary person':`${or} nonbinary person`;
+      text = (or==='asexual')?'asexual nonbinary person':`${or} nonbinary person`;
+    } else if(or==='lesbian'){
+      text = ct?`${ct}lesbian`:'lesbian';
+    } else if(state.ace){
+      text = `asexual ${ct}${gb}`;
+    } else {
+      text = `${or} ${ct}${gb}`;
     }
-    if(or==='lesbian'){ return ct?`${ct}lesbian`:'lesbian'; }
-    if(state.ace){ return `asexual ${ct}${gb}`; }
-    return `${or} ${ct}${gb}`;
+
+    // 5. Confidence — only state a label firmly when the sliders sit near the ends.
+    // A fuzzy mid-slider answer should never brand someone with a hard verdict.
+    const genderConfident = state.giOffScale || giV < 15 || giV > 85;
+    const orientConfident = state.ace || soV < 15 || soV > 85 || (soV >= 38 && soV < 62);
+    const confident = genderConfident && orientConfident;
+
+    return { text, confident };
   }
 
   function buildResult(){
@@ -686,7 +698,11 @@
     document.getElementById('res-summary').innerHTML =
       `You are <span style="color:${state.color}">${giPhrase()}</span>, you express yourself as <span style="color:${state.color}">${gePhrase()}</span>, and you are <span style="color:${state.color}">${soPhrase()}</span>.`;
 
-    document.getElementById('res-label').textContent = identityLabel();
+    const lab = identityLabel();
+    document.getElementById('res-label').textContent = lab.text;
+    document.getElementById('res-label-pre').textContent = lab.confident
+      ? 'In everyday terms, people often call this'
+      : 'You might relate to a word like';
 
     const bars = [
       {label:'Gender Identity', val: state.giOffScale?50:state.genderIdentity, off:state.giOffScale, left:'Woman', right:'Man', phrase: giPhrase()},
@@ -750,27 +766,32 @@
     x.fillStyle=grad; x.font='800 140px "Plus Jakarta Sans", sans-serif';
     x.fillText('SOGIE', W/2, 370);
 
-    x.fillStyle='rgba(255,255,255,0.92)'; x.font='500 40px "DM Sans", sans-serif';
-    wrapText(x, `I am ${giPhrase()}, I express as ${gePhrase()}, and I am ${soPhrase()}.`, W/2, 470, 880, 52);
+    // Summary sentence — wraps to a variable number of lines, so everything below flows from it
+    x.textAlign='center'; x.fillStyle='rgba(255,255,255,0.92)'; x.font='500 38px "DM Sans", sans-serif';
+    const sumTop=458, sumLh=50;
+    const nLines = wrapText(x, `I am ${giPhrase()}, I express as ${gePhrase()}, and I am ${soPhrase()}.`, W/2, sumTop, 904, sumLh);
+    const sumBottom = sumTop + (nLines-1)*sumLh;
 
-    // Identity label
+    // Identity label — lead-in adapts to confidence; position flows below the summary
+    const lab = identityLabel();
+    const preY = sumBottom + 64;
     x.fillStyle='rgba(255,255,255,0.45)'; x.font='600 28px "Plus Jakarta Sans", sans-serif';
-    x.fillText('In everyday terms:', W/2, 580);
+    x.fillText(lab.confident ? 'In everyday terms:' : 'You might relate to:', W/2, preY);
     const lgrad = x.createLinearGradient(W/2-260,0,W/2+260,0);
     stripes.forEach((s,i)=> lgrad.addColorStop(i/(stripes.length-1), s));
-    const lbl = identityLabel();
-    x.font='800 72px "Plus Jakarta Sans", sans-serif';
-    const lw = x.measureText(lbl).width;
-    const lfSize = lw > 860 ? Math.floor(72 * 860 / lw) : 72;
+    const labelY = preY + 64;
+    x.font='800 70px "Plus Jakarta Sans", sans-serif';
+    const lw = x.measureText(lab.text).width;
+    const lfSize = lw > 820 ? Math.floor(70 * 820 / lw) : 70;
     x.fillStyle=lgrad; x.font=`800 ${lfSize}px "Plus Jakarta Sans", sans-serif`;
-    x.fillText(lbl, W/2, 652);
+    x.fillText(lab.text, W/2, labelY);
 
     const bars=[
       {label:'GENDER IDENTITY', val: state.giOffScale?null:state.genderIdentity},
       {label:'EXPRESSION', val: state.genderExpression},
       {label:'ORIENTATION', val: state.ace?null:state.orientation}
     ];
-    let by=730;
+    let by = Math.min(labelY + 78, 756); // flow below label, but never crowd the divider at 1010
     bars.forEach(b=>{
       x.textAlign='left'; x.fillStyle='rgba(255,255,255,0.55)'; x.font='700 26px "Plus Jakarta Sans", sans-serif';
       x.fillText(b.label, 120, by-18);
@@ -817,6 +838,7 @@
     for(const w of words){ const t=line+w+' '; if(ctx.measureText(t).width>maxW && line){ lines.push(line.trim()); line=w+' '; } else line=t; }
     lines.push(line.trim());
     lines.forEach((l,i)=> ctx.fillText(l, cx, y+i*lh));
+    return lines.length; // so callers can flow content below
   }
 
   /* ════════════════════════════════════════════════════
