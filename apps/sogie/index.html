@@ -213,6 +213,8 @@
     .res-custom-input { flex:1; min-width:0; background:rgba(255,255,255,0.08); border:1.5px solid rgba(255,255,255,0.18); border-radius:100px; padding:0.55rem 1rem; color:#fff; font-family:'DM Sans',sans-serif; font-size:0.86rem; }
     .res-custom-input::placeholder { color:rgba(255,255,255,0.4); }
     .res-custom-input:focus { outline:none; border-color:rgba(255,255,255,0.55); }
+    .res-custom-input.shake { border-color:#E40303; animation:shakeX 0.4s; }
+    @keyframes shakeX { 0%,100%{transform:translateX(0);} 20%{transform:translateX(-5px);} 40%{transform:translateX(5px);} 60%{transform:translateX(-4px);} 80%{transform:translateX(4px);} }
     .res-custom-add { background:#fff; color:var(--ink); border:none; border-radius:100px; padding:0.55rem 1.1rem; font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:0.86rem; cursor:pointer; -webkit-tap-highlight-color:transparent; }
     .res-label-hint { font-size:0.78rem; color:rgba(255,255,255,0.45); line-height:1.55; }
 
@@ -329,7 +331,7 @@
           <p class="res-picker-intro">No one gets to hand you a label here — not even this app. A word only means something if <b>you</b> choose it. Pick as many as fit — your gender, your romantic side, and your sexual side can each have their own word. Skip anything that doesn't. It's about knowing yourself, not fitting a box.</p>
           <div class="res-chips" id="res-chips"></div>
           <div class="res-custom">
-            <input id="custom-word" class="res-custom-input" placeholder="Don't see your word? Add it…" maxlength="24" autocomplete="off" onkeydown="if(event.key==='Enter'){event.preventDefault();addCustomWord();}" />
+            <input id="custom-word" class="res-custom-input" placeholder="Don't see your word? Add it…" maxlength="24" autocomplete="off" autocapitalize="words" spellcheck="false" inputmode="text" oninput="this.value=this.value.replace(/[^\p{L}\s-]/gu,'')" onkeydown="if(event.key==='Enter'){event.preventDefault();addCustomWord();}" />
             <button class="res-custom-add" onclick="addCustomWord()">Add</button>
           </div>
           <div class="res-label-hint">Pick any, a few, or none — and it can change tomorrow. Whatever you choose goes on your card. ✨</div>
@@ -802,16 +804,45 @@
   function addCustomWord(){
     const input = document.getElementById('custom-word');
     if(!input) return;
-    // strip characters that could break the inline handler or inject markup
-    let w = (input.value||'').replace(/[<>"'`]/g,'').replace(/\s+/g,' ').trim().slice(0,24);
-    if(!w){ input.value=''; return; }
-    // case-insensitive: select an existing cloud word, or add the new custom one
+    // Sanitize: letters (any language), spaces, and hyphens only — no digits,
+    // symbols, emoji, markup, or quotes. Collapse runs and trim edges.
+    let w = (input.value||'')
+      .normalize('NFC')
+      .replace(/[^\p{L}\s-]/gu,'')
+      .replace(/\s+/g,' ')
+      .replace(/-{2,}/g,'-')
+      .replace(/^[-\s]+|[-\s]+$/g,'')
+      .trim();
+    const words = w ? w.split(' ') : [];
+    // Identity words are short: 1–3 words, each ≤18 chars, ≤24 total. No essays.
+    if(!w || words.length > 3 || words.some(t=>t.length > 18) || w.length > 24){
+      flashCustom();
+      return;
+    }
+    // Capitalize the first letter, leave the rest as typed (keeps "Two-Spirit").
+    w = w.charAt(0).toUpperCase() + w.slice(1);
+    // Cap how many custom words a person can add, just to keep things sane.
+    const customCount = state.pickedWords.filter(p=>!WORD_CLOUD.includes(p)).length;
     const cloudMatch = WORD_CLOUD.find(c=>c.toLowerCase()===w.toLowerCase());
     const target = cloudMatch || w;
-    if(!state.pickedWords.some(p=>p.toLowerCase()===target.toLowerCase())) state.pickedWords.push(target);
+    const already = state.pickedWords.some(p=>p.toLowerCase()===target.toLowerCase());
+    if(!already && !cloudMatch && customCount >= 5){ flashCustom(); return; }
+    if(!already) state.pickedWords.push(target);
     input.value='';
+    input.placeholder = "Don't see your word? Add it…";
     renderChips();
     drawCard();
+  }
+
+  function flashCustom(){
+    const input = document.getElementById('custom-word');
+    if(!input) return;
+    input.value = '';
+    input.classList.add('shake');
+    input.placeholder = 'Letters only — a word or two';
+    setTimeout(()=>input.classList.remove('shake'), 400);
+    clearTimeout(input._ph);
+    input._ph = setTimeout(()=>{ input.placeholder = "Don't see your word? Add it…"; }, 2800);
   }
 
   function buildResult(){
