@@ -214,6 +214,13 @@
     .event-text { font-size:0.95rem; color:rgba(255,255,255,0.78); line-height:1.6; margin-bottom:1.1rem; }
     .event-link { display:inline-flex; align-items:center; gap:0.5rem; font-size:0.92rem; font-weight:600; color:var(--ink); background:#fff; border-radius:100px; padding:0.75rem 1.2rem; text-decoration:none; }
     .event-link .ic-wrap { width:16px; height:16px; color:var(--ink); }
+    .event-flag { display:inline-block; font-family:'Plus Jakarta Sans',sans-serif; font-size:0.68rem; font-weight:800; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink); background:var(--yellow); border-radius:100px; padding:0.3rem 0.8rem; margin-bottom:0.85rem; }
+    .event-meta { display:flex; flex-direction:column; gap:0.45rem; text-align:left; max-width:300px; margin:0 auto 1.1rem; }
+    .event-meta-row { display:flex; gap:0.6rem; font-size:0.9rem; color:rgba(255,255,255,0.82); line-height:1.45; }
+    .event-meta-row b { color:#fff; font-weight:700; }
+    .event-meta-ic { flex-shrink:0; opacity:0.9; }
+    .event-foot { font-size:0.85rem; color:rgba(255,255,255,0.6); line-height:1.55; margin-top:1.1rem; padding-top:1rem; border-top:1px solid rgba(255,255,255,0.12); }
+    .event-foot b { color:var(--yellow); }
 
     /* Share */
     .share-title { text-align:center; font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:1.45rem; letter-spacing:-0.02em; margin-bottom:0.4rem; }
@@ -306,9 +313,16 @@
       <div class="event-card">
         <div class="event-icon"><span class="ic-wrap" data-icon="calendar" data-color="#FFED00"></span></div>
         <div class="event-kicker">Do not just take the quiz. Show up.</div>
-        <div class="event-title">Love Laban: Pride PH Festival 2026</div>
-        <div class="event-text">June is Pride Month in Manila. March, celebrate, and stand for the SOGIE Equality Bill. Then catch the celebrations at <b>Halxyon Club, Poblacion, Makati.</b></div>
-        <a class="event-link" href="https://www.facebook.com/photo.php?fbid=958115633651899&set=a.249146027882200&type=3&ref=embed_post" target="_blank" rel="noopener">See the festival details <span class="ic-wrap" data-icon="external" data-color="#0A0A0A"></span></a>
+        <span class="event-flag">This Friday · Fundraiser</span>
+        <div class="event-title">Independence Slay: Pride with Purpose</div>
+        <div class="event-text">A drag fundraising show where <b>every peso of the entrance fee goes to Pride PH.</b> Featuring Felicia Ding and the Halxyon Queens &amp; Kings.</div>
+        <div class="event-meta">
+          <div class="event-meta-row"><span class="event-meta-ic ic-wrap" data-icon="calendar" data-color="#FFED00"></span><span><b>Friday, June 12</b></span></div>
+          <div class="event-meta-row"><span class="event-meta-ic ic-wrap" data-icon="flag" data-color="#FFED00"></span><span>Halxyon Club, 2nd Floor, 5353 A.M Flores Bldg, cor. General Luna &amp; Mariano, Poblacion, Makati</span></div>
+          <div class="event-meta-row"><span class="event-meta-ic ic-wrap" data-icon="sparkles" data-color="#FFED00"></span><span><b>₱450 entrance</b> (comes with a drink) · Buy 1 Take 1 cocktails · 10% off bottles that night</span></div>
+        </div>
+        <a class="event-link" href="https://www.facebook.com/photo?fbid=122118805425278349&set=a.122104902963278349" target="_blank" rel="noopener">Reserve your spot <span class="ic-wrap" data-icon="external" data-color="#0A0A0A"></span></a>
+        <div class="event-foot">And it does not stop there — <b>Pride celebrations run all month long</b> at Halxyon, capped by the <b>Pride PH Festival after party on June 27.</b></div>
       </div>
 
       <!-- Share -->
@@ -827,9 +841,9 @@
     x.fillText('What is yours?', W/2, 1140);
 
     x.fillStyle='#FFED00'; x.font='700 26px "Plus Jakarta Sans", sans-serif';
-    x.fillText('Love Laban: Pride PH Festival 2026', W/2, 1210);
+    x.fillText('Pride fundraiser · Fri June 12 · Halxyon Makati', W/2, 1210);
     x.fillStyle='rgba(255,255,255,0.65)'; x.font='500 24px "DM Sans", sans-serif';
-    x.fillText('After party: Halxyon Club, Poblacion Makati', W/2, 1250);
+    x.fillText('Pride PH Festival after party · June 27', W/2, 1250);
 
     x.fillStyle='rgba(255,255,255,0.38)'; x.font='600 26px "DM Sans", sans-serif';
     x.fillText('paolodomingo.com/apps/sogie', W/2, 1310);
