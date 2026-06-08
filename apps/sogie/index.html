@@ -313,7 +313,7 @@
         <div class="res-label-section">
           <div class="res-label-pre">Your words, your call</div>
           <div class="res-picker-title">Tap the words that feel like you</div>
-          <p class="res-picker-intro">No one gets to hand you a label here — not even this app. A word only means something if <b>you</b> choose it. Tap whatever helps you understand yourself a little better. Skip the ones that don't fit. It's about knowing yourself, not fitting a box.</p>
+          <p class="res-picker-intro">No one gets to hand you a label here — not even this app. A word only means something if <b>you</b> choose it. Pick as many as fit — your gender, your romantic side, and your sexual side can each have their own word. Skip anything that doesn't. It's about knowing yourself, not fitting a box.</p>
           <div class="res-chips" id="res-chips"></div>
           <div class="res-label-hint">Pick any, a few, or none — and it can change tomorrow. Whatever you choose goes on your card. ✨</div>
         </div>
@@ -450,7 +450,8 @@
   const LINK = {
     identity: 'https://www.apa.org/topics/lgbtq/transgender-people-gender-identity-gender-expression',
     expression: 'https://transstudent.org/gender/',
-    orientation: 'https://www.apa.org/topics/lgbtq/orientation'
+    orientation: 'https://www.apa.org/topics/lgbtq/orientation',
+    attraction: 'https://lgbtqia.ucdavis.edu/educated/glossary'
   };
 
   /* ════════════════════════════════════════════════════
@@ -500,7 +501,7 @@
     {
       type:'slider', key:'orientation', escapeKey:'ace', icon:'heart',
       title:'Who are you drawn to?',
-      help:'This is your sexual orientation: who gives you butterflies. Slide between a different gender, everyone, and the same gender as you.',
+      help:'This is your orientation: who you\'re drawn to. Slide for a rough map. Heads up — who you fall for romantically and who you\'re sexually drawn to can be different (more on that next). You\'ll pick your own words at the end.',
       learn:{url:LINK.orientation, label:'What is sexual orientation? (APA)'},
       left:'A different gender', mid:'More than one', right:'The same gender',
       escape:'I don\'t really feel that kind of attraction (asexual)',
@@ -511,6 +512,13 @@
         : v<62 ? {t:'Drawn to more than one gender', s:'Bi or pan energy'}
         : v<85 ? {t:'Mostly the same gender', s:'Mostly, but open'}
         : {t:'Drawn to the same gender', s:'Gay or lesbian'}
+    },
+    {
+      type:'teach', icon:'heart', badge:'Plot twist, again',
+      text:'Attraction isn\'t just <span class="hl">one thing.</span>',
+      sub:'Who you fall for romantically and who you\'re sexually drawn to can be two different things. Someone can be panromantic but demisexual, or aromantic but not asexual. No combo is wrong — and you\'ll name your own at the end.',
+      learn:{url:LINK.attraction, label:'Romantic vs sexual attraction (UC Davis)'},
+      cta:'Good to know →'
     },
     {
       type:'choice', key:'sexAssigned', icon:'clipboard',
@@ -600,6 +608,7 @@
         <div class="teach-icon"><span class="ic-wrap" data-icon="${step.icon}"></span></div>
         <div class="teach-text">${step.text}</div>
         <div class="teach-sub">${step.sub}</div>
+        ${step.learn ? `<a class="learn" href="${step.learn.url}" target="_blank" rel="noopener" style="margin:0 auto 1.5rem;"><span class="ic-wrap" data-icon="external"></span><span class="lk">${step.learn.label}</span></a>`:''}
         <div><button class="btn btn-primary" onclick="next()">${step.cta}</button></div>
       </div>`;
   }
@@ -705,7 +714,8 @@
   const WORD_CLOUD = [
     'Woman','Man','Cis woman','Cis man','Trans woman','Trans man',
     'Nonbinary','Genderfluid','Agender',
-    'Lesbian','Gay','Bisexual','Pansexual','Queer','Asexual','Straight','Questioning'
+    'Lesbian','Gay','Bisexual','Pansexual','Queer','Straight','Questioning',
+    'Asexual','Demisexual','Aromantic','Panromantic','Biromantic'
   ];
 
   // Soft suggestions only — used to gently highlight, never to pre-select.
