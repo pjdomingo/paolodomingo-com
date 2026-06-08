@@ -127,6 +127,26 @@
     .soon-label { font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:0.9rem; color:var(--muted); }
     .soon-sub { font-size:0.8rem; color:var(--muted); opacity:0.7; }
 
+    /* ── SUPPORT / COLLAB CTA ─────────────────────────── */
+    .support-cta { border-top:2px solid var(--ink); background:var(--ink); color:#fff; }
+    .sc-inner { max-width:760px; margin:0 auto; padding:4rem 2rem; text-align:center; }
+    .sc-kicker { font-family:'Plus Jakarta Sans',sans-serif; font-size:0.7rem; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:var(--yellow); margin-bottom:1rem; }
+    .sc-h2 { font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:clamp(1.8rem,5vw,2.8rem); letter-spacing:-0.035em; line-height:1.05; margin-bottom:1rem; }
+    .sc-sub { font-size:1rem; line-height:1.65; color:rgba(255,255,255,0.7); max-width:480px; margin:0 auto 2rem; }
+    .sc-actions { display:flex; gap:0.75rem; justify-content:center; flex-wrap:wrap; }
+    .sc-btn { font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:0.95rem; padding:0.9rem 1.5rem; border-radius:100px; text-decoration:none; cursor:pointer; border:2px solid var(--ink); transition:transform 0.15s; display:inline-flex; align-items:center; gap:0.5rem; }
+    .sc-btn:active { transform:scale(0.97); }
+    .sc-btn-light { background:var(--yellow); color:var(--ink); border-color:var(--yellow); }
+    .sc-btn-dark { background:transparent; color:#fff; border-color:rgba(255,255,255,0.25); }
+    .sc-btn-dark:hover { border-color:#fff; }
+    .sc-qr { max-width:300px; margin:2rem auto 0; background:#fff; border-radius:20px; padding:1.5rem; color:var(--ink); animation:scReveal 0.3s ease; }
+    .sc-qr[hidden] { display:none; }
+    @keyframes scReveal { from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
+    .sc-qr img { width:100%; max-width:230px; display:block; margin:0 auto 0.75rem; border-radius:10px; }
+    .sc-qr-label { font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:0.9rem; }
+    .sc-qr-sub { font-size:0.8rem; color:var(--muted); margin-top:0.2rem; }
+    @media (max-width:600px){ .sc-inner { padding:3rem 1.5rem; } }
+
     /* ── FOOTER ───────────────────────────────────────── */
     footer { border-top:2px solid var(--ink); padding:1.75rem 2rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; background:var(--cream); }
     .footer-copy { font-size:0.82rem; color:var(--muted); }
@@ -218,6 +238,25 @@
     </div>
   </div>
 
+  <!-- SUPPORT / COLLAB -->
+  <section class="support-cta">
+    <div class="sc-inner">
+      <div class="sc-kicker">Enjoying these?</div>
+      <h2 class="sc-h2">Like my apps? Let's make something.</h2>
+      <p class="sc-sub">Everything here is free and built for the love of it. If one helped or made you smile, you can hire me to build yours — or just buy me a coffee. Both mean a lot. 💛</p>
+      <div class="sc-actions">
+        <a class="sc-btn sc-btn-light" href="mailto:domingopauljohn@gmail.com?subject=Let's%20build%20something%20together">Let's build something together →</a>
+        <button class="sc-btn sc-btn-dark" id="coffee-btn" onclick="toggleCoffee()" aria-expanded="false" aria-controls="sc-qr">Buy me a coffee ☕</button>
+      </div>
+      <div class="sc-qr" id="sc-qr" hidden>
+        <img src="gcash-qr.jpg" alt="GCash QR code to send a tip to Paolo Domingo" loading="lazy" onerror="this.parentElement.querySelector('.sc-qr-fallback').hidden=false; this.style.display='none';" />
+        <div class="sc-qr-label">Scan with GCash 💙</div>
+        <div class="sc-qr-sub">Salamat — every coffee fuels the next app.</div>
+        <div class="sc-qr-fallback sc-qr-sub" hidden>QR coming soon — for now, <a href="mailto:domingopauljohn@gmail.com">email me</a>. 🙏</div>
+      </div>
+    </div>
+  </section>
+
   <!-- FOOTER -->
   <footer>
     <span class="footer-copy">© Paolo Domingo · 2026</span>
@@ -244,6 +283,15 @@
     hamburger.addEventListener('click', () => { mobileMenu.classList.add('open'); hamburger.setAttribute('aria-expanded','true'); });
     menuClose.addEventListener('click', closeMobileMenu);
     function closeMobileMenu(){ mobileMenu.classList.remove('open'); hamburger.setAttribute('aria-expanded','false'); }
+
+    // Buy me a coffee — reveal GCash QR
+    function toggleCoffee(){
+      const qr = document.getElementById('sc-qr');
+      const btn = document.getElementById('coffee-btn');
+      const open = qr.hasAttribute('hidden');
+      if(open){ qr.removeAttribute('hidden'); btn.setAttribute('aria-expanded','true'); qr.scrollIntoView({behavior:'smooth', block:'center'}); }
+      else { qr.setAttribute('hidden',''); btn.setAttribute('aria-expanded','false'); }
+    }
   </script>
 </body>
 </html>
