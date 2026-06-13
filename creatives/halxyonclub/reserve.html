@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- MIGRATION: this <base> scopes relative paths to the subfolder. When this moves to its own root domain, change to href="/" or delete this line. -->
+<base href="/creatives/halxyonclub/">
+<title>Reserve a Table — Halxyon Club</title>
+<meta name="theme-color" content="#000000">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav nav--solid">
+  <div class="nav-inner">
+    <a class="nav-back" href="index.html">← Home</a>
+    <a class="brand" href="index.html" style="font-size:18px">HAL<span class="x-mark" role="img" aria-label="X"></span>YON</a>
+    <span style="width:48px"></span>
+  </div>
+</nav>
+
+<main class="res-page">
+  <div class="res-head">
+    <h1 class="serif">Reserve a Table</h1>
+    <p>Three quick steps. Our team calls you to confirm.</p>
+  </div>
+
+  <!-- STEPPER -->
+  <div class="stepper" id="stepper">
+    <div class="step-pip active" data-step="1"><div class="dot">1</div><div class="nm">When</div></div>
+    <div class="step-line"></div>
+    <div class="step-pip" data-step="2"><div class="dot">2</div><div class="nm">Table</div></div>
+    <div class="step-line"></div>
+    <div class="step-pip" data-step="3"><div class="dot">3</div><div class="nm">Details</div></div>
+  </div>
+
+  <!-- STEP 1 — WHEN & WHO -->
+  <section class="panel show" id="panel1">
+    <h2 class="serif">When are you joining us?</h2>
+    <p class="hint">Pick your night and how many guests.</p>
+    <div class="field">
+      <label for="date">Date</label>
+      <input class="input" type="date" id="date">
+    </div>
+    <div class="field">
+      <label>Party size</label>
+      <div class="qty">
+        <button type="button" id="minus" aria-label="Fewer guests">−</button>
+        <div class="val serif" id="pax">2</div>
+        <button type="button" id="plus" aria-label="More guests">+</button>
+      </div>
+    </div>
+    <button class="btn btn--gold btn--block" id="toStep2">Choose your table</button>
+  </section>
+
+  <!-- STEP 2 — TABLE -->
+  <section class="panel" id="panel2">
+    <a class="nav-back" id="back1" style="display:inline-flex;margin-bottom:16px">← When &amp; guests</a>
+    <h2 class="serif">Choose your table</h2>
+    <p class="hint" id="step2hint">Tap an available table. Minimum spend shown is indicative.</p>
+
+    <div class="map-toolbar">
+      <div class="view-toggle">
+        <button id="vMap" class="on">Map</button>
+        <button id="vList">List</button>
+      </div>
+      <div class="zoom-controls" id="zoomCtl">
+        <button id="zOut" aria-label="Zoom out">−</button>
+        <button id="zFit" aria-label="Fit" title="Fit">⤢</button>
+        <button id="zIn" aria-label="Zoom in">+</button>
+      </div>
+    </div>
+
+    <div class="legend">
+      <span><i class="lg-avail"></i>Available</span>
+      <span><i class="lg-sel"></i>Selected</span>
+      <span><i class="lg-taken"></i>Reserved</span>
+    </div>
+
+    <div class="map-scroll" id="mapScroll">
+      <svg id="floor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 1560" preserveAspectRatio="xMidYMid meet"></svg>
+    </div>
+    <p class="map-hint">Drag to explore · pinch or use + / − to zoom</p>
+
+    <div class="list-view" id="listView"></div>
+  </section>
+
+  <!-- STEP 3 — DETAILS -->
+  <section class="panel" id="panel3">
+    <a class="nav-back" id="back2" style="display:inline-flex;margin-bottom:16px">← Change table</a>
+    <h2 class="serif">Your details</h2>
+    <p class="hint">We'll call to confirm your reservation.</p>
+    <div class="field"><label for="gname">Full name</label><input class="input" id="gname" placeholder="Your name" autocomplete="name"></div>
+    <div class="field"><label for="gphone">Mobile number</label><input class="input" id="gphone" type="tel" inputmode="tel" placeholder="09xx xxx xxxx" autocomplete="tel"></div>
+    <div class="field"><label for="gemail">Email <span style="color:var(--text-faint);text-transform:none;letter-spacing:0">(optional)</span></label><input class="input" id="gemail" type="email" inputmode="email" placeholder="you@email.com" autocomplete="email"></div>
+    <div class="field"><label for="gnotes">Anything we should know? <span style="color:var(--text-faint);text-transform:none;letter-spacing:0">(optional)</span></label><textarea class="input" id="gnotes" placeholder="Occasion, bottle preference, arrival time…"></textarea></div>
+    <button class="btn btn--gold btn--block" id="confirm">Confirm reservation</button>
+    <p class="muted center" style="font-size:13px;margin-top:14px">This is a request — it's final once our team confirms by phone.</p>
+  </section>
+
+  <!-- SUCCESS -->
+  <section class="success" id="success">
+    <div class="mark"><span class="x-mark" role="img" aria-label="Halxyon"></span></div>
+    <h2 class="serif">Your table is reserved</h2>
+    <p>Thank you, <span id="okName" class="gold">guest</span>. We've received your request and will call you shortly to confirm.</p>
+    <div class="scard" id="okCard"></div>
+    <a class="btn btn--ghost btn--block" href="index.html">Back to Halxyon</a>
+  </section>
+</main>
+
+<!-- SELECTION BAR -->
+<div class="selbar" id="selbar">
+  <div class="selbar-inner">
+    <div class="selbar-info">
+      <div class="t serif" id="selName">—</div>
+      <div class="m" id="selMeta"></div>
+    </div>
+    <button class="btn btn--gold" id="selContinue">Continue</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------- Floor plan data (mirrors supabase-schema.sql) ---------- */
+const TABLES=[
+  {id:'VIP1',label:'VIP 1',zone:'vip',seats:8,min:30000,x:25,y:725,w:300,h:145},
+  {id:'VIP2',label:'VIP 2',zone:'vip',seats:8,min:30000,x:25,y:915,w:300,h:145},
+  {id:'VIP3',label:'VIP 3',zone:'vip',seats:8,min:30000,x:510,y:725,w:300,h:145},
+  {id:'VIP4',label:'VIP 4',zone:'vip',seats:8,min:30000,x:510,y:915,w:300,h:145},
+  {id:'VIP5',label:'VIP 5',zone:'vip',seats:10,min:40000,x:910,y:225,w:150,h:295},
+  {id:'ST11',label:'ST 11',zone:'standard',seats:4,min:12000,x:1105,y:45,w:110,h:110},
+  {id:'ST12',label:'ST 12',zone:'standard',seats:4,min:12000,x:1105,y:190,w:110,h:110},
+  {id:'ST13',label:'ST 13',zone:'standard',seats:4,min:12000,x:1105,y:335,w:110,h:110},
+  {id:'ST14',label:'ST 14',zone:'standard',seats:4,min:12000,x:1105,y:480,w:110,h:110},
+  {id:'ST15',label:'ST 15',zone:'standard',seats:4,min:12000,x:1260,y:45,w:110,h:110},
+  {id:'ST16',label:'ST 16',zone:'standard',seats:4,min:12000,x:1260,y:190,w:110,h:110},
+  {id:'ST17',label:'ST 17',zone:'standard',seats:4,min:12000,x:1260,y:335,w:110,h:110},
+  {id:'ST18',label:'ST 18',zone:'standard',seats:4,min:12000,x:1260,y:480,w:110,h:110},
+  {id:'ST19',label:'ST 19',zone:'standard',seats:4,min:12000,x:1415,y:45,w:110,h:110},
+  {id:'ST20',label:'ST 20',zone:'standard',seats:4,min:12000,x:1415,y:190,w:110,h:110},
+  {id:'ST21',label:'ST 21',zone:'standard',seats:4,min:12000,x:1415,y:335,w:110,h:110},
+  {id:'ST22',label:'ST 22',zone:'standard',seats:4,min:12000,x:1415,y:480,w:110,h:110},
+  {id:'ST23',label:'ST 23',zone:'standard',seats:4,min:12000,x:1570,y:335,w:110,h:110},
+  {id:'ST24',label:'ST 24',zone:'standard',seats:4,min:12000,x:1570,y:480,w:110,h:110},
+  {id:'ST1',label:'ST 1',zone:'standard',seats:4,min:12000,x:510,y:1110,w:110,h:110},
+  {id:'ST2',label:'ST 2',zone:'standard',seats:4,min:12000,x:650,y:1110,w:110,h:110},
+  {id:'ST3',label:'ST 3',zone:'standard',seats:4,min:12000,x:790,y:1110,w:110,h:110},
+  {id:'ST4',label:'ST 4',zone:'standard',seats:4,min:12000,x:325,y:1265,w:110,h:110},
+  {id:'ST5',label:'ST 5',zone:'standard',seats:4,min:12000,x:510,y:1265,w:110,h:110},
+  {id:'ST6',label:'ST 6',zone:'standard',seats:4,min:12000,x:650,y:1265,w:110,h:110},
+  {id:'ST7',label:'ST 7',zone:'standard',seats:4,min:12000,x:790,y:1265,w:110,h:110},
+  {id:'ST8',label:'ST 8',zone:'standard',seats:4,min:12000,x:510,y:1420,w:110,h:110},
+  {id:'ST9',label:'ST 9',zone:'standard',seats:4,min:12000,x:650,y:1420,w:110,h:110},
+  {id:'ST10',label:'ST 10',zone:'standard',seats:4,min:12000,x:790,y:1420,w:110,h:110},
+];
+const FEATURES=[
+  {label:'STAGE',x:345,y:140,w:465,h:430,fs:46},
+  {label:'BAR',x:1815,y:25,w:150,h:585,fs:40},
+];
+
+/* ---------- State ---------- */
+let partySize=2, selDate='', selected=null, view='map', zoom=null;
+const peso=n=>'₱'+n.toLocaleString('en-PH');
+
+/* mock availability per date (localStorage) so the prototype "remembers" bookings */
+function takenSet(){
+  if(!selDate) return new Set();
+  const k='halxyon_taken_'+selDate;
+  let v=localStorage.getItem(k);
+  if(v===null){ v=JSON.stringify(['ST15','ST16','VIP2','ST21']); localStorage.setItem(k,v); } // seed demo
+  return new Set(JSON.parse(v));
+}
+function markTaken(id){
+  const k='halxyon_taken_'+selDate, s=takenSet(); s.add(id);
+  localStorage.setItem(k,JSON.stringify([...s]));
+}
+
+/* ---------- Date setup ---------- */
+const dateEl=document.getElementById('date');
+const today=new Date(); today.setHours(0,0,0,0);
+dateEl.min=today.toISOString().split('T')[0];
+
+/* ---------- Party size ---------- */
+const paxEl=document.getElementById('pax');
+document.getElementById('plus').onclick=()=>{partySize=Math.min(12,partySize+1);paxEl.textContent=partySize;};
+document.getElementById('minus').onclick=()=>{partySize=Math.max(1,partySize-1);paxEl.textContent=partySize;};
+
+/* ---------- State class for a table ---------- */
+function stateOf(t){
+  if(takenSet().has(t.id)) return 'taken';
+  if(t.seats<partySize) return 'small';
+  if(selected===t.id) return 'selected';
+  return 'avail';
+}
+
+/* ---------- Render SVG ---------- */
+const floor=document.getElementById('floor');
+function renderMap(){
+  let s='<defs><linearGradient id="tsel" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff4db8"/><stop offset=".5" stop-color="#7a7bff"/><stop offset="1" stop-color="#4fc3ff"/></linearGradient></defs>';
+  for(const f of FEATURES){
+    s+=`<g class="feat"><rect x="${f.x}" y="${f.y}" width="${f.w}" height="${f.h}" rx="8"/>`+
+       `<text x="${f.x+f.w/2}" y="${f.y+f.h/2}" font-size="${f.fs}">${f.label}</text></g>`;
+  }
+  for(const t of TABLES){
+    const st=stateOf(t), fs=t.zone==='vip'?38:26;
+    s+=`<g class="tbl t-${st}" data-id="${t.id}" role="button" tabindex="0" aria-label="${t.label}, ${st}">`+
+       `<rect x="${t.x}" y="${t.y}" width="${t.w}" height="${t.h}" rx="10"/>`+
+       `<text x="${t.x+t.w/2}" y="${t.y+t.h/2}" font-size="${fs}">${t.label}</text></g>`;
+  }
+  floor.innerHTML=s;
+}
+
+/* ---------- Render List ---------- */
+const listView=document.getElementById('listView');
+function renderList(){
+  const zones=[['vip','VIP Tables'],['standard','Standard Tables']];
+  let html='';
+  for(const [z,title] of zones){
+    html+=`<div class="zone-group"><h3>${title}</h3><div class="table-cards">`;
+    for(const t of TABLES.filter(t=>t.zone===z)){
+      const st=stateOf(t);
+      const cls=st==='selected'?'sel':st==='taken'?'taken':st==='small'?'small':'';
+      const status=st==='taken'?'<div class="tc-status">Reserved</div>'
+        :st==='small'?`<div class="tc-meta">Seats up to ${t.seats}</div>`
+        :`<div class="tc-meta">Up to ${t.seats} guests · ${peso(t.min)} min</div>`;
+      html+=`<button class="table-card ${cls}" data-id="${t.id}"><div class="tc-name">${t.label}</div>${status}</button>`;
+    }
+    html+='</div></div>';
+  }
+  listView.innerHTML=html;
+}
+
+function renderTables(){ renderMap(); renderList(); }
+
+/* ---------- Selection ---------- */
+const selbar=document.getElementById('selbar');
+function select(id){
+  const t=TABLES.find(x=>x.id===id); if(!t) return;
+  const st=stateOf(t);
+  if(st==='taken'){ toast('That table is already reserved for this night.'); return; }
+  if(st==='small'){ toast(`${t.label} seats up to ${t.seats}. Reduce your party size or pick a larger table.`); return; }
+  selected = (selected===id)?null:id;
+  renderTables(); updateSelbar();
+}
+function updateSelbar(){
+  const t=TABLES.find(x=>x.id===selected);
+  if(t){
+    document.getElementById('selName').textContent=t.label;
+    document.getElementById('selMeta').textContent=`Up to ${t.seats} guests · ${peso(t.min)} min spend`;
+    selbar.classList.add('up');
+  } else selbar.classList.remove('up');
+}
+
+/* delegate taps */
+floor.addEventListener('click',e=>{const g=e.target.closest('.tbl');if(g)select(g.dataset.id);});
+floor.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')){const g=e.target.closest('.tbl');if(g){e.preventDefault();select(g.dataset.id);}}});
+listView.addEventListener('click',e=>{const c=e.target.closest('.table-card');if(c)select(c.dataset.id);});
+
+/* ---------- View toggle ---------- */
+const mapScroll=document.getElementById('mapScroll'), zoomCtl=document.getElementById('zoomCtl');
+document.getElementById('vMap').onclick=()=>setView('map');
+document.getElementById('vList').onclick=()=>setView('list');
+function setView(v){
+  view=v;
+  document.getElementById('vMap').classList.toggle('on',v==='map');
+  document.getElementById('vList').classList.toggle('on',v==='list');
+  mapScroll.style.display=v==='map'?'':'none';
+  document.querySelector('.map-hint').style.display=v==='map'?'':'none';
+  zoomCtl.style.display=v==='map'?'':'none';
+  listView.style.display=v==='list'?'block':'none';
+}
+
+/* ---------- Zoom ---------- */
+function applyZoom(){
+  const base=mapScroll.clientWidth-28;
+  floor.style.width=Math.round(base*zoom)+'px';
+}
+document.getElementById('zIn').onclick=()=>{zoom=Math.min(3,zoom+0.3);applyZoom();};
+document.getElementById('zOut').onclick=()=>{zoom=Math.max(0.8,zoom-0.3);applyZoom();};
+document.getElementById('zFit').onclick=()=>{zoom=1;applyZoom();};
+
+/* ---------- Step navigation ---------- */
+function goStep(n){
+  for(const p of [1,2,3]) document.getElementById('panel'+p).classList.toggle('show',p===n);
+  document.getElementById('success').classList.remove('show');
+  document.querySelectorAll('.step-pip').forEach(pip=>{
+    const s=+pip.dataset.step;
+    pip.classList.toggle('active',s===n);
+    pip.classList.toggle('done',s<n);
+  });
+  selbar.classList.toggle('up', n===2 && !!selected);
+  scrollTo({top:0,behavior:'smooth'});
+}
+
+document.getElementById('toStep2').onclick=()=>{
+  if(!dateEl.value){ toast('Please choose a date first.'); dateEl.focus(); return; }
+  selDate=dateEl.value;
+  if(zoom===null) zoom=matchMedia('(max-width:640px)').matches?2:1.4;
+  renderTables(); goStep(2); requestAnimationFrame(applyZoom);
+};
+document.getElementById('back1').onclick=()=>goStep(1);
+document.getElementById('back2').onclick=()=>goStep(2);
+document.getElementById('selContinue').onclick=()=>{ if(selected) goStep(3); };
+/* clickable completed pips */
+document.getElementById('stepper').addEventListener('click',e=>{
+  const pip=e.target.closest('.step-pip'); if(!pip)return;
+  const s=+pip.dataset.step;
+  if(s===1) goStep(1);
+  else if(s===2 && selDate) goStep(2);
+});
+
+/* ---------- Confirm ---------- */
+document.getElementById('confirm').onclick=()=>{
+  const name=document.getElementById('gname').value.trim();
+  const phone=document.getElementById('gphone').value.trim();
+  if(name.length<2){ toast('Please enter your name.'); return; }
+  if(phone.replace(/\D/g,'').length<7){ toast('Please enter a valid mobile number.'); return; }
+  const t=TABLES.find(x=>x.id===selected);
+  markTaken(selected);
+  // success screen
+  const d=new Date(selDate+'T00:00:00');
+  const pretty=d.toLocaleDateString('en-PH',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+  document.getElementById('okName').textContent=name;
+  document.getElementById('okCard').innerHTML=
+    `<div class="r"><span>Table</span><span>${t.label}</span></div>`+
+    `<div class="r"><span>Date</span><span>${pretty}</span></div>`+
+    `<div class="r"><span>Guests</span><span>${partySize}</span></div>`+
+    `<div class="r"><span>Under</span><span>${name}</span></div>`;
+  ['panel1','panel2','panel3'].forEach(id=>document.getElementById(id).classList.remove('show'));
+  document.querySelectorAll('.step-pip').forEach(p=>p.classList.add('done'));
+  selbar.classList.remove('up');
+  document.getElementById('success').classList.add('show');
+  scrollTo({top:0,behavior:'smooth'});
+};
+
+/* ---------- Toast ---------- */
+let toastT; const toastEl=document.getElementById('toast');
+function toast(msg){ toastEl.textContent=msg; toastEl.classList.add('show'); clearTimeout(toastT);
+  toastT=setTimeout(()=>toastEl.classList.remove('show'),3200); }
+
+/* keep zoom sane on resize */
+addEventListener('resize',()=>{ if(view==='map'&&zoom!==null) applyZoom(); },{passive:true});
+</script>
+</body>
+</html>
