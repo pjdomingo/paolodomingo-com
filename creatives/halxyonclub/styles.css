@@ -102,9 +102,19 @@ a{color:inherit;text-decoration:none}
 
 /* ---------- Hero (photographic) ---------- */
 .hero{position:relative;min-height:100svh;display:flex;align-items:flex-end;overflow:hidden;background:#000}
-.hero-bg{position:absolute;inset:0;z-index:0;background:url('assets/hero.jpg') center 40%/cover no-repeat;
-  animation:kenburns 24s ease-in-out infinite alternate;will-change:transform}
-@keyframes kenburns{from{transform:scale(1.06)}to{transform:scale(1.2) translate(-1.5%,-1.5%)}}
+.hero-bg{position:absolute;inset:0;z-index:0;overflow:hidden;background:#000}
+.hero-slide{position:absolute;inset:0;background-position:center 42%;background-size:cover;background-repeat:no-repeat;
+  opacity:0;animation:heroCycle 21s linear infinite;will-change:opacity,transform}
+.hero-slide:nth-child(2){animation-delay:7s}
+.hero-slide:nth-child(3){animation-delay:14s}
+@keyframes heroCycle{
+  0%{opacity:0;transform:scale(1.05)}
+  8%{opacity:1}
+  33%{opacity:1}
+  41%{opacity:0;transform:scale(1.13)}
+  100%{opacity:0;transform:scale(1.13)}
+}
+@media(prefers-reduced-motion:reduce){.hero-slide{animation:none}.hero-slide:first-child{opacity:1;transform:none}}
 .hero-overlay{position:absolute;inset:0;z-index:1;background:
   linear-gradient(96deg,rgba(0,0,0,.9) 0%,rgba(0,0,0,.58) 44%,rgba(0,0,0,.2) 76%,rgba(0,0,0,.5) 100%),
   linear-gradient(180deg,rgba(5,5,7,.45) 0%,transparent 32%,rgba(5,5,7,.62) 80%,#050507 100%)}
@@ -164,9 +174,11 @@ a{color:inherit;text-decoration:none}
 /* Gallery */
 .gal-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:42px}
 .gal-item{position:relative;aspect-ratio:3/4;border-radius:14px;overflow:hidden;border:1px solid var(--line);
-  background:linear-gradient(160deg,#161320,#0a0910);display:flex;align-items:flex-end;padding:16px}
-.gal-item span{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-faint);position:relative;z-index:1}
-.gal-item::before{content:"";position:absolute;inset:0;background:radial-gradient(80% 60% at 50% 0,rgba(150,90,255,.16),transparent 70%)}
+  background-color:#0a0910;background-size:cover;background-position:center;display:flex;align-items:flex-end;padding:16px;
+  transition:transform .5s var(--ease),border-color .5s}
+.gal-item:hover{transform:translateY(-4px);border-color:var(--accent)}
+.gal-item span{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#fff;position:relative;z-index:1}
+.gal-item::before{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.74),transparent 52%)}
 
 /* Visit */
 .visit-grid{display:grid;gap:14px;margin-top:40px}
