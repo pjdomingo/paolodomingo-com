@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Machines That Learn — Paolo Domingo × PLM</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --white: #FFFFFF;
+      --off-white: #F8F7F2;
+      --black: #0F0F0F;
+      --accent: #FF4B1F;
+      --gray: #8C8C8C;
+      --light: #E5E4DF;
+      --font: 'Space Grotesk', sans-serif;
+      --mono: 'Space Mono', monospace;
+    }
+
+    html, body {
+      width: 100%; height: 100%;
+      overflow: hidden;
+      font-family: var(--font);
+      background: var(--white);
+      color: var(--black);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── PROGRESS BAR ─── */
+    #progress {
+      position: fixed; top: 0; left: 0;
+      height: 2px; background: var(--accent);
+      z-index: 999; transition: width 0.6s cubic-bezier(.4,0,.2,1);
+      width: 0%;
+    }
+
+    /* ─── TOP NAV ─── */
+    #top-nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      padding: 26px 52px;
+      display: flex; justify-content: space-between; align-items: flex-start;
+      z-index: 100; pointer-events: none;
+    }
+    #nav-left {
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--gray); line-height: 1.6;
+    }
+    #nav-right {
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: 0.14em; color: var(--gray);
+      text-align: right;
+    }
+    #nav-right .num {
+      font-size: 16px; font-family: var(--font);
+      font-weight: 700; color: var(--accent); display: block;
+      line-height: 1;
+    }
+
+    /* ─── DOT NAV ─── */
+    #dot-nav {
+      position: fixed; right: 28px; top: 50%;
+      transform: translateY(-50%);
+      display: flex; flex-direction: column; gap: 10px;
+      z-index: 100;
+    }
+    .dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--light); cursor: pointer;
+      transition: all 0.3s ease; pointer-events: all;
+    }
+    .dot.active { background: var(--accent); transform: scale(1.8); }
+    .dot:hover:not(.active) { background: var(--black); }
+
+    /* ─── BOTTOM NAV ─── */
+    #bottom-nav {
+      position: fixed; bottom: 32px; left: 50%;
+      transform: translateX(-50%);
+      display: flex; align-items: center; gap: 20px;
+      z-index: 100;
+    }
+    .nav-btn {
+      width: 42px; height: 42px;
+      border: 1.5px solid currentColor; border-radius: 50%;
+      background: transparent; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.22s ease; font-size: 15px;
+      color: var(--black); font-family: var(--font);
+    }
+    .nav-btn:hover:not(:disabled) {
+      background: var(--black); color: var(--white);
+    }
+    .nav-btn:disabled { opacity: 0.18; cursor: default; pointer-events: none; }
+    #slide-name {
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--gray); min-width: 110px; text-align: center;
+    }
+
+    /* ─── SLIDES WRAPPER ─── */
+    #wrap {
+      width: 100%; height: 100vh; position: relative;
+    }
+
+    .slide {
+      position: absolute; inset: 0;
+      width: 100%; height: 100vh;
+      display: flex; align-items: center;
+      padding: 100px 80px 80px;
+      visibility: hidden; opacity: 0;
+      will-change: transform, opacity;
+    }
+    .slide.active { visibility: visible; opacity: 1; }
+
+    /* Dark variant */
+    .dark {
+      background: var(--black); color: var(--white);
+    }
+    .dark .tag { color: rgba(255,255,255,0.35); }
+    .dark .muted { color: rgba(255,255,255,0.5); }
+    .dark .divider { border-color: rgba(255,255,255,0.1); }
+    .dark .chip {
+      border-color: rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.7);
+    }
+
+    /* ─── TYPE SCALE ─── */
+    .tag {
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 40px;
+      display: block;
+    }
+
+    .xl {
+      font-size: clamp(62px, 9vw, 130px);
+      font-weight: 700; line-height: 0.93;
+      letter-spacing: -0.03em;
+    }
+    .lg {
+      font-size: clamp(44px, 6vw, 84px);
+      font-weight: 700; line-height: 0.95;
+      letter-spacing: -0.025em;
+    }
+    .md {
+      font-size: clamp(28px, 3.2vw, 48px);
+      font-weight: 600; line-height: 1.1;
+      letter-spacing: -0.015em;
+    }
+    .sm {
+      font-size: clamp(15px, 1.4vw, 20px);
+      font-weight: 400; line-height: 1.65;
+      color: var(--gray);
+    }
+
+    .accent { color: var(--accent); }
+    .muted { color: var(--gray); }
+    .light-text { font-weight: 300; font-style: italic; }
+
+    .quote {
+      border-left: 2.5px solid var(--accent);
+      padding: 4px 0 4px 24px;
+      font-size: clamp(18px, 2.2vw, 30px);
+      font-weight: 500; line-height: 1.35;
+      font-style: italic;
+    }
+
+    .divider { border: none; border-top: 1px solid var(--light); }
+
+    /* ─── LAYOUT HELPERS ─── */
+    .grid-2 {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 72px; width: 100%; align-items: start;
+    }
+
+    /* ─── CHIPS ─── */
+    .chips { display: flex; gap: 10px; flex-wrap: wrap; margin: 32px 0 40px; }
+    .chip {
+      font-family: var(--mono); font-size: 11px;
+      padding: 9px 16px; border: 1.5px solid var(--black);
+      letter-spacing: 0.06em; white-space: nowrap;
+    }
+
+    /* ─── CAREER TIMELINE ─── */
+    .timeline {
+      display: flex; align-items: center;
+      flex-wrap: wrap; gap: 0; margin: 36px 0;
+    }
+    .t-role {
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 8px 13px; border: 1.5px solid var(--black);
+      white-space: nowrap; transition: all 0.22s;
+      cursor: default;
+    }
+    .t-role:hover { background: var(--black); color: var(--white); }
+    .t-arr { color: var(--accent); padding: 0 6px; font-size: 13px; }
+
+    /* ─── PROJECT LAYOUT ─── */
+    .proj-wrap {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0 56px; align-items: center; width: 100%;
+    }
+    .proj-num {
+      font-size: clamp(120px, 17vw, 260px);
+      font-weight: 700; line-height: 1;
+      letter-spacing: -0.05em;
+      color: var(--light); user-select: none;
+    }
+
+    /* ─── SKILL LIST ─── */
+    .skill-row {
+      display: flex; gap: 20px; align-items: flex-start;
+      padding: 18px 0; border-bottom: 1px solid var(--light);
+    }
+    .skill-n {
+      font-family: var(--mono); font-size: 10px;
+      color: var(--accent); padding-top: 5px; min-width: 22px;
+    }
+    .skill-title { font-size: clamp(18px, 2vw, 26px); font-weight: 600; }
+    .skill-sub { font-size: 13px; color: var(--gray); margin-top: 3px; line-height: 1.4; }
+
+    /* ─── ADVICE ROWS ─── */
+    .a-row {
+      display: flex; gap: 14px; align-items: flex-start;
+      padding: 14px 0; border-bottom: 1px solid var(--light);
+      font-size: clamp(13px, 1.3vw, 17px); line-height: 1.55;
+    }
+    .a-row::before {
+      content: '→'; color: var(--accent);
+      flex-shrink: 0; padding-top: 1px; font-size: 13px;
+    }
+
+    /* ─── TRENDS GRID ─── */
+    .trends {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 2px; width: 100%; margin: 32px 0 36px;
+    }
+    .t-card {
+      background: var(--off-white); padding: 28px;
+      transition: background 0.22s;
+    }
+    .t-card:hover { background: var(--light); }
+    .t-n {
+      font-family: var(--mono); font-size: 10px;
+      color: var(--accent); letter-spacing: 0.1em;
+      margin-bottom: 10px;
+    }
+    .t-title { font-size: clamp(16px, 1.6vw, 22px); font-weight: 600; margin-bottom: 6px; }
+    .t-desc { font-size: 13px; color: var(--gray); line-height: 1.5; }
+
+    /* ─── SLIDE 1: HERO ─── */
+    #s1 { padding: 0; }
+    #canvas3d {
+      position: absolute; inset: 0; z-index: 0;
+      pointer-events: none;
+    }
+    #hero-inner {
+      position: relative; z-index: 2;
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column;
+      justify-content: space-between; padding: 72px 80px;
+    }
+    #hero-eye {
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--gray);
+    }
+    #hero-title {
+      font-size: clamp(80px, 12vw, 168px);
+      font-weight: 700; line-height: 0.88;
+      letter-spacing: -0.04em;
+    }
+    #hero-foot {
+      display: flex; justify-content: space-between; align-items: flex-end;
+    }
+    #hero-sub {
+      font-size: 15px; color: var(--gray); line-height: 1.7;
+      max-width: 300px;
+    }
+    #hero-hint {
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--gray); display: flex; align-items: center; gap: 8px;
+    }
+    #hero-hint::after {
+      content: '→';
+      animation: nudge 1.8s ease-in-out infinite;
+    }
+    @keyframes nudge {
+      0%,100% { transform: translateX(0); }
+      50% { transform: translateX(5px); }
+    }
+
+    /* ─── SLIDE 7: DARK TRUTH ─── */
+    #s7 { padding: 100px 80px 80px; }
+
+    /* ─── SLIDE 11: QA ─── */
+    #s11 {
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; text-align: center;
+    }
+    #qa-big {
+      font-size: clamp(90px, 14vw, 200px);
+      font-weight: 700; line-height: 0.85;
+      letter-spacing: -0.05em; color: var(--white);
+    }
+  </style>
+</head>
+<body>
+
+  <div id="progress"></div>
+
+  <!-- Top nav -->
+  <div id="top-nav">
+    <div id="nav-left">
+      Paul John Domingo<br>
+      PLM · Machine Learning Applications
+    </div>
+    <div id="nav-right">
+      <span class="num" id="cur">01</span>
+      of 11
+    </div>
+  </div>
+
+  <!-- Dot nav -->
+  <div id="dot-nav"></div>
+
+  <!-- Bottom nav -->
+  <div id="bottom-nav">
+    <button class="nav-btn" id="btn-prev" disabled>←</button>
+    <div id="slide-name">INTRO</div>
+    <button class="nav-btn" id="btn-next">→</button>
+  </div>
+
+  <!-- ═══════════════ SLIDES ═══════════════ -->
+  <div id="wrap">
+
+    <!-- S1 · HERO -->
+    <section class="slide active" id="s1" data-name="INTRO">
+      <canvas id="canvas3d"></canvas>
+      <div id="hero-inner">
+        <div id="hero-eye">Pamantasan ng Lungsod ng Maynila &nbsp;·&nbsp; 2026</div>
+        <div>
+          <div id="hero-title">
+            Machines<br>
+            <span style="font-weight:300;font-style:italic;color:#888;">that</span><br>
+            Learn.
+          </div>
+        </div>
+        <div id="hero-foot">
+          <div id="hero-sub">
+            A real talk about ML<br>from someone who builds it.<br><br>
+            <strong style="color:var(--black);">Paul John Domingo</strong><br>
+            Fractional CTO · Director of Software Delivery
+          </div>
+          <div id="hero-hint">Space or → to begin</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- S2 · THE HOOK -->
+    <section class="slide" id="s2" data-name="THE HOOK">
+      <div style="max-width:880px;width:100%;">
+        <span class="tag">01 · The Hook</span>
+        <h2 class="xl" style="margin-bottom:36px;">
+          You used your<br>phone this morning.
+        </h2>
+        <p class="sm" style="margin-bottom:0;">A machine learning model had already profiled you before you got out of bed.</p>
+        <div class="chips">
+          <span class="chip">YouTube recommended</span>
+          <span class="chip">Spotify queued</span>
+          <span class="chip">Gmail filtered spam</span>
+          <span class="chip">Face ID unlocked</span>
+        </div>
+        <div class="quote">
+          "ML isn't the future.<br>
+          It's the air you're already breathing."
+        </div>
+      </div>
+    </section>
+
+    <!-- S3 · WHO AM I -->
+    <section class="slide" id="s3" data-name="WHO AM I">
+      <div style="width:100%;">
+        <span class="tag">02 · Who Am I</span>
+        <div class="grid-2" style="gap:60px;">
+          <div>
+            <h2 class="xl" style="margin-bottom:20px;">
+              I started<br>at&nbsp;<span class="accent">18.</span>
+            </h2>
+            <p class="sm" style="margin-bottom:28px;">
+              No plan. Just showed up as a software engineer and said yes to everything that came my way.
+            </p>
+            <div class="timeline">
+              <span class="t-role">Dev</span><span class="t-arr">→</span>
+              <span class="t-role">UX</span><span class="t-arr">→</span>
+              <span class="t-role">QA</span><span class="t-arr">→</span>
+              <span class="t-role">BA</span><span class="t-arr">→</span>
+              <span class="t-role">PM</span><span class="t-arr">→</span>
+              <span class="t-role" style="background:var(--black);color:var(--white);">CTO</span>
+            </div>
+          </div>
+          <div style="padding-top:48px;">
+            <div class="quote" style="margin-bottom:36px;">
+              "Curiosity and humility are what kept me going.
+              Not talent. Not luck."
+            </div>
+            <p class="sm">
+              Today I work as a <strong style="color:var(--black);">Fractional CTO, Product Manager, and Director of Software Delivery</strong> — for Sprout Solutions and a Canadian micro-SaaS startup.<br><br>
+              The rotation through every role is what made me. Every time the industry changes — and it always does — I stay curious instead of scared.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- S4 · PROJECT 01 -->
+    <section class="slide" id="s4" data-name="PROJECT 01">
+      <div style="width:100%;">
+        <span class="tag">03 · ML at Work · Project 01 · Sprout Solutions</span>
+        <div class="proj-wrap">
+          <div class="proj-num">01</div>
+          <div>
+            <h2 class="lg" style="margin-bottom:18px;">
+              The AI that learns<br>how you code.
+            </h2>
+            <p class="sm" style="margin-bottom:20px;">
+              We're transforming software development at Sprout Solutions so that the majority of the engineering workflow runs through AI agents.
+            </p>
+            <p class="sm" style="margin-bottom:24px;">
+              One piece of that: an <strong style="color:var(--black);">automatic code reviewer</strong> with a learning feedback loop. It watches how developers write code — their patterns, their preferences — and uses that to get smarter at reviewing future code.<br><br>
+              The machine doesn't just review. It learns. Every pull request makes it better.
+            </p>
+            <div style="font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:0.12em;text-transform:uppercase;">
+              This is what ML looks like at work. Not sci-fi. Just smart automation.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- S5 · PROJECT 02 -->
+    <section class="slide" id="s5" data-name="PROJECT 02">
+      <div style="width:100%;">
+        <span class="tag">03 · ML at Work · Project 02 · Canadian Startup</span>
+        <div class="proj-wrap">
+          <div class="proj-num">02</div>
+          <div>
+            <h2 class="lg" style="margin-bottom:18px;">
+              Building products<br>at the speed of AI.
+            </h2>
+            <p class="sm" style="margin-bottom:20px;">
+              We run a micro-SaaS model — small apps, specific niches, minimal monthly fee. The bet is volume: many products, each serving a different group of people.
+            </p>
+            <p class="sm" style="margin-bottom:24px;">
+              The problem? <strong style="color:var(--black);">How do you launch 10 products a year instead of 1?</strong><br><br>
+              We built ML pipelines that pull Google Trends, market research, and competitor data — then AI agents that analyze it all and give us launch recommendations in hours, not months.<br><br>
+              Faster decisions. Smarter bets. Less guessing.
+            </p>
+            <div style="font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:0.12em;text-transform:uppercase;">
+              ML for business strategy — not just engineering.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- S6 · PROJECT 03 -->
+    <section class="slide" id="s6" data-name="PROJECT 03">
+      <div style="width:100%;">
+        <span class="tag">03 · ML at Work · Project 03 · Pride Month 2026</span>
+        <div class="proj-wrap">
+          <div class="proj-num" style="color:#FFE2DB;">03</div>
+          <div>
+            <h2 class="lg" style="margin-bottom:18px;">
+              Teaching a machine<br>to explain love.
+            </h2>
+            <p class="sm" style="margin-bottom:20px;">
+              A straight friend asked me a random question about gender and attraction. It stopped me. <strong style="color:var(--black);">That one question turned into an app.</strong>
+            </p>
+            <p class="sm" style="margin-bottom:24px;">
+              We used ML to study the behavioral patterns around SOGIE education — what makes it confusing for people who haven't lived it, and what actually makes it click.<br><br>
+              The finding? <strong style="color:var(--black);">Gamify it. Make it layman. Make it feel like a conversation, not a lecture.</strong><br><br>
+              We built a SOGIE awareness app that spreads understanding through play — designed for people who don't yet know what they don't know.
+            </p>
+            <div style="font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:0.12em;text-transform:uppercase;">
+              ML doesn't have to be cold. It can be compassionate.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- S7 · THE TRUTH (DARK) -->
+    <section class="slide dark" id="s7" data-name="THE TRUTH">
+      <div style="max-width:780px;width:100%;">
+        <span class="tag" style="color:rgba(255,75,31,0.85);">04 · What Nobody Tells You</span>
+        <h2 class="xl" style="color:var(--white);margin-bottom:36px;">
+          AI is only as good as<br>the person building it.
+        </h2>
+        <p class="sm" style="color:rgba(255,255,255,0.55);margin-bottom:44px;">
+          The tools are easy to find. A Google search away.<br>
+          What's hard is the foundation.<br><br>
+          A solid base in software engineering still matters. Without it, ML becomes chaos — a mess of models that work in demos and break in real life.
+        </p>
+        <div class="quote">
+          "Most ML problems are people problems<br>wearing a technical costume."
+        </div>
+      </div>
+    </section>
+
+    <!-- S8 · SKILLS -->
+    <section class="slide" id="s8" data-name="SKILLS">
+      <div style="width:100%;">
+        <span class="tag">05 · What Actually Matters</span>
+        <div class="grid-2" style="align-items:start;gap:80px;">
+          <div>
+            <h2 class="md" style="margin-bottom:10px;">
+              You can Google<br>the technical stuff.
+            </h2>
+            <p class="sm" style="font-style:italic;margin-bottom:36px;">Seriously. Just ChatGPT it.</p>
+            <h3 class="lg" style="color:var(--accent);line-height:0.95;">
+              Here's what<br>you can't.
+            </h3>
+          </div>
+          <div>
+            <div class="skill-row">
+              <div class="skill-n">01</div>
+              <div>
+                <div class="skill-title">Storytelling</div>
+                <div class="skill-sub">If you can't explain it to your lola, it doesn't matter.</div>
+              </div>
+            </div>
+            <div class="skill-row">
+              <div class="skill-n">02</div>
+              <div>
+                <div class="skill-title">Curiosity</div>
+                <div class="skill-sub">The willingness to be wrong — and be okay with it.</div>
+              </div>
+            </div>
+            <div class="skill-row">
+              <div class="skill-n">03</div>
+              <div>
+                <div class="skill-title">Communication</div>
+                <div class="skill-sub">Slack. Email. The meeting nobody wanted. These decide careers.</div>
+              </div>
+            </div>
+            <div class="skill-row">
+              <div class="skill-n">04</div>
+              <div>
+                <div class="skill-title">Patience with not knowing</div>
+                <div class="skill-sub">"I don't know yet" is a superpower, not a weakness.</div>
+              </div>
+            </div>
+            <div class="skill-row" style="border-bottom:none;">
+              <div class="skill-n">05</div>
+              <div>
+                <div class="skill-title">Asking better questions</div>
+                <div class="skill-sub">More valuable than knowing all the answers.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- S9 · ADVICE -->
+    <section class="slide" id="s9" data-name="ADVICE">
+      <div style="width:100%;">
+        <span class="tag">06 · What I'd Tell 18-Year-Old Me</span>
+        <div class="grid-2" style="align-items:start;gap:72px;">
+          <div>
+            <h3 class="md" style="margin-bottom:28px;">
+              For those who know<br>they want this.
+            </h3>
+            <div class="a-row">Start a project. This week. Not next semester.</div>
+            <div class="a-row">GitHub and Kaggle are your portfolio. Your GWA is not.</div>
+            <div class="a-row">Pick a problem you actually care about. Motivation outlasts discipline every time.</div>
+            <div class="a-row">You don't need to be ready. You just need to start.</div>
+          </div>
+          <div>
+            <h3 class="md" style="margin-bottom:28px;">
+              For those still<br>figuring it out.
+            </h3>
+            <div class="quote" style="margin-bottom:28px;font-size:clamp(18px,2.2vw,28px);">
+              "You don't need certainty.<br>You need curiosity."
+            </div>
+            <p class="sm">
+              ML touches everything — healthcare, music, agriculture, law, education. You don't need to be a pure engineer.<br><br>
+              Your biggest competition isn't your classmate. It's future-you who didn't start.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- S10 · THE FUTURE -->
+    <section class="slide" id="s10" data-name="THE FUTURE">
+      <div style="width:100%;">
+        <span class="tag">07 · What's Coming</span>
+        <h2 class="lg" style="margin-bottom:32px;">
+          The window is open<br><span class="accent">right now.</span>
+        </h2>
+        <div class="trends">
+          <div class="t-card">
+            <div class="t-n">01</div>
+            <div class="t-title">AI Agents</div>
+            <div class="t-desc">Systems that plan and act on their own. Already in production.</div>
+          </div>
+          <div class="t-card">
+            <div class="t-n">02</div>
+            <div class="t-title">Generative AI</div>
+            <div class="t-desc">Not just ChatGPT — it's inside your tools, your code, your workflow.</div>
+          </div>
+          <div class="t-card">
+            <div class="t-n">03</div>
+            <div class="t-title">Edge AI</div>
+            <div class="t-desc">ML running on your phone, not in the cloud. Faster. Smarter. More private.</div>
+          </div>
+          <div class="t-card">
+            <div class="t-n">04</div>
+            <div class="t-title">AI × Your Field</div>
+            <div class="t-desc">Doctor + AI. Lawyer + AI. Designer + AI. The combination is the career.</div>
+          </div>
+        </div>
+        <div class="quote">
+          "AI won't replace you. A person using AI well will. Be that person."
+        </div>
+      </div>
+    </section>
+
+    <!-- S11 · Q&A -->
+    <section class="slide dark" id="s11" data-name="Q&A">
+      <div style="text-align:center;width:100%;">
+        <div class="tag" style="text-align:center;color:rgba(255,75,31,0.6);">08 · Open Forum</div>
+        <div id="qa-big">Your<br>turn.</div>
+        <p style="font-size:18px;color:rgba(255,255,255,0.4);margin:28px 0 40px;">
+          Ask anything.
+        </p>
+        <p style="font-family:var(--mono);font-size:10px;color:rgba(255,255,255,0.25);letter-spacing:0.14em;text-transform:uppercase;line-height:2;">
+          paolodomingo.com &nbsp;·&nbsp; domingopauljohn@gmail.com
+        </p>
+      </div>
+    </section>
+
+  </div><!-- /wrap -->
+
+  <!-- Three.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+  <script>
+  (() => {
+    'use strict';
+
+    // ─── DATA ───
+    const slides = Array.from(document.querySelectorAll('.slide'));
+    const TOTAL = slides.length;
+    const NAMES = slides.map(s => s.dataset.name);
+    let cur = 0, busy = false;
+
+    // ─── DOTS ───
+    const dotWrap = document.getElementById('dot-nav');
+    NAMES.forEach((_, i) => {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i === 0 ? ' active' : '');
+      d.addEventListener('click', () => go(i));
+      dotWrap.appendChild(d);
+    });
+
+    // ─── SYNC UI ───
+    function syncUI(idx) {
+      document.querySelectorAll('.dot').forEach((d, i) => {
+        d.classList.toggle('active', i === idx);
+      });
+      document.getElementById('cur').textContent = String(idx + 1).padStart(2, '0');
+      document.getElementById('slide-name').textContent = NAMES[idx];
+      document.getElementById('btn-prev').disabled = idx === 0;
+      document.getElementById('btn-next').disabled = idx === TOTAL - 1;
+      document.getElementById('progress').style.width =
+        ((idx / (TOTAL - 1)) * 100) + '%';
+
+      // Dark slide → white controls
+      const dark = slides[idx].classList.contains('dark');
+      const bn = document.getElementById('bottom-nav');
+      const tn = document.getElementById('top-nav');
+      bn.style.color = dark ? '#fff' : '';
+      tn.style.color = dark ? 'rgba(255,255,255,0.4)' : '';
+      document.getElementById('cur').style.color =
+        dark ? 'rgba(255,75,31,0.9)' : 'var(--accent)';
+    }
+
+    // ─── ANIMATE CONTENT IN ───
+    function animIn(idx) {
+      const s = slides[idx];
+      const els = s.querySelectorAll(
+        '.tag, .xl, .lg, .md, .sm, .quote, .timeline, .chips, ' +
+        '.proj-num, .proj-wrap>div:last-child, .skill-row, .a-row, ' +
+        '.trends, .t-card, #hero-inner>*, #qa-big, p, h2, h3'
+      );
+      gsap.fromTo(els,
+        { opacity: 0, y: 22 },
+        { opacity: 1, y: 0, duration: 0.55, stagger: 0.055,
+          ease: 'power2.out', delay: 0.18 }
+      );
+    }
+
+    // ─── TRANSITION ───
+    function go(target) {
+      if (busy || target === cur || target < 0 || target >= TOTAL) return;
+      busy = true;
+      const dir = target > cur ? 1 : -1;
+      const outEl = slides[cur];
+      const inEl  = slides[target];
+
+      inEl.style.visibility = 'visible';
+      inEl.style.opacity = '0';
+
+      gsap.to(outEl, {
+        opacity: 0, x: dir * -55, duration: 0.38, ease: 'power2.in',
+        onComplete() {
+          outEl.style.visibility = 'hidden';
+          outEl.classList.remove('active');
+          gsap.set(outEl, { x: 0 });
+        }
+      });
+
+      gsap.fromTo(inEl,
+        { opacity: 0, x: dir * 55 },
+        {
+          opacity: 1, x: 0, duration: 0.45, ease: 'power2.out', delay: 0.22,
+          onStart() {
+            inEl.classList.add('active');
+            animIn(target);
+          },
+          onComplete() { busy = false; }
+        }
+      );
+
+      cur = target;
+      syncUI(cur);
+    }
+
+    // ─── CONTROLS ───
+    document.getElementById('btn-next').addEventListener('click', () => go(cur + 1));
+    document.getElementById('btn-prev').addEventListener('click', () => go(cur - 1));
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+        e.preventDefault(); go(cur + 1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        e.preventDefault(); go(cur - 1);
+      }
+    });
+
+    let wt;
+    document.addEventListener('wheel', e => {
+      clearTimeout(wt);
+      wt = setTimeout(() => {
+        if (e.deltaY > 30) go(cur + 1);
+        else if (e.deltaY < -30) go(cur - 1);
+      }, 60);
+    }, { passive: true });
+
+    let tx = 0;
+    document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+    document.addEventListener('touchend', e => {
+      const dx = tx - e.changedTouches[0].clientX;
+      if (Math.abs(dx) > 48) { dx > 0 ? go(cur + 1) : go(cur - 1); }
+    }, { passive: true });
+
+    // ─── THREE.JS HERO ───
+    const canvas = document.getElementById('canvas3d');
+    const W = () => window.innerWidth;
+    const H = () => window.innerHeight;
+
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    renderer.setSize(W(), H());
+    renderer.setClearColor(0xFFFFFF, 1);
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(55, W() / H(), 0.1, 80);
+    camera.position.z = 7;
+
+    // Shapes
+    const geos = [
+      new THREE.IcosahedronGeometry(0.65, 0),
+      new THREE.OctahedronGeometry(0.55, 0),
+      new THREE.TetrahedronGeometry(0.65, 0),
+      new THREE.IcosahedronGeometry(0.42, 0),
+      new THREE.OctahedronGeometry(0.72, 0),
+      new THREE.TetrahedronGeometry(0.48, 0),
+      new THREE.IcosahedronGeometry(0.32, 0),
+      new THREE.OctahedronGeometry(0.38, 0),
+    ];
+
+    const objs = geos.map((g, i) => {
+      const mat = new THREE.MeshBasicMaterial({ color: 0xE2E1DC, wireframe: true });
+      const m = new THREE.Mesh(g, mat);
+      m.position.set(
+        (Math.random() - 0.5) * 12,
+        (Math.random() - 0.5) * 7,
+        (Math.random() - 0.5) * 4 - 1
+      );
+      m.rotation.set(Math.random() * 6.28, Math.random() * 6.28, Math.random() * 6.28);
+      scene.add(m);
+      return {
+        mesh: m,
+        rx: (Math.random() - 0.5) * 0.004,
+        ry: (Math.random() - 0.5) * 0.004,
+        fy: Math.random() * 6.28,
+        fs: 0.003 + Math.random() * 0.005,
+        fa: 0.12 + Math.random() * 0.22,
+        oy: m.position.y
+      };
+    });
+
+    let mx = 0, my = 0;
+    window.addEventListener('mousemove', e => {
+      mx = (e.clientX / W() - 0.5) * 2;
+      my = (e.clientY / H() - 0.5) * 2;
+    });
+
+    window.addEventListener('resize', () => {
+      camera.aspect = W() / H();
+      camera.updateProjectionMatrix();
+      renderer.setSize(W(), H());
+    });
+
+    function tick() {
+      requestAnimationFrame(tick);
+      if (cur !== 0) return;
+
+      objs.forEach(o => {
+        o.mesh.rotation.x += o.rx;
+        o.mesh.rotation.y += o.ry;
+        o.fy += o.fs;
+        o.mesh.position.y = o.oy + Math.sin(o.fy) * o.fa;
+      });
+
+      camera.position.x += (mx * 0.35 - camera.position.x) * 0.04;
+      camera.position.y += (-my * 0.22 - camera.position.y) * 0.04;
+
+      renderer.render(scene, camera);
+    }
+    tick();
+
+    // ─── HERO ENTRANCE ───
+    gsap.fromTo('#hero-eye',    { opacity:0, y:8  }, { opacity:1, y:0, duration:0.7, delay:0.4 });
+    gsap.fromTo('#hero-title',  { opacity:0, y:36 }, { opacity:1, y:0, duration:1.0, delay:0.6, ease:'power3.out' });
+    gsap.fromTo('#hero-foot',   { opacity:0, y:16 }, { opacity:1, y:0, duration:0.7, delay:1.0 });
+
+    // Init
+    syncUI(0);
+
+  })();
+  </script>
+</body>
+</html>
