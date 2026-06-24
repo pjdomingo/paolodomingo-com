@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DJ 101 — Paolo Domingo</title>
+  <meta name="description" content="A 3-week foundation course on DJing — history, beat matching, song keys, crowd reading, and more." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    :root {
+      --yellow: #F5E642;
+      --ink: #0A0A0A;
+      --white: #FFFFFF;
+      --muted: #888888;
+      --border: rgba(10,10,10,0.08);
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--white);
+      color: var(--ink);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ──────────────────────────────────── */
+    #main-nav {
+      position: sticky; top: 0; z-index: 1000;
+      background: var(--white);
+      display: flex; align-items: center; justify-content: space-between;
+      height: 60px;
+      padding: 0 2.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-wordmark {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800; font-size: 1rem;
+      color: var(--ink); text-decoration: none;
+      letter-spacing: -0.03em;
+    }
+    .nav-wordmark span {
+      display: inline-block;
+      background: var(--yellow);
+      padding: 2px 8px;
+      margin-right: 6px;
+    }
+
+    .nav-links {
+      display: flex; align-items: center; gap: 2rem; list-style: none;
+    }
+    .nav-links a {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.65rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none;
+      transition: color 0.2s;
+      padding-bottom: 2px;
+      border-bottom: 2px solid transparent;
+    }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-links a.active {
+      color: var(--ink);
+      border-bottom-color: var(--yellow);
+    }
+
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; background: none; border: none; padding: 4px;
+    }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--ink); border-radius: 2px; }
+
+    @media (max-width: 860px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+    }
+
+    /* ── HERO ─────────────────────────────────── */
+    .hero {
+      padding: 7rem 2.5rem 5rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .hero-eyebrow {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 1.5rem;
+    }
+    .hero h1 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(4.5rem, 12vw, 8rem);
+      font-weight: 800; line-height: 0.95;
+      letter-spacing: -0.04em;
+      color: var(--ink);
+      margin-bottom: 0.4em;
+    }
+    .hero-accent-bar {
+      width: 80px; height: 5px;
+      background: var(--yellow);
+      margin-bottom: 2rem;
+    }
+    .hero-sub {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.25rem; font-weight: 600;
+      color: var(--ink); margin-bottom: 1rem;
+      letter-spacing: -0.02em;
+    }
+    .hero-desc {
+      font-size: 1.05rem; line-height: 1.7;
+      color: var(--muted); max-width: 560px;
+    }
+
+    .week-list {
+      display: flex; gap: 0.75rem; margin-top: 2.5rem; flex-wrap: wrap;
+    }
+    .week-pill {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.68rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      background: var(--ink); color: var(--white);
+      padding: 6px 14px; border-radius: 100px;
+    }
+
+    /* ── SECTIONS ─────────────────────────────── */
+    .section-divider {
+      width: 100%; height: 1px;
+      background: var(--border);
+    }
+
+    section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 5rem 2.5rem;
+    }
+
+    .section-meta {
+      display: flex; align-items: center; gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .week-badge {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.62rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      background: var(--yellow); color: var(--ink);
+      padding: 4px 12px; border-radius: 100px;
+    }
+    .section-eyebrow {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.68rem; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    section h2 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-weight: 800; letter-spacing: -0.03em;
+      line-height: 1.1; margin-bottom: 1.5rem;
+      color: var(--ink);
+    }
+
+    section p {
+      font-size: 1.02rem; line-height: 1.78;
+      color: #333;
+      margin-bottom: 1.2rem;
+      max-width: 680px;
+    }
+    section p:last-of-type { margin-bottom: 0; }
+
+    /* ── CALLOUT BOXES ────────────────────────── */
+    .callout {
+      background: #FAFAFA;
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--yellow);
+      padding: 1.25rem 1.5rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1.5rem 0;
+      max-width: 680px;
+    }
+    .callout-label {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.65rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 0.5rem;
+    }
+    .callout p {
+      font-size: 0.95rem; line-height: 1.65;
+      color: var(--ink); margin-bottom: 0;
+    }
+
+    /* ── CONCEPT GRID ─────────────────────────── */
+    .concept-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0;
+      max-width: 680px;
+    }
+    .concept-card {
+      border: 1px solid var(--border);
+      padding: 1.25rem;
+      border-radius: 10px;
+    }
+    .concept-card .label {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.65rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 0.4rem;
+    }
+    .concept-card .value {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.6rem; font-weight: 800;
+      letter-spacing: -0.03em; color: var(--ink);
+      line-height: 1;
+    }
+    .concept-card .desc {
+      font-size: 0.88rem; color: #555;
+      margin-top: 0.4rem; line-height: 1.5;
+    }
+
+    /* ── CAMELOT TABLE ────────────────────────── */
+    .camelot-intro {
+      max-width: 680px;
+    }
+    .camelot-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 6px;
+      margin: 1.5rem 0;
+      max-width: 680px;
+    }
+    .camelot-cell {
+      aspect-ratio: 1;
+      border-radius: 8px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.62rem; font-weight: 700;
+      line-height: 1.2; text-align: center;
+      border: 1px solid var(--border);
+      cursor: default;
+    }
+    .camelot-cell .num { font-size: 0.85rem; font-weight: 800; }
+    .camelot-cell.major { background: var(--yellow); color: var(--ink); }
+    .camelot-cell.minor { background: var(--ink); color: var(--white); }
+
+    .camelot-legend {
+      display: flex; gap: 1.5rem; margin-top: 0.75rem; flex-wrap: wrap;
+    }
+    .legend-item {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-size: 0.82rem; color: var(--muted);
+    }
+    .legend-swatch {
+      width: 14px; height: 14px; border-radius: 3px;
+      border: 1px solid var(--border);
+    }
+
+    /* ── COMPARISON TABLE ─────────────────────── */
+    .compare-table {
+      width: 100%; border-collapse: collapse; max-width: 680px;
+      margin: 1.5rem 0;
+    }
+    .compare-table th {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.68rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      text-align: left; padding: 0.75rem 1rem;
+      border-bottom: 2px solid var(--ink);
+      color: var(--muted);
+    }
+    .compare-table td {
+      font-size: 0.95rem; padding: 0.9rem 1rem;
+      border-bottom: 1px solid var(--border);
+      line-height: 1.55; color: #333;
+      vertical-align: top;
+    }
+    .compare-table td:first-child {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700; color: var(--ink); white-space: nowrap;
+    }
+    .compare-table tr:last-child td { border-bottom: none; }
+
+    /* ── FOOTER ───────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2.5rem;
+      text-align: center;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--muted);
+    }
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--ink); }
+
+    /* ── RESPONSIVE ───────────────────────────── */
+    @media (max-width: 600px) {
+      .hero { padding: 4rem 1.5rem 3rem; }
+      section { padding: 3.5rem 1.5rem; }
+      #main-nav { padding: 0 1.5rem; }
+      .camelot-grid { grid-template-columns: repeat(6, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="main-nav" role="navigation" aria-label="Course navigation">
+    <a href="#hero" class="nav-wordmark"><span>DJ 101</span> Paolo Domingo</a>
+    <ul class="nav-links">
+      <li><a href="#history">History</a></li>
+      <li><a href="#spinning">Spinning</a></li>
+      <li><a href="#bpm">BPM</a></li>
+      <li><a href="#phrases">Phrases</a></li>
+      <li><a href="#keys">Keys</a></li>
+      <li><a href="#edits">Edits</a></li>
+      <li><a href="#playlists">Playlists</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger-btn" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero" id="hero">
+    <p class="hero-eyebrow">3-Week Foundation Course</p>
+    <h1>DJ 101</h1>
+    <div class="hero-accent-bar"></div>
+    <p class="hero-sub">Learn the language of the DJ booth.</p>
+    <p class="hero-desc">From the roots of DJ culture to reading a crowd — this course covers everything you need to mix with confidence, intention, and style.</p>
+    <div class="week-list">
+      <span class="week-pill">Week 1 — Foundations</span>
+      <span class="week-pill">Week 2 — Technique</span>
+      <span class="week-pill">Week 3 — The Set</span>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- 1. HISTORY & OBJECTIVE -->
+  <section id="history">
+    <div class="section-meta">
+      <span class="week-badge">Week 1</span>
+      <span class="section-eyebrow">History &amp; Objective</span>
+    </div>
+    <h2>Where it all started — and what a DJ actually does.</h2>
+    <p>DJing was born in the late 1960s and exploded in the 1970s. <strong>DJ Kool Herc</strong> is widely credited as the father of hip-hop DJing — he discovered the "merry-go-round" technique, isolating the drum break of a record and looping it to keep the party going. Grandmaster Flash refined this into "quick-mix theory," while Frankie Knuckles built the sound of house music at The Warehouse in Chicago. In Europe, disco and electronic dance music gave rise to a different but parallel DJ culture.</p>
+    <p>Over decades, DJing evolved from party tool to art form to career. Today, DJs perform in clubs, arenas, radio booths, weddings, and corporate events worldwide.</p>
+    <div class="callout">
+      <p class="callout-label">The Objective</p>
+      <p>A DJ's job is simple on paper: <strong>keep the dance floor moving.</strong> In practice, that means reading the crowd, building energy over time, choosing the right track at the right moment, and connecting one song to the next so seamlessly that people don't notice — they just feel it.</p>
+    </div>
+    <p>Every technical skill you learn — beat matching, harmonic mixing, phrasing — is a tool in service of that one goal. The crowd is always the real instrument.</p>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- 2. SPINNING -->
+  <section id="spinning">
+    <div class="section-meta">
+      <span class="week-badge">Week 1</span>
+      <span class="section-eyebrow">What is Spinning</span>
+    </div>
+    <h2>Playing records as a performance instrument.</h2>
+    <p>"Spinning" refers to the act of playing recorded music — originally vinyl records on turntables — in a way that creates a continuous, curated musical experience. Unlike a musician who plays notes, a DJ plays <em>tracks</em>. But that's only the beginning.</p>
+    <p>Turntablism elevated spinning into its own art form: using the turntable as an instrument through scratching, beat juggling, and manipulation of the playback. Even if you're mixing on CDJs or a controller today, understanding the physical mechanics of a turntable gives you a deeper intuition for tempo, feel, and timing.</p>
+    <div class="callout">
+      <p class="callout-label">Vinyl → CDJ → Controller</p>
+      <p>The tools have changed, but the principles haven't. Vinyl taught DJs to feel music physically. CDJs digitized that feel. Controllers made it portable. The ear training that matters most is the same across all three.</p>
+    </div>
+    <p>When a DJ "spins," they're making real-time decisions — not just pressing play. They're controlling tempo, volume, EQ, effects, and timing simultaneously while watching the crowd and thinking three tracks ahead.</p>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- 3. BPM & BEAT MATCHING -->
+  <section id="bpm">
+    <div class="section-meta">
+      <span class="week-badge">Week 2</span>
+      <span class="section-eyebrow">BPM &amp; Beat Matching</span>
+    </div>
+    <h2>Sync two tracks. Keep the floor moving.</h2>
+    <p><strong>BPM (Beats Per Minute)</strong> is the tempo of a track — how many beats occur in one minute. A 128 BPM house track has 128 beats every 60 seconds. Most DJ software and hardware can detect BPM automatically, but learning to hear it is fundamental.</p>
+    <div class="concept-grid">
+      <div class="concept-card">
+        <div class="label">Slow</div>
+        <div class="value">70–100</div>
+        <div class="desc">Hip-hop, R&B, slow jams</div>
+      </div>
+      <div class="concept-card">
+        <div class="label">Mid</div>
+        <div class="value">110–125</div>
+        <div class="desc">Pop, disco, nu-disco</div>
+      </div>
+      <div class="concept-card">
+        <div class="label">House</div>
+        <div class="value">124–132</div>
+        <div class="desc">House, tech house, garage</div>
+      </div>
+      <div class="concept-card">
+        <div class="label">Fast</div>
+        <div class="value">138–160+</div>
+        <div class="desc">Techno, trance, drum &amp; bass</div>
+      </div>
+    </div>
+    <p><strong>Beat matching</strong> is the process of aligning the BPM of two tracks so they play simultaneously without one running ahead or behind the other. Before sync buttons existed, DJs did this by ear using the <strong>pitch fader</strong> — a slider that slightly speeds up or slows down a track — and <strong>nudging</strong> the platter to push a beat forward or backward in real time.</p>
+    <div class="callout">
+      <p class="callout-label">How to beat match manually</p>
+      <p>1. Play Track A through the speakers. 2. Cue up Track B in your headphones. 3. Tap the BPM of both tracks. 4. Adjust Track B's pitch fader until the tempos feel identical. 5. Nudge the platter until the beats align. 6. Bring Track B into the mix.</p>
+    </div>
+    <p>Even if you use sync, train your ear first. DJs who can't beat match manually are vulnerable the moment the technology fails — and they'll never fully understand why their mixes sound off.</p>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- 4. PHRASES, BEATS & BARS -->
+  <section id="phrases">
+    <div class="section-meta">
+      <span class="week-badge">Week 2</span>
+      <span class="section-eyebrow">Structure</span>
+    </div>
+    <h2>Phrases, beats &amp; bars — the grammar of music.</h2>
+    <p>Music is structured in a predictable hierarchy. Understanding this structure lets you make transitions that feel natural instead of jarring — because you're working <em>with</em> the music, not against it.</p>
+    <div class="concept-grid">
+      <div class="concept-card">
+        <div class="label">Beat</div>
+        <div class="value">1</div>
+        <div class="desc">The single pulse. The "thump" of the kick drum.</div>
+      </div>
+      <div class="concept-card">
+        <div class="label">Bar</div>
+        <div class="value">4 beats</div>
+        <div class="desc">4 beats = 1 bar. The basic unit of rhythm.</div>
+      </div>
+      <div class="concept-card">
+        <div class="label">Phrase</div>
+        <div class="value">4–8 bars</div>
+        <div class="desc">A musical sentence. Where the energy shifts.</div>
+      </div>
+      <div class="concept-card">
+        <div class="label">Section</div>
+        <div class="value">16–32 bars</div>
+        <div class="desc">Verse, chorus, drop, breakdown — the big blocks.</div>
+      </div>
+    </div>
+    <p>In most dance music, <strong>energy changes happen at phrase boundaries</strong> — every 16 or 32 bars. A breakdown drops at bar 64. A drop hits at bar 96. If you start a transition mid-phrase, it will feel wrong even to listeners who can't explain why.</p>
+    <div class="callout">
+      <p class="callout-label">The rule</p>
+      <p>Always start and end your mixes on phrase boundaries — ideally at the top of an 8 or 16-bar phrase. Count in your head: 1-2-3-4, 2-2-3-4, 3-2-3-4… Listen for the "1" to hit with the musical change.</p>
+    </div>
+    <p>Phrasing is the single most overlooked skill in beginner DJs — and the single most obvious tell when it's wrong. Get this right and your mixes will immediately sound more professional.</p>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- 5. SONG KEYS & CAMELOT WHEEL -->
+  <section id="keys">
+    <div class="section-meta">
+      <span class="week-badge">Week 2</span>
+      <span class="section-eyebrow">Harmonic Mixing</span>
+    </div>
+    <h2>Song keys &amp; the Camelot Wheel.</h2>
+    <p>Every song is written in a musical <strong>key</strong> — a set of notes that the melody, chords, and bassline are built around. When two tracks in incompatible keys are mixed together, the result is a clash that sounds dissonant, even "wrong," to listeners.</p>
+    <p><strong>Harmonic mixing</strong> is the practice of only mixing tracks whose keys are musically compatible — so the transition sounds melodically smooth. The tool that makes this practical for DJs is the <strong>Camelot Wheel</strong>.</p>
+
+    <div class="camelot-intro">
+      <p>The Camelot Wheel maps all 24 musical keys (12 major, 12 minor) onto a clock-like grid. Each position has a number (1–12) and a letter (A = minor, B = major). Compatible keys are adjacent on the wheel.</p>
+    </div>
+
+    <!-- Camelot Wheel grid -->
+    <div class="camelot-grid" aria-label="Camelot Wheel">
+      <!-- Minor (A) row -->
+      <div class="camelot-cell minor"><span class="num">1A</span>Am</div>
+      <div class="camelot-cell minor"><span class="num">2A</span>Em</div>
+      <div class="camelot-cell minor"><span class="num">3A</span>Bm</div>
+      <div class="camelot-cell minor"><span class="num">4A</span>F♯m</div>
+      <div class="camelot-cell minor"><span class="num">5A</span>D♭m</div>
+      <div class="camelot-cell minor"><span class="num">6A</span>A♭m</div>
+      <div class="camelot-cell minor"><span class="num">7A</span>E♭m</div>
+      <div class="camelot-cell minor"><span class="num">8A</span>B♭m</div>
+      <div class="camelot-cell minor"><span class="num">9A</span>Fm</div>
+      <div class="camelot-cell minor"><span class="num">10A</span>Cm</div>
+      <div class="camelot-cell minor"><span class="num">11A</span>Gm</div>
+      <div class="camelot-cell minor"><span class="num">12A</span>Dm</div>
+      <!-- Major (B) row -->
+      <div class="camelot-cell major"><span class="num">1B</span>C</div>
+      <div class="camelot-cell major"><span class="num">2B</span>G</div>
+      <div class="camelot-cell major"><span class="num">3B</span>D</div>
+      <div class="camelot-cell major"><span class="num">4B</span>A</div>
+      <div class="camelot-cell major"><span class="num">5B</span>E</div>
+      <div class="camelot-cell major"><span class="num">6B</span>B</div>
+      <div class="camelot-cell major"><span class="num">7B</span>F♯</div>
+      <div class="camelot-cell major"><span class="num">8B</span>D♭</div>
+      <div class="camelot-cell major"><span class="num">9B</span>A♭</div>
+      <div class="camelot-cell major"><span class="num">10B</span>E♭</div>
+      <div class="camelot-cell major"><span class="num">11B</span>B♭</div>
+      <div class="camelot-cell major"><span class="num">12B</span>F</div>
+    </div>
+
+    <div class="camelot-legend">
+      <div class="legend-item">
+        <div class="legend-swatch" style="background: var(--yellow);"></div>
+        B — Major keys
+      </div>
+      <div class="legend-item">
+        <div class="legend-swatch" style="background: var(--ink);"></div>
+        A — Minor keys
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top: 1.5rem;">
+      <p class="callout-label">The 3 safe moves</p>
+      <p>
+        <strong>Same number, switch letter</strong> — e.g. 8A → 8B (relative major/minor, very smooth).<br>
+        <strong>+1 or −1 on the number</strong> — e.g. 8A → 9A or 7A (adjacent key, energy up or down).<br>
+        <strong>Same number, same letter</strong> — mixing two tracks in the exact same key (always safe).
+      </p>
+    </div>
+    <p>Most DJ software (Rekordbox, Serato, Traktor) can detect and display Camelot keys automatically. Tag your music library — it turns harmonic mixing from guesswork into a system.</p>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- 6. RADIO EDITS VS EXTENDED VERSIONS -->
+  <section id="edits">
+    <div class="section-meta">
+      <span class="week-badge">Week 3</span>
+      <span class="section-eyebrow">Track Formats</span>
+    </div>
+    <h2>Radio edits vs. extended versions.</h2>
+    <p>The same song can exist in multiple formats — and the format matters a great deal to a DJ. Choosing the wrong version can leave you scrambling during a live mix.</p>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Format</th>
+          <th>Length</th>
+          <th>Structure</th>
+          <th>DJ Use</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Radio Edit</td>
+          <td>~3–4 min</td>
+          <td>Intro → verse → chorus → outro. Often starts immediately on the vocal. Outro cuts quickly.</td>
+          <td>Tough to mix in/out of. Use for background music or a very quick-drop effect.</td>
+        </tr>
+        <tr>
+          <td>Extended Version</td>
+          <td>~6–8 min</td>
+          <td>Long instrumental intro + outro. Minimal arrangement in the mix sections — space to blend.</td>
+          <td>Ideal for DJing. The long intro/outro is your mixing window. You have time to blend properly.</td>
+        </tr>
+        <tr>
+          <td>Club Mix / Remix</td>
+          <td>~6–10 min</td>
+          <td>Aggressive drop, stripped-down arrangement. Built specifically for the floor.</td>
+          <td>Best for peak-hour sets. Often more energetic than the original.</td>
+        </tr>
+        <tr>
+          <td>Acapella / Instrumental</td>
+          <td>varies</td>
+          <td>Vocals only or music only.</td>
+          <td>For mashups, layering vocals over another track's instrumental.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <p class="callout-label">Rule of thumb</p>
+      <p>When building your library, always hunt for the <strong>extended version</strong> first. It gives you the most control. You can always start a mix later into the track — you can't add intro space that isn't there.</p>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- 7. PLAYLISTS & CROWD READING -->
+  <section id="playlists">
+    <div class="section-meta">
+      <span class="week-badge">Week 3</span>
+      <span class="section-eyebrow">The Set</span>
+    </div>
+    <h2>Creating playlists &amp; reading the crowd.</h2>
+    <p>A DJ set is a journey. The job isn't to play your favorite songs in a row — it's to take a crowd somewhere and bring them back. That requires an <strong>energy arc</strong>: a deliberate rise, peak, and resolution over the course of the set.</p>
+
+    <div class="concept-grid">
+      <div class="concept-card">
+        <div class="label">Opening</div>
+        <div class="value">Low</div>
+        <div class="desc">Warm up the room. Familiar grooves, mid-tempo, nothing too heavy.</div>
+      </div>
+      <div class="concept-card">
+        <div class="label">Build</div>
+        <div class="value">Rising</div>
+        <div class="desc">Introduce tension. Slightly faster, bigger drops, crowd starts moving.</div>
+      </div>
+      <div class="concept-card">
+        <div class="label">Peak</div>
+        <div class="value">High</div>
+        <div class="desc">Your biggest weapons. Full energy. The crowd is yours.</div>
+      </div>
+      <div class="concept-card">
+        <div class="label">Cool Down</div>
+        <div class="value">Falling</div>
+        <div class="desc">Bring it back. Last song is slower — leave them wanting more.</div>
+      </div>
+    </div>
+
+    <p><strong>Crowd reading</strong> is the skill of adjusting your plan in real time based on what you see. Is the floor filling? Good — keep building. Is it thinning out? You might have pushed too hard too early — drop back, rebuild. The pre-planned playlist is a guide, not a script.</p>
+
+    <div class="callout">
+      <p class="callout-label">Signals to watch for</p>
+      <p>
+        <strong>Arms raised, singing along</strong> — they know this track, they love it. Let it breathe.<br>
+        <strong>People checking their phones</strong> — you may have lost the room. Pivot now.<br>
+        <strong>Moving toward the floor</strong> — energy is building. Don't cut it short.<br>
+        <strong>Moving to the bar</strong> — the last track didn't land. Make a move.
+      </p>
+    </div>
+
+    <p>Build your playlist in zones, not individual tracks. A zone might be 20 minutes of tech-house at 128 BPM in 8A/9A keys — but within that zone, you have 8–10 tracks to choose from depending on what the room needs. Flexibility within structure is what separates a good DJ from a great one.</p>
+    <p>Your library is your most important asset. Organize it well — by BPM, key, energy level, and genre. The DJ who knows their music wins every time.</p>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- FOOTER -->
+  <footer>
+    DJ 101 &nbsp;·&nbsp; <a href="https://paolodomingo.com">paolodomingo.com</a>
+  </footer>
+
+  <script>
+    // Active nav link on scroll
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(a => a.classList.remove('active'));
+          const active = document.querySelector(`.nav-links a[href="#${entry.target.id}"]`);
+          if (active) active.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-40% 0px -50% 0px' });
+
+    sections.forEach(s => observer.observe(s));
+  </script>
+
+</body>
+</html>
