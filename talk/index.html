@@ -140,6 +140,25 @@
     .tt { font-size:clamp(15px,1.6vw,21px); font-weight:600; margin-bottom:5px; }
     .td { font-size:13px; color:var(--gray); line-height:1.45; }
 
+    /* ── S10 BIG PICTURE ── */
+    .bp-wrap { display:grid; grid-template-columns:1fr 1.15fr; gap:52px; width:100%; margin-top:24px; align-items:start; }
+    .bp-caption { font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--gray); margin-bottom:18px; }
+    .bp-hier { position:relative; width:100%; max-width:300px; aspect-ratio:1; }
+    .bp-ring { position:absolute; border-radius:50%; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; opacity:0; transform:scale(.5); }
+    .bp-ai  { inset:0; border:1.5px solid var(--light); }
+    .bp-ml  { inset:16%; border:1.5px solid var(--black); background:var(--off); }
+    .bp-llm { inset:36%; border:2px solid var(--accent); background:var(--white); }
+    .bp-rl { font-size:clamp(11px,1.2vw,15px); font-weight:700; }
+    .bp-rd { font-size:9px; color:var(--gray); line-height:1.4; margin-top:3px; padding:0 10px; }
+    .bp-spec { display:flex; align-items:stretch; gap:0; width:100%; }
+    .bp-sb { flex:1; padding:16px 14px; background:var(--off); opacity:0; transform:translateY(20px); }
+    .bp-sb-hl { background:var(--black); color:var(--white); }
+    .bp-sb-hl .bp-sb-d { color:rgba(255,255,255,.45); }
+    .bp-sb-tag { font-family:var(--mono); font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); margin-bottom:7px; }
+    .bp-sb-q { font-size:clamp(14px,1.5vw,19px); font-weight:700; margin-bottom:5px; line-height:1.2; }
+    .bp-sb-d { font-size:11px; color:var(--gray); line-height:1.45; }
+    .bp-arr { display:flex; align-items:center; color:var(--accent); font-size:18px; padding:0 8px; opacity:0; flex-shrink:0; }
+
     /* ── S10 BREAKTHROUGHS ── */
     .bc-grid { display:grid; grid-template-columns:1fr 1fr; gap:2px; width:100%; margin:28px 0; }
     .bc { background:var(--off); padding:22px 26px; opacity:0; transform:scale(.96); }
@@ -153,8 +172,8 @@
     .cr-label { font-family:var(--mono); font-size:10px; color:var(--accent); letter-spacing:.1em; text-transform:uppercase; min-width:110px; padding-top:2px; flex-shrink:0; }
     .cr-body { font-size:clamp(13px,1.35vw,16px); color:rgba(255,255,255,.65); line-height:1.55; }
 
-    /* ── S13 Q&A ── */
-    #s13 { flex-direction:column; justify-content:center; text-align:center; }
+    /* ── S14 Q&A ── */
+    #s14 { flex-direction:column; justify-content:center; text-align:center; }
     #qa-type { font-size:clamp(80px,13vw,190px); font-weight:700; line-height:.85; letter-spacing:-.05em; color:var(--white); }
     #qa-cur { display:inline-block; width:4px; height:.78em; background:var(--accent); vertical-align:-.02em; margin-left:4px; animation:blink 1s step-end infinite; opacity:0; }
     #qa-sub { font-size:18px; color:rgba(255,255,255,.4); margin:28px 0 36px; opacity:0; }
@@ -171,7 +190,7 @@
 
 <div id="tnav">
   <div id="tnav-l">Paul John Domingo<br>PLM · Machine Learning Applications</div>
-  <div id="tnav-r"><span class="n" id="cur">01</span>of 13</div>
+  <div id="tnav-r"><span class="n" id="cur">01</span>of 14</div>
 </div>
 
 <div id="dnav"></div>
@@ -407,8 +426,66 @@
     </div>
   </section>
 
-  <!-- S10 · BREAKTHROUGHS -->
-  <section class="slide" id="s10" data-name="BREAKTHROUGHS">
+  <!-- S10 · BIG PICTURE -->
+  <section class="slide" id="s10" data-name="THE BIG PICTURE">
+    <div style="width:100%;">
+      <span class="tag">00 · Quick Clarity</span>
+      <h2 class="lg" style="margin-bottom:0;">Let's clear this up.</h2>
+      <div class="bp-wrap">
+        <div>
+          <p class="bp-caption">The Hierarchy</p>
+          <svg viewBox="0 0 260 260" style="width:100%;max-width:280px;display:block;" id="bp-svg">
+            <g id="bpc-ai" opacity="0">
+              <circle cx="130" cy="130" r="124" fill="none" stroke="#E5E4DF" stroke-width="1.5"/>
+            </g>
+            <g id="bpc-ml" opacity="0">
+              <circle cx="130" cy="130" r="87" fill="#F8F7F2" stroke="#0F0F0F" stroke-width="1.5"/>
+            </g>
+            <g id="bpc-llm" opacity="0">
+              <circle cx="130" cy="130" r="51" fill="white" stroke="#FF4B1F" stroke-width="2"/>
+            </g>
+            <g id="bpl-ai" opacity="0">
+              <text x="130" y="19" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-weight="700" font-size="12" fill="#0F0F0F">AI</text>
+              <text x="130" y="33" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-size="8" fill="#8C8C8C">Any technique making machines seem intelligent</text>
+            </g>
+            <g id="bpl-ml" opacity="0">
+              <text x="130" y="58" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-weight="700" font-size="12" fill="#0F0F0F">ML</text>
+              <text x="130" y="72" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-size="8" fill="#8C8C8C">Learns from data — not hard-coded rules</text>
+            </g>
+            <g id="bpl-llm" opacity="0">
+              <text x="130" y="125" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-weight="700" font-size="12" fill="#FF4B1F">LLMs</text>
+              <text x="130" y="141" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-size="8" fill="#8C8C8C">ChatGPT · Claude · Gemini</text>
+            </g>
+          </svg>
+        </div>
+        <div>
+          <p class="bp-caption">The Spectrum</p>
+          <div class="bp-spec">
+            <div class="bp-sb" id="bps1">
+              <div class="bp-sb-tag">Data Analytics</div>
+              <div class="bp-sb-q">What happened?</div>
+              <div class="bp-sb-d">Looks at the past. A human reads the chart and decides.</div>
+            </div>
+            <div class="bp-arr" id="bpa1">→</div>
+            <div class="bp-sb bp-sb-hl" id="bps2">
+              <div class="bp-sb-tag">Machine Learning</div>
+              <div class="bp-sb-q">What will happen?</div>
+              <div class="bp-sb-d">Finds patterns. Predicts & acts without being told how.</div>
+            </div>
+            <div class="bp-arr" id="bpa2">→</div>
+            <div class="bp-sb" id="bps3">
+              <div class="bp-sb-tag">AI Agents</div>
+              <div class="bp-sb-q">What should I do?</div>
+              <div class="bp-sb-d">Plans and acts on its own. Minimal human in the loop.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S11 · BREAKTHROUGHS -->
+  <section class="slide" id="s11" data-name="BREAKTHROUGHS">
     <div style="width:100%;">
       <span class="tag">08 · In The Wild</span>
       <h2 class="lg" style="margin-bottom:28px;">ML that actually <span class="ac">changed things.</span></h2>
@@ -421,8 +498,8 @@
     </div>
   </section>
 
-  <!-- S11 · THE CRACKS (DARK) -->
-  <section class="slide dark" id="s11" data-name="THE CRACKS">
+  <!-- S12 · THE CRACKS (DARK) -->
+  <section class="slide dark" id="s12" data-name="THE CRACKS">
     <div style="width:100%;">
       <span class="tag">09 · The Other Side</span>
       <h2 class="lg" style="margin-bottom:32px;color:var(--white);">It's not <span class="ac">all good.</span></h2>
@@ -435,8 +512,8 @@
     </div>
   </section>
 
-  <!-- S12 · FUTURE -->
-  <section class="slide" id="s12" data-name="THE FUTURE">
+  <!-- S13 · FUTURE -->
+  <section class="slide" id="s13" data-name="THE FUTURE">
     <div style="width:100%;">
       <span class="tag">10 · What's Coming</span>
       <h2 class="lg" style="margin-bottom:28px;">The window is open <span class="ac">right now.</span></h2>
@@ -450,8 +527,8 @@
     </div>
   </section>
 
-  <!-- S13 · Q&A -->
-  <section class="slide dark" id="s13" data-name="Q&A">
+  <!-- S14 · Q&A -->
+  <section class="slide dark" id="s14" data-name="Q&A">
     <div style="text-align:center;width:100%;">
       <div class="tag" style="text-align:center;">11 · Open Forum</div>
       <div id="qa-type"></div><span id="qa-cur"></span>
@@ -596,28 +673,35 @@
       gsap.set('#adv-l .ar, #adv-r .ar', { opacity: 0, x: -16 });
       gsap.set('#s9 .md, #s9 .tag', { opacity: 0, y: 18 });
     }
-    if (i === 9) { // S10 breakthroughs
-      gsap.set('#bc-grid .bc', { opacity: 0, scale: .96 });
+    if (i === 9) { // S10 big picture
+      gsap.set('#bpc-ai, #bpc-ml, #bpc-llm', { opacity: 0 });
+      gsap.set('#bpl-ai, #bpl-ml, #bpl-llm', { opacity: 0 });
+      gsap.set('#bps1, #bps2, #bps3', { opacity: 0, y: 20 });
+      gsap.set('#bpa1, #bpa2', { opacity: 0 });
       gsap.set('#s10 .lg, #s10 .tag', { opacity: 0, y: 18 });
     }
-    if (i === 10) { // S11 cracks
-      document.querySelectorAll('#cracks .cr').forEach(el => { el.style.opacity = '0'; el.style.transform = 'translateX(-20px)'; });
+    if (i === 10) { // S11 breakthroughs
+      gsap.set('#bc-grid .bc', { opacity: 0, scale: .96 });
       gsap.set('#s11 .lg, #s11 .tag', { opacity: 0, y: 18 });
     }
-    if (i === 11) { // S12 trends
-      gsap.set('#trends .tc', { opacity: 0, scale: .96 });
-      gsap.set('#s12 .lg, #s12 .quote, #s12 .tag', { opacity: 0, y: 18 });
+    if (i === 11) { // S12 cracks
+      document.querySelectorAll('#cracks .cr').forEach(el => { el.style.opacity = '0'; el.style.transform = 'translateX(-20px)'; });
+      gsap.set('#s12 .lg, #s12 .tag', { opacity: 0, y: 18 });
     }
-    if (i === 12) { // S13 qa
+    if (i === 12) { // S13 trends
+      gsap.set('#trends .tc', { opacity: 0, scale: .96 });
+      gsap.set('#s13 .lg, #s13 .quote, #s13 .tag', { opacity: 0, y: 18 });
+    }
+    if (i === 13) { // S14 qa
       document.getElementById('qa-type').textContent = '';
       gsap.set('#qa-cur, #qa-sub, #qa-contact', { opacity: 0 });
-      gsap.set('#s13 .tag', { opacity: 0, y: 18 });
+      gsap.set('#s14 .tag', { opacity: 0, y: 18 });
     }
   }
 
   // ─── PER-SLIDE ANIMATIONS ───
   function runAnim(i) {
-    const fns = [animS1, animS2, animS3, animS4, animS5, animS6, animS7, animS8, animS9, animS10, animS11, animS12, animS13];
+    const fns = [animS1, animS2, animS3, animS4, animS5, animS6, animS7, animS8, animS9, animS10, animS11, animS12, animS13, animS14];
     if (fns[i]) fns[i]();
   }
 
@@ -738,37 +822,60 @@
   }
 
   function animS10() {
-    const tl = gsap.timeline({ delay: .1 });
+    const tl = gsap.timeline({ delay: .2 });
     tl.to('#s10 .tag', { opacity: 1, y: 0, duration: .4 })
-      .to('#s10 .lg',  { opacity: 1, y: 0, duration: .55 }, '-=.1')
-      .to('#bc-grid .bc', { opacity: 1, scale: 1, duration: .45, stagger: .1, ease: 'back.out(1.2)' });
+      .to('#s10 .lg',  { opacity: 1, y: 0, duration: .5 }, '-=.1');
+    // SVG circles grow from center
+    gsap.to('#bpc-ai',  { opacity: 1, duration: .1, delay: .55 });
+    gsap.from('#bpc-ai circle',  { attr: { r: 0 }, duration: .65, ease: 'power2.out', delay: .55 });
+    gsap.to('#bpc-ml',  { opacity: 1, duration: .1, delay: .85 });
+    gsap.from('#bpc-ml circle',  { attr: { r: 0 }, duration: .65, ease: 'power2.out', delay: .85 });
+    gsap.to('#bpc-llm', { opacity: 1, duration: .1, delay: 1.15 });
+    gsap.from('#bpc-llm circle', { attr: { r: 0 }, duration: .65, ease: 'power2.out', delay: 1.15 });
+    // labels fade in after each circle
+    gsap.to('#bpl-ai',  { opacity: 1, duration: .35, delay: 1.0 });
+    gsap.to('#bpl-ml',  { opacity: 1, duration: .35, delay: 1.3 });
+    gsap.to('#bpl-llm', { opacity: 1, duration: .35, delay: 1.6 });
+    // spectrum boxes slide up
+    gsap.to('#bps1', { opacity: 1, y: 0, duration: .4, ease: 'power2.out', delay: 1.75 });
+    gsap.to('#bpa1', { opacity: 1, duration: .25, delay: 2.0 });
+    gsap.to('#bps2', { opacity: 1, y: 0, duration: .4, ease: 'power2.out', delay: 2.05 });
+    gsap.to('#bpa2', { opacity: 1, duration: .25, delay: 2.3 });
+    gsap.to('#bps3', { opacity: 1, y: 0, duration: .4, ease: 'power2.out', delay: 2.35 });
   }
 
   function animS11() {
     const tl = gsap.timeline({ delay: .1 });
     tl.to('#s11 .tag', { opacity: 1, y: 0, duration: .4 })
-      .to('#s11 .lg',  { opacity: 1, y: 0, duration: .55 }, '-=.1');
-    document.querySelectorAll('#cracks .cr').forEach((el, i) => {
-      gsap.to(el, { opacity: 1, x: 0, duration: .45, ease: 'power2.out', delay: .5 + i * .13 });
-    });
+      .to('#s11 .lg',  { opacity: 1, y: 0, duration: .55 }, '-=.1')
+      .to('#bc-grid .bc', { opacity: 1, scale: 1, duration: .45, stagger: .1, ease: 'back.out(1.2)' });
   }
 
   function animS12() {
     const tl = gsap.timeline({ delay: .1 });
     tl.to('#s12 .tag', { opacity: 1, y: 0, duration: .4 })
-      .to('#s12 .lg',  { opacity: 1, y: 0, duration: .55 }, '-=.1')
+      .to('#s12 .lg',  { opacity: 1, y: 0, duration: .55 }, '-=.1');
+    document.querySelectorAll('#cracks .cr').forEach((el, i) => {
+      gsap.to(el, { opacity: 1, x: 0, duration: .45, ease: 'power2.out', delay: .5 + i * .13 });
+    });
+  }
+
+  function animS13() {
+    const tl = gsap.timeline({ delay: .1 });
+    tl.to('#s13 .tag', { opacity: 1, y: 0, duration: .4 })
+      .to('#s13 .lg',  { opacity: 1, y: 0, duration: .55 }, '-=.1')
       .to('#trends .tc', { opacity: 1, scale: 1, duration: .4, stagger: .09, ease: 'back.out(1.2)' })
-      .to('#s12 .quote', { opacity: 1, y: 0, duration: .5 });
+      .to('#s13 .quote', { opacity: 1, y: 0, duration: .5 });
     ['pd1','pd2','pd3','pd4'].forEach((id, i) => {
       gsap.to('#' + id, { scale: 1.6, opacity: .4, duration: .7, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: i * .2 });
     });
   }
 
-  function animS13() {
+  function animS14() {
     const el = document.getElementById('qa-type');
     const cursor = document.getElementById('qa-cur');
     el.textContent = '';
-    gsap.to('#s13 .tag', { opacity: 1, y: 0, duration: .4 });
+    gsap.to('#s14 .tag', { opacity: 1, y: 0, duration: .4 });
     gsap.to(cursor, { opacity: 1, duration: .1, delay: .4 });
     let txt = '';
     const full = 'Your\nturn.';
