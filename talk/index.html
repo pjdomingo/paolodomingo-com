@@ -4,866 +4,775 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Machines That Learn — Paolo Domingo × PLM</title>
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
     :root {
-      --white: #FFFFFF;
-      --off-white: #F8F7F2;
-      --black: #0F0F0F;
-      --accent: #FF4B1F;
-      --gray: #8C8C8C;
-      --light: #E5E4DF;
-      --font: 'Space Grotesk', sans-serif;
-      --mono: 'Space Mono', monospace;
+      --white: #FFFFFF; --off: #F8F7F2; --black: #0F0F0F;
+      --accent: #FF4B1F; --gray: #8C8C8C; --light: #E5E4DF;
+      --font: 'Space Grotesk', sans-serif; --mono: 'Space Mono', monospace;
     }
+    html, body { width:100%; height:100%; overflow:hidden; font-family:var(--font); background:var(--white); color:var(--black); -webkit-font-smoothing:antialiased; }
 
-    html, body {
-      width: 100%; height: 100%;
-      overflow: hidden;
-      font-family: var(--font);
-      background: var(--white);
-      color: var(--black);
-      -webkit-font-smoothing: antialiased;
-    }
+    /* ── PROGRESS ── */
+    #prog { position:fixed; top:0; left:0; height:2px; background:var(--accent); z-index:999; width:0%; transition:width .6s cubic-bezier(.4,0,.2,1); }
 
-    /* ─── PROGRESS BAR ─── */
-    #progress {
-      position: fixed; top: 0; left: 0;
-      height: 2px; background: var(--accent);
-      z-index: 999; transition: width 0.6s cubic-bezier(.4,0,.2,1);
-      width: 0%;
-    }
+    /* ── TOP NAV ── */
+    #tnav { position:fixed; top:0; left:0; right:0; padding:26px 52px; display:flex; justify-content:space-between; align-items:flex-start; z-index:200; pointer-events:none; }
+    #tnav-l { font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--gray); line-height:1.7; }
+    #tnav-r { font-family:var(--mono); font-size:10px; letter-spacing:.14em; color:var(--gray); text-align:right; }
+    #tnav-r .n { font-size:18px; font-family:var(--font); font-weight:700; color:var(--accent); display:block; line-height:1; }
 
-    /* ─── TOP NAV ─── */
-    #top-nav {
-      position: fixed; top: 0; left: 0; right: 0;
-      padding: 26px 52px;
-      display: flex; justify-content: space-between; align-items: flex-start;
-      z-index: 100; pointer-events: none;
-    }
-    #nav-left {
-      font-family: var(--mono); font-size: 10px;
-      letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--gray); line-height: 1.6;
-    }
-    #nav-right {
-      font-family: var(--mono); font-size: 10px;
-      letter-spacing: 0.14em; color: var(--gray);
-      text-align: right;
-    }
-    #nav-right .num {
-      font-size: 16px; font-family: var(--font);
-      font-weight: 700; color: var(--accent); display: block;
-      line-height: 1;
-    }
+    /* ── DOT NAV ── */
+    #dnav { position:fixed; right:28px; top:50%; transform:translateY(-50%); display:flex; flex-direction:column; gap:10px; z-index:200; }
+    .dot { width:5px; height:5px; border-radius:50%; background:var(--light); cursor:pointer; transition:all .3s; pointer-events:all; }
+    .dot.on { background:var(--accent); transform:scale(1.8); }
+    .dot:hover:not(.on) { background:var(--black); }
 
-    /* ─── DOT NAV ─── */
-    #dot-nav {
-      position: fixed; right: 28px; top: 50%;
-      transform: translateY(-50%);
-      display: flex; flex-direction: column; gap: 10px;
-      z-index: 100;
-    }
-    .dot {
-      width: 5px; height: 5px; border-radius: 50%;
-      background: var(--light); cursor: pointer;
-      transition: all 0.3s ease; pointer-events: all;
-    }
-    .dot.active { background: var(--accent); transform: scale(1.8); }
-    .dot:hover:not(.active) { background: var(--black); }
+    /* ── BOTTOM NAV ── */
+    #bnav { position:fixed; bottom:32px; left:50%; transform:translateX(-50%); display:flex; align-items:center; gap:20px; z-index:200; }
+    .nbtn { width:42px; height:42px; border:1.5px solid currentColor; border-radius:50%; background:transparent; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .22s; font-size:15px; color:var(--black); }
+    .nbtn:hover:not(:disabled) { background:var(--black); color:var(--white); }
+    .nbtn:disabled { opacity:.18; pointer-events:none; }
+    #sname { font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--gray); min-width:110px; text-align:center; }
 
-    /* ─── BOTTOM NAV ─── */
-    #bottom-nav {
-      position: fixed; bottom: 32px; left: 50%;
-      transform: translateX(-50%);
-      display: flex; align-items: center; gap: 20px;
-      z-index: 100;
-    }
-    .nav-btn {
-      width: 42px; height: 42px;
-      border: 1.5px solid currentColor; border-radius: 50%;
-      background: transparent; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: all 0.22s ease; font-size: 15px;
-      color: var(--black); font-family: var(--font);
-    }
-    .nav-btn:hover:not(:disabled) {
-      background: var(--black); color: var(--white);
-    }
-    .nav-btn:disabled { opacity: 0.18; cursor: default; pointer-events: none; }
-    #slide-name {
-      font-family: var(--mono); font-size: 10px;
-      letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--gray); min-width: 110px; text-align: center;
-    }
+    /* ── SLIDES ── */
+    #wrap { width:100%; height:100vh; position:relative; }
+    .slide { position:absolute; inset:0; width:100%; height:100vh; display:flex; align-items:center; padding:100px 80px 80px; visibility:hidden; opacity:0; transform:translateX(0); transition:opacity .42s ease, transform .42s ease; }
+    .slide.on { visibility:visible; }
+    .dark { background:var(--black); color:var(--white); }
 
-    /* ─── SLIDES WRAPPER ─── */
-    #wrap {
-      width: 100%; height: 100vh; position: relative;
-    }
+    /* ── TYPE ── */
+    .tag { font-family:var(--mono); font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:var(--accent); margin-bottom:36px; display:block; }
+    .dark .tag { color:rgba(255,75,31,.75); }
+    .xl { font-size:clamp(56px,8.5vw,124px); font-weight:700; line-height:.92; letter-spacing:-.035em; }
+    .lg { font-size:clamp(40px,5.5vw,80px); font-weight:700; line-height:.95; letter-spacing:-.025em; }
+    .md { font-size:clamp(24px,3vw,44px); font-weight:600; line-height:1.1; letter-spacing:-.015em; }
+    .sm { font-size:clamp(14px,1.35vw,19px); line-height:1.65; color:var(--gray); }
+    .dark .sm { color:rgba(255,255,255,.5); }
+    .ac { color:var(--accent); }
+    .quote { border-left:2.5px solid var(--accent); padding:4px 0 4px 22px; font-size:clamp(17px,2vw,26px); font-weight:500; line-height:1.35; font-style:italic; }
+    .g2 { display:grid; grid-template-columns:1fr 1fr; gap:68px; width:100%; align-items:start; }
 
-    .slide {
-      position: absolute; inset: 0;
-      width: 100%; height: 100vh;
-      display: flex; align-items: center;
-      padding: 100px 80px 80px;
-      visibility: hidden; opacity: 0;
-      will-change: transform, opacity;
-    }
-    .slide.active { visibility: visible; opacity: 1; }
+    /* ── S1 HERO ── */
+    #s1 { padding:0; }
+    #canvas3d { position:absolute; inset:0; z-index:0; pointer-events:none; }
+    #hi { position:relative; z-index:2; width:100%; height:100%; display:flex; flex-direction:column; justify-content:space-between; padding:72px 80px; }
+    #h-eye { font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--gray); }
+    #h-title { font-size:clamp(80px,12.5vw,172px); font-weight:700; line-height:.87; letter-spacing:-.04em; }
+    #h-foot { display:flex; justify-content:space-between; align-items:flex-end; }
+    #h-sub { font-size:15px; color:var(--gray); line-height:1.7; max-width:290px; }
+    #h-hint { font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--gray); display:flex; align-items:center; gap:8px; }
+    #h-hint::after { content:'→'; animation:nudge 1.8s ease-in-out infinite; }
+    @keyframes nudge { 0%,100%{transform:translateX(0)} 50%{transform:translateX(5px)} }
 
-    /* Dark variant */
-    .dark {
-      background: var(--black); color: var(--white);
-    }
-    .dark .tag { color: rgba(255,255,255,0.35); }
-    .dark .muted { color: rgba(255,255,255,0.5); }
-    .dark .divider { border-color: rgba(255,255,255,0.1); }
-    .dark .chip {
-      border-color: rgba(255,255,255,0.2);
-      color: rgba(255,255,255,0.7);
-    }
+    /* ── S2 CHIPS ── */
+    .chips { display:flex; gap:9px; flex-wrap:wrap; margin:28px 0 36px; }
+    .chip { font-family:var(--mono); font-size:11px; padding:9px 16px; border:1.5px solid var(--black); letter-spacing:.06em; white-space:nowrap; opacity:0; transform:translateY(-28px); }
 
-    /* ─── TYPE SCALE ─── */
-    .tag {
-      font-family: var(--mono); font-size: 10px;
-      letter-spacing: 0.16em; text-transform: uppercase;
-      color: var(--accent); margin-bottom: 40px;
-      display: block;
-    }
+    /* ── S3 TIMELINE ── */
+    .tl { display:flex; align-items:center; flex-wrap:nowrap; margin:32px 0; position:relative; }
+    .tr { font-family:var(--mono); font-size:10px; letter-spacing:.08em; text-transform:uppercase; padding:8px 12px; border:1.5px solid var(--black); white-space:nowrap; transition:all .22s; cursor:default; }
+    .tr:hover { background:var(--black); color:var(--white); }
+    .tr.end { background:var(--black); color:var(--white); }
+    .ta { color:var(--accent); padding:0 6px; font-size:13px; }
+    #tl-line { position:absolute; bottom:-12px; left:0; height:1.5px; background:var(--accent); width:0%; }
 
-    .xl {
-      font-size: clamp(62px, 9vw, 130px);
-      font-weight: 700; line-height: 0.93;
-      letter-spacing: -0.03em;
-    }
-    .lg {
-      font-size: clamp(44px, 6vw, 84px);
-      font-weight: 700; line-height: 0.95;
-      letter-spacing: -0.025em;
-    }
-    .md {
-      font-size: clamp(28px, 3.2vw, 48px);
-      font-weight: 600; line-height: 1.1;
-      letter-spacing: -0.015em;
-    }
-    .sm {
-      font-size: clamp(15px, 1.4vw, 20px);
-      font-weight: 400; line-height: 1.65;
-      color: var(--gray);
-    }
+    /* ── S4 CODE EDITOR ── */
+    .code-wrap { background:#1a1a1a; border-radius:10px; overflow:hidden; font-family:var(--mono); font-size:12px; line-height:1.9; width:100%; }
+    .code-hdr { background:#252525; padding:10px 14px; display:flex; align-items:center; gap:6px; }
+    .cdot { width:11px; height:11px; border-radius:50%; }
+    .cdot.r{background:#FF5F57;} .cdot.y{background:#FEBC2E;} .cdot.g{background:#28C840;}
+    .cfn { font-family:var(--mono); font-size:10px; color:#888; margin-left:8px; }
+    .code-body { padding:14px 16px; position:relative; overflow:hidden; }
+    .cl { color:#ccc; padding:0 0 0 8px; }
+    .cl .kw{color:#ff79c6;} .cl .fn{color:#79c0ff;} .cl .str{color:#a8ff78;}
+    .cl .cm{color:#555;}
+    .cl-check { color:#28C840; margin-left:8px; opacity:0; font-size:11px; }
+    .scanner { position:absolute; left:0; right:0; height:22px; background:rgba(40,200,64,.13); border-left:2px solid #28C840; top:14px; pointer-events:none; }
+    .approved { font-family:var(--mono); font-size:11px; color:#28C840; text-align:right; padding:10px 16px; border-top:1px solid #2a2a2a; opacity:0; letter-spacing:.1em; }
 
-    .accent { color: var(--accent); }
-    .muted { color: var(--gray); }
-    .light-text { font-weight: 300; font-style: italic; }
+    /* ── S5 BAR CHART ── */
+    .chart { display:flex; flex-direction:column; align-items:flex-start; width:100%; }
+    .bars { display:flex; align-items:flex-end; gap:8px; height:150px; padding-bottom:0; width:100%; }
+    .b { flex:1; border-radius:3px 3px 0 0; transform-origin:bottom; transform:scaleY(0); }
+    .b:nth-child(1){background:var(--light);}
+    .b:nth-child(2){background:var(--light);}
+    .b:nth-child(3){background:var(--light);}
+    .b:nth-child(4){background:var(--light);}
+    .b:nth-child(5){background:#ccc;}
+    .b:nth-child(6){background:var(--accent);}
+    .bar-floor { width:100%; height:1.5px; background:var(--light); margin-bottom:8px; }
+    .bar-labels { display:flex; gap:8px; width:100%; padding-top:4px; }
+    .bl { flex:1; text-align:center; font-family:var(--mono); font-size:9px; color:var(--gray); letter-spacing:.08em; }
+    .chart-cap { font-family:var(--mono); font-size:10px; color:var(--gray); letter-spacing:.1em; text-transform:uppercase; margin-top:16px; }
 
-    .quote {
-      border-left: 2.5px solid var(--accent);
-      padding: 4px 0 4px 24px;
-      font-size: clamp(18px, 2.2vw, 30px);
-      font-weight: 500; line-height: 1.35;
-      font-style: italic;
-    }
+    /* ── S6 ORBS ── */
+    .orb-field { position:absolute; inset:0; overflow:hidden; pointer-events:none; z-index:0; }
+    .orb { position:absolute; border-radius:50%; opacity:0; }
+    #s6 .proj-content { position:relative; z-index:1; }
 
-    .divider { border: none; border-top: 1px solid var(--light); }
+    /* ── S7 TYPEWRITER ── */
+    #tw { display:inline; }
+    .cur { display:inline-block; width:3px; height:.85em; background:var(--white); vertical-align:-.05em; margin-left:2px; animation:blink 1s step-end infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+    #s7-rest { opacity:0; }
 
-    /* ─── LAYOUT HELPERS ─── */
-    .grid-2 {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 72px; width: 100%; align-items: start;
-    }
+    /* ── S8 SKILLS ── */
+    .sr { display:flex; gap:20px; align-items:flex-start; padding:17px 0; border-bottom:1px solid var(--light); overflow:hidden; }
+    .sr:last-child { border-bottom:none; }
+    .sn { font-family:var(--mono); font-size:10px; color:var(--accent); padding-top:4px; min-width:22px; }
+    .st { font-size:clamp(17px,1.8vw,24px); font-weight:600; }
+    .sd { font-size:13px; color:var(--gray); margin-top:3px; }
+    .sr-inner { transform:translateX(-120%); }
 
-    /* ─── CHIPS ─── */
-    .chips { display: flex; gap: 10px; flex-wrap: wrap; margin: 32px 0 40px; }
-    .chip {
-      font-family: var(--mono); font-size: 11px;
-      padding: 9px 16px; border: 1.5px solid var(--black);
-      letter-spacing: 0.06em; white-space: nowrap;
-    }
+    /* ── S9 ADVICE ── */
+    .ar { display:flex; gap:14px; align-items:flex-start; padding:13px 0; border-bottom:1px solid var(--light); font-size:clamp(13px,1.3vw,17px); line-height:1.5; opacity:0; transform:translateX(-16px); }
+    .ar::before { content:'→'; color:var(--accent); flex-shrink:0; padding-top:1px; font-size:13px; }
 
-    /* ─── CAREER TIMELINE ─── */
-    .timeline {
-      display: flex; align-items: center;
-      flex-wrap: wrap; gap: 0; margin: 36px 0;
-    }
-    .t-role {
-      font-family: var(--mono); font-size: 10px;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      padding: 8px 13px; border: 1.5px solid var(--black);
-      white-space: nowrap; transition: all 0.22s;
-      cursor: default;
-    }
-    .t-role:hover { background: var(--black); color: var(--white); }
-    .t-arr { color: var(--accent); padding: 0 6px; font-size: 13px; }
+    /* ── S10 TRENDS ── */
+    .trends { display:grid; grid-template-columns:1fr 1fr; gap:2px; width:100%; margin:28px 0 32px; }
+    .tc { background:var(--off); padding:26px 28px; transform:scale(.96); opacity:0; }
+    .tn { font-family:var(--mono); font-size:10px; color:var(--accent); letter-spacing:.1em; margin-bottom:10px; display:flex; align-items:center; gap:8px; }
+    .pdot { width:7px; height:7px; border-radius:50%; background:var(--accent); display:inline-block; }
+    .tt { font-size:clamp(15px,1.6vw,21px); font-weight:600; margin-bottom:5px; }
+    .td { font-size:13px; color:var(--gray); line-height:1.45; }
 
-    /* ─── PROJECT LAYOUT ─── */
-    .proj-wrap {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 0 56px; align-items: center; width: 100%;
-    }
-    .proj-num {
-      font-size: clamp(120px, 17vw, 260px);
-      font-weight: 700; line-height: 1;
-      letter-spacing: -0.05em;
-      color: var(--light); user-select: none;
-    }
+    /* ── S11 Q&A ── */
+    #s11 { flex-direction:column; justify-content:center; text-align:center; }
+    #qa-type { font-size:clamp(80px,13vw,190px); font-weight:700; line-height:.85; letter-spacing:-.05em; color:var(--white); }
+    #qa-cur { display:inline-block; width:4px; height:.78em; background:var(--accent); vertical-align:-.02em; margin-left:4px; animation:blink 1s step-end infinite; opacity:0; }
+    #qa-sub { font-size:18px; color:rgba(255,255,255,.4); margin:28px 0 36px; opacity:0; }
+    #qa-contact { font-family:var(--mono); font-size:10px; color:rgba(255,255,255,.22); letter-spacing:.14em; text-transform:uppercase; line-height:2.2; opacity:0; }
 
-    /* ─── SKILL LIST ─── */
-    .skill-row {
-      display: flex; gap: 20px; align-items: flex-start;
-      padding: 18px 0; border-bottom: 1px solid var(--light);
-    }
-    .skill-n {
-      font-family: var(--mono); font-size: 10px;
-      color: var(--accent); padding-top: 5px; min-width: 22px;
-    }
-    .skill-title { font-size: clamp(18px, 2vw, 26px); font-weight: 600; }
-    .skill-sub { font-size: 13px; color: var(--gray); margin-top: 3px; line-height: 1.4; }
-
-    /* ─── ADVICE ROWS ─── */
-    .a-row {
-      display: flex; gap: 14px; align-items: flex-start;
-      padding: 14px 0; border-bottom: 1px solid var(--light);
-      font-size: clamp(13px, 1.3vw, 17px); line-height: 1.55;
-    }
-    .a-row::before {
-      content: '→'; color: var(--accent);
-      flex-shrink: 0; padding-top: 1px; font-size: 13px;
-    }
-
-    /* ─── TRENDS GRID ─── */
-    .trends {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 2px; width: 100%; margin: 32px 0 36px;
-    }
-    .t-card {
-      background: var(--off-white); padding: 28px;
-      transition: background 0.22s;
-    }
-    .t-card:hover { background: var(--light); }
-    .t-n {
-      font-family: var(--mono); font-size: 10px;
-      color: var(--accent); letter-spacing: 0.1em;
-      margin-bottom: 10px;
-    }
-    .t-title { font-size: clamp(16px, 1.6vw, 22px); font-weight: 600; margin-bottom: 6px; }
-    .t-desc { font-size: 13px; color: var(--gray); line-height: 1.5; }
-
-    /* ─── SLIDE 1: HERO ─── */
-    #s1 { padding: 0; }
-    #canvas3d {
-      position: absolute; inset: 0; z-index: 0;
-      pointer-events: none;
-    }
-    #hero-inner {
-      position: relative; z-index: 2;
-      width: 100%; height: 100%;
-      display: flex; flex-direction: column;
-      justify-content: space-between; padding: 72px 80px;
-    }
-    #hero-eye {
-      font-family: var(--mono); font-size: 10px;
-      letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--gray);
-    }
-    #hero-title {
-      font-size: clamp(80px, 12vw, 168px);
-      font-weight: 700; line-height: 0.88;
-      letter-spacing: -0.04em;
-    }
-    #hero-foot {
-      display: flex; justify-content: space-between; align-items: flex-end;
-    }
-    #hero-sub {
-      font-size: 15px; color: var(--gray); line-height: 1.7;
-      max-width: 300px;
-    }
-    #hero-hint {
-      font-family: var(--mono); font-size: 10px;
-      letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--gray); display: flex; align-items: center; gap: 8px;
-    }
-    #hero-hint::after {
-      content: '→';
-      animation: nudge 1.8s ease-in-out infinite;
-    }
-    @keyframes nudge {
-      0%,100% { transform: translateX(0); }
-      50% { transform: translateX(5px); }
-    }
-
-    /* ─── SLIDE 7: DARK TRUTH ─── */
-    #s7 { padding: 100px 80px 80px; }
-
-    /* ─── SLIDE 11: QA ─── */
-    #s11 {
-      display: flex; align-items: center; justify-content: center;
-      flex-direction: column; text-align: center;
-    }
-    #qa-big {
-      font-size: clamp(90px, 14vw, 200px);
-      font-weight: 700; line-height: 0.85;
-      letter-spacing: -0.05em; color: var(--white);
-    }
+    /* ── PROJ LAYOUT ── */
+    .proj-grid { display:grid; grid-template-columns:1fr 1fr; gap:52px; width:100%; align-items:center; }
+    .pn { font-size:clamp(100px,14vw,210px); font-weight:700; line-height:1; letter-spacing:-.05em; color:var(--light); user-select:none; margin-bottom:0; }
   </style>
 </head>
 <body>
 
-  <div id="progress"></div>
+<div id="prog"></div>
 
-  <!-- Top nav -->
-  <div id="top-nav">
-    <div id="nav-left">
-      Paul John Domingo<br>
-      PLM · Machine Learning Applications
+<div id="tnav">
+  <div id="tnav-l">Paul John Domingo<br>PLM · Machine Learning Applications</div>
+  <div id="tnav-r"><span class="n" id="cur">01</span>of 11</div>
+</div>
+
+<div id="dnav"></div>
+
+<div id="bnav">
+  <button class="nbtn" id="bp" disabled>←</button>
+  <div id="sname">INTRO</div>
+  <button class="nbtn" id="bn">→</button>
+</div>
+
+<div id="wrap">
+
+  <!-- S1 · HERO -->
+  <section class="slide on" id="s1" data-name="INTRO">
+    <canvas id="canvas3d"></canvas>
+    <div id="hi">
+      <div id="h-eye">Pamantasan ng Lungsod ng Maynila &nbsp;·&nbsp; 2026</div>
+      <div>
+        <div id="h-title">
+          Machines<br>
+          <span style="font-weight:300;font-style:italic;color:#aaa;">that</span><br>
+          Learn.
+        </div>
+      </div>
+      <div id="h-foot">
+        <div id="h-sub">
+          A real talk about ML<br>from someone who builds it.<br><br>
+          <strong style="color:var(--black);">Paul John Domingo</strong><br>
+          Fractional CTO · Director of Software Delivery
+        </div>
+        <div id="h-hint">Space or → to begin</div>
+      </div>
     </div>
-    <div id="nav-right">
-      <span class="num" id="cur">01</span>
-      of 11
+  </section>
+
+  <!-- S2 · THE HOOK -->
+  <section class="slide" id="s2" data-name="THE HOOK">
+    <div style="max-width:860px;width:100%;">
+      <span class="tag">01 · The Hook</span>
+      <h2 class="xl" style="margin-bottom:28px;">You used your<br>phone this morning.</h2>
+      <p class="sm" style="font-size:clamp(16px,1.6vw,22px);color:var(--black);margin-bottom:0;">A machine learning model profiled you before you got out of bed.</p>
+      <div class="chips">
+        <span class="chip">YouTube recommended</span>
+        <span class="chip">Spotify queued</span>
+        <span class="chip">Gmail filtered spam</span>
+        <span class="chip">Face ID unlocked</span>
+      </div>
+      <div class="quote">"ML isn't the future. It's already here."</div>
     </div>
-  </div>
+  </section>
 
-  <!-- Dot nav -->
-  <div id="dot-nav"></div>
-
-  <!-- Bottom nav -->
-  <div id="bottom-nav">
-    <button class="nav-btn" id="btn-prev" disabled>←</button>
-    <div id="slide-name">INTRO</div>
-    <button class="nav-btn" id="btn-next">→</button>
-  </div>
-
-  <!-- ═══════════════ SLIDES ═══════════════ -->
-  <div id="wrap">
-
-    <!-- S1 · HERO -->
-    <section class="slide active" id="s1" data-name="INTRO">
-      <canvas id="canvas3d"></canvas>
-      <div id="hero-inner">
-        <div id="hero-eye">Pamantasan ng Lungsod ng Maynila &nbsp;·&nbsp; 2026</div>
+  <!-- S3 · ABOUT -->
+  <section class="slide" id="s3" data-name="WHO AM I">
+    <div style="width:100%;">
+      <span class="tag">02 · Who Am I</span>
+      <div class="g2" style="gap:60px;">
         <div>
-          <div id="hero-title">
-            Machines<br>
-            <span style="font-weight:300;font-style:italic;color:#888;">that</span><br>
-            Learn.
+          <h2 class="xl" style="margin-bottom:20px;">Started at <span class="ac">18.</span></h2>
+          <p class="sm" style="margin-bottom:4px;">No plan. Showed up as a software engineer<br>and said yes to everything.</p>
+          <div class="tl">
+            <span class="tr">Dev</span><span class="ta">→</span>
+            <span class="tr">UX</span><span class="ta">→</span>
+            <span class="tr">QA</span><span class="ta">→</span>
+            <span class="tr">BA</span><span class="ta">→</span>
+            <span class="tr">PM</span><span class="ta">→</span>
+            <span class="tr end">CTO</span>
+            <div id="tl-line"></div>
           </div>
         </div>
-        <div id="hero-foot">
-          <div id="hero-sub">
-            A real talk about ML<br>from someone who builds it.<br><br>
-            <strong style="color:var(--black);">Paul John Domingo</strong><br>
-            Fractional CTO · Director of Software Delivery
-          </div>
-          <div id="hero-hint">Space or → to begin</div>
+        <div style="padding-top:56px;">
+          <div class="quote" style="margin-bottom:32px;">"Curiosity and humility.<br>Not talent. Not luck."</div>
+          <p class="sm">
+            Fractional CTO · Product Manager<br>Director of Software Delivery<br><br>
+            Sprout Solutions + Canadian micro-SaaS startup.
+          </p>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- S2 · THE HOOK -->
-    <section class="slide" id="s2" data-name="THE HOOK">
-      <div style="max-width:880px;width:100%;">
-        <span class="tag">01 · The Hook</span>
-        <h2 class="xl" style="margin-bottom:36px;">
-          You used your<br>phone this morning.
-        </h2>
-        <p class="sm" style="margin-bottom:0;">A machine learning model had already profiled you before you got out of bed.</p>
-        <div class="chips">
-          <span class="chip">YouTube recommended</span>
-          <span class="chip">Spotify queued</span>
-          <span class="chip">Gmail filtered spam</span>
-          <span class="chip">Face ID unlocked</span>
+  <!-- S4 · PROJECT 01 -->
+  <section class="slide" id="s4" data-name="PROJECT 01">
+    <div style="width:100%;">
+      <span class="tag">03 · ML at Work · Sprout Solutions</span>
+      <div class="proj-grid">
+        <div>
+          <div class="pn">01</div>
+          <h2 class="lg" style="margin-bottom:16px;">The AI that learns<br>how you code.</h2>
+          <p class="sm" style="margin-bottom:20px;">
+            We built an ML feedback loop at Sprout Solutions that watches how engineers write code — then uses that to review the next PR better.
+          </p>
+          <p class="sm" style="color:var(--accent);font-weight:600;">Every merge makes it smarter.</p>
         </div>
-        <div class="quote">
-          "ML isn't the future.<br>
-          It's the air you're already breathing."
-        </div>
-      </div>
-    </section>
-
-    <!-- S3 · WHO AM I -->
-    <section class="slide" id="s3" data-name="WHO AM I">
-      <div style="width:100%;">
-        <span class="tag">02 · Who Am I</span>
-        <div class="grid-2" style="gap:60px;">
-          <div>
-            <h2 class="xl" style="margin-bottom:20px;">
-              I started<br>at&nbsp;<span class="accent">18.</span>
-            </h2>
-            <p class="sm" style="margin-bottom:28px;">
-              No plan. Just showed up as a software engineer and said yes to everything that came my way.
-            </p>
-            <div class="timeline">
-              <span class="t-role">Dev</span><span class="t-arr">→</span>
-              <span class="t-role">UX</span><span class="t-arr">→</span>
-              <span class="t-role">QA</span><span class="t-arr">→</span>
-              <span class="t-role">BA</span><span class="t-arr">→</span>
-              <span class="t-role">PM</span><span class="t-arr">→</span>
-              <span class="t-role" style="background:var(--black);color:var(--white);">CTO</span>
+        <div>
+          <div class="code-wrap">
+            <div class="code-hdr">
+              <span class="cdot r"></span><span class="cdot y"></span><span class="cdot g"></span>
+              <span class="cfn">review.js — AI Code Reviewer</span>
             </div>
-          </div>
-          <div style="padding-top:48px;">
-            <div class="quote" style="margin-bottom:36px;">
-              "Curiosity and humility are what kept me going.
-              Not talent. Not luck."
+            <div class="code-body" id="code-body">
+              <div class="scanner" id="scanner"></div>
+              <div class="cl"><span class="kw">function</span> <span class="fn">reviewPR</span>(diff) {</div>
+              <div class="cl">  <span class="kw">const</span> pattern = <span class="fn">learnFrom</span>(history);<span class="cl-check" id="ck1">✓</span></div>
+              <div class="cl">  <span class="kw">const</span> issues = <span class="fn">scan</span>(diff, pattern);<span class="cl-check" id="ck2">✓</span></div>
+              <div class="cl">  <span class="cm">// gets smarter every time</span><span class="cl-check" id="ck3">✓</span></div>
+              <div class="cl">  <span class="kw">return</span> <span class="fn">feedback</span>(issues);</div>
+              <div class="cl">}</div>
             </div>
-            <p class="sm">
-              Today I work as a <strong style="color:var(--black);">Fractional CTO, Product Manager, and Director of Software Delivery</strong> — for Sprout Solutions and a Canadian micro-SaaS startup.<br><br>
-              The rotation through every role is what made me. Every time the industry changes — and it always does — I stay curious instead of scared.
-            </p>
+            <div class="approved" id="approved">✓ &nbsp;APPROVED — model updated</div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- S4 · PROJECT 01 -->
-    <section class="slide" id="s4" data-name="PROJECT 01">
-      <div style="width:100%;">
-        <span class="tag">03 · ML at Work · Project 01 · Sprout Solutions</span>
-        <div class="proj-wrap">
-          <div class="proj-num">01</div>
-          <div>
-            <h2 class="lg" style="margin-bottom:18px;">
-              The AI that learns<br>how you code.
-            </h2>
-            <p class="sm" style="margin-bottom:20px;">
-              We're transforming software development at Sprout Solutions so that the majority of the engineering workflow runs through AI agents.
-            </p>
-            <p class="sm" style="margin-bottom:24px;">
-              One piece of that: an <strong style="color:var(--black);">automatic code reviewer</strong> with a learning feedback loop. It watches how developers write code — their patterns, their preferences — and uses that to get smarter at reviewing future code.<br><br>
-              The machine doesn't just review. It learns. Every pull request makes it better.
-            </p>
-            <div style="font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:0.12em;text-transform:uppercase;">
-              This is what ML looks like at work. Not sci-fi. Just smart automation.
+  <!-- S5 · PROJECT 02 -->
+  <section class="slide" id="s5" data-name="PROJECT 02">
+    <div style="width:100%;">
+      <span class="tag">03 · ML at Work · Canadian Startup</span>
+      <div class="proj-grid">
+        <div>
+          <div class="pn">02</div>
+          <h2 class="lg" style="margin-bottom:16px;">Ship 10 products<br>a year. Not 1.</h2>
+          <p class="sm" style="margin-bottom:20px;">
+            ML pipelines pulling Google Trends, market data, and competitor signals — turned into launch decisions in hours, not months.
+          </p>
+          <p class="sm" style="color:var(--accent);font-weight:600;">Less guessing. More shipping.</p>
+        </div>
+        <div>
+          <div class="chart">
+            <div class="bars" id="bars">
+              <div class="b" style="height:40%"></div>
+              <div class="b" style="height:55%"></div>
+              <div class="b" style="height:38%"></div>
+              <div class="b" style="height:65%"></div>
+              <div class="b" style="height:72%"></div>
+              <div class="b" style="height:95%"></div>
             </div>
+            <div class="bar-floor"></div>
+            <div class="bar-labels">
+              <div class="bl">Q1</div><div class="bl">Q2</div><div class="bl">Q3</div>
+              <div class="bl">Q4</div><div class="bl">Q5</div><div class="bl" style="color:var(--accent);">AI</div>
+            </div>
+            <div class="chart-cap" id="chart-cap" style="opacity:0;">Product launches per quarter</div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- S5 · PROJECT 02 -->
-    <section class="slide" id="s5" data-name="PROJECT 02">
-      <div style="width:100%;">
-        <span class="tag">03 · ML at Work · Project 02 · Canadian Startup</span>
-        <div class="proj-wrap">
-          <div class="proj-num">02</div>
-          <div>
-            <h2 class="lg" style="margin-bottom:18px;">
-              Building products<br>at the speed of AI.
-            </h2>
-            <p class="sm" style="margin-bottom:20px;">
-              We run a micro-SaaS model — small apps, specific niches, minimal monthly fee. The bet is volume: many products, each serving a different group of people.
-            </p>
-            <p class="sm" style="margin-bottom:24px;">
-              The problem? <strong style="color:var(--black);">How do you launch 10 products a year instead of 1?</strong><br><br>
-              We built ML pipelines that pull Google Trends, market research, and competitor data — then AI agents that analyze it all and give us launch recommendations in hours, not months.<br><br>
-              Faster decisions. Smarter bets. Less guessing.
-            </p>
-            <div style="font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:0.12em;text-transform:uppercase;">
-              ML for business strategy — not just engineering.
-            </div>
+  <!-- S6 · PROJECT 03 -->
+  <section class="slide" id="s6" data-name="PROJECT 03">
+    <div class="orb-field" id="orb-field">
+      <div class="orb" id="o1" style="width:200px;height:200px;background:#FF003355;top:10%;left:5%;"></div>
+      <div class="orb" id="o2" style="width:150px;height:150px;background:#FF7F0044;top:55%;left:2%;"></div>
+      <div class="orb" id="o3" style="width:180px;height:180px;background:#FFFF0033;bottom:5%;left:20%;"></div>
+      <div class="orb" id="o4" style="width:220px;height:220px;background:#00800033;top:8%;right:5%;"></div>
+      <div class="orb" id="o5" style="width:130px;height:130px;background:#0000FF33;bottom:10%;right:8%;"></div>
+      <div class="orb" id="o6" style="width:160px;height:160px;background:#8B008B44;top:40%;right:3%;"></div>
+    </div>
+    <div class="proj-content" style="width:100%;max-width:820px;">
+      <span class="tag">03 · ML at Work · Pride Month 2026</span>
+      <div class="pn" style="margin-bottom:16px;">03</div>
+      <h2 class="lg" style="margin-bottom:18px;">Teaching a machine<br>to explain love.</h2>
+      <p class="sm" style="margin-bottom:18px;font-size:clamp(15px,1.5vw,21px);">
+        A straight friend asked one question.<br>That question became an app.
+      </p>
+      <p class="sm" style="margin-bottom:24px;">
+        ML helped us understand what makes SOGIE confusing for people who haven't lived it. The answer: gamify it. Make it feel like a conversation, not a lecture.
+      </p>
+      <p class="sm" style="color:var(--accent);font-weight:600;">ML doesn't have to be cold. It can be compassionate.</p>
+    </div>
+  </section>
+
+  <!-- S7 · THE TRUTH (DARK) -->
+  <section class="slide dark" id="s7" data-name="THE TRUTH">
+    <div style="max-width:820px;width:100%;">
+      <span class="tag">04 · What Nobody Tells You</span>
+      <h2 class="xl" style="color:var(--white);margin-bottom:32px;min-height:2.8em;">
+        <span id="tw"></span><span class="cur" id="tw-cur"></span>
+      </h2>
+      <div id="s7-rest">
+        <p class="sm" style="margin-bottom:36px;">The tools are easy to find. The foundation is hard.</p>
+        <div class="quote">"Most ML problems are people problems<br>wearing a technical costume."</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S8 · SKILLS -->
+  <section class="slide" id="s8" data-name="SKILLS">
+    <div style="width:100%;">
+      <span class="tag">05 · What Actually Matters</span>
+      <div class="g2" style="gap:80px;">
+        <div>
+          <h2 class="md" style="margin-bottom:10px;">You can Google<br>the tech.</h2>
+          <p class="sm" style="font-style:italic;margin-bottom:40px;">Seriously. Just ChatGPT it.</p>
+          <h3 class="lg" style="color:var(--accent);line-height:.95;">Here's what<br>you can't.</h3>
+        </div>
+        <div id="skill-list">
+          <div class="sr"><div class="sn">01</div><div class="sr-inner"><div class="st">Storytelling</div><div class="sd">Can't explain it to your lola? Doesn't matter.</div></div></div>
+          <div class="sr"><div class="sn">02</div><div class="sr-inner"><div class="st">Curiosity</div><div class="sd">The willingness to be wrong — and be okay with it.</div></div></div>
+          <div class="sr"><div class="sn">03</div><div class="sr-inner"><div class="st">Communication</div><div class="sd">Slack. Email. The meeting nobody wanted.</div></div></div>
+          <div class="sr"><div class="sn">04</div><div class="sr-inner"><div class="st">Patience with not knowing</div><div class="sd">"I don't know yet" is a superpower.</div></div></div>
+          <div class="sr"><div class="sn">05</div><div class="sr-inner"><div class="st">Asking better questions</div><div class="sd">Worth more than knowing all the answers.</div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S9 · ADVICE -->
+  <section class="slide" id="s9" data-name="ADVICE">
+    <div style="width:100%;">
+      <span class="tag">06 · What I'd Tell 18-Year-Old Me</span>
+      <div class="g2" style="align-items:start;gap:72px;">
+        <div>
+          <h3 class="md" style="margin-bottom:24px;">Know what<br>you want.</h3>
+          <div id="adv-l">
+            <div class="ar">Start a project. This week. Not next semester.</div>
+            <div class="ar">GitHub > GWA. Your portfolio is your resume.</div>
+            <div class="ar">Care about the problem. Motivation outlasts discipline.</div>
+            <div class="ar">Don't wait to be ready. Start anyway.</div>
+          </div>
+        </div>
+        <div>
+          <h3 class="md" style="margin-bottom:24px;">Still<br>figuring it out.</h3>
+          <div id="adv-r">
+            <div class="ar" style="border-bottom:none;font-size:clamp(15px,1.5vw,20px);font-weight:500;color:var(--black);">"You don't need certainty.<br>You need curiosity."</div>
+            <div class="ar">ML touches every field. Pick yours and add AI to it.</div>
+            <div class="ar">Your biggest competition is future-you who didn't start.</div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- S6 · PROJECT 03 -->
-    <section class="slide" id="s6" data-name="PROJECT 03">
-      <div style="width:100%;">
-        <span class="tag">03 · ML at Work · Project 03 · Pride Month 2026</span>
-        <div class="proj-wrap">
-          <div class="proj-num" style="color:#FFE2DB;">03</div>
-          <div>
-            <h2 class="lg" style="margin-bottom:18px;">
-              Teaching a machine<br>to explain love.
-            </h2>
-            <p class="sm" style="margin-bottom:20px;">
-              A straight friend asked me a random question about gender and attraction. It stopped me. <strong style="color:var(--black);">That one question turned into an app.</strong>
-            </p>
-            <p class="sm" style="margin-bottom:24px;">
-              We used ML to study the behavioral patterns around SOGIE education — what makes it confusing for people who haven't lived it, and what actually makes it click.<br><br>
-              The finding? <strong style="color:var(--black);">Gamify it. Make it layman. Make it feel like a conversation, not a lecture.</strong><br><br>
-              We built a SOGIE awareness app that spreads understanding through play — designed for people who don't yet know what they don't know.
-            </p>
-            <div style="font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:0.12em;text-transform:uppercase;">
-              ML doesn't have to be cold. It can be compassionate.
-            </div>
-          </div>
-        </div>
+  <!-- S10 · FUTURE -->
+  <section class="slide" id="s10" data-name="THE FUTURE">
+    <div style="width:100%;">
+      <span class="tag">07 · What's Coming</span>
+      <h2 class="lg" style="margin-bottom:28px;">The window is open <span class="ac">right now.</span></h2>
+      <div class="trends" id="trends">
+        <div class="tc"><div class="tn"><span class="pdot" id="pd1"></span>01</div><div class="tt">AI Agents</div><div class="td">Systems that plan and act on their own. Already in production.</div></div>
+        <div class="tc"><div class="tn"><span class="pdot" id="pd2"></span>02</div><div class="tt">Generative AI</div><div class="td">Not just ChatGPT — it's inside your tools, code, and workflow.</div></div>
+        <div class="tc"><div class="tn"><span class="pdot" id="pd3"></span>03</div><div class="tt">Edge AI</div><div class="td">ML running on your phone. Faster, smarter, more private.</div></div>
+        <div class="tc"><div class="tn"><span class="pdot" id="pd4"></span>04</div><div class="tt">AI × Your Field</div><div class="td">Doctor + AI. Lawyer + AI. You don't need to be a pure engineer.</div></div>
       </div>
-    </section>
+      <div class="quote">"AI won't replace you. A person using AI well will. Be that person."</div>
+    </div>
+  </section>
 
-    <!-- S7 · THE TRUTH (DARK) -->
-    <section class="slide dark" id="s7" data-name="THE TRUTH">
-      <div style="max-width:780px;width:100%;">
-        <span class="tag" style="color:rgba(255,75,31,0.85);">04 · What Nobody Tells You</span>
-        <h2 class="xl" style="color:var(--white);margin-bottom:36px;">
-          AI is only as good as<br>the person building it.
-        </h2>
-        <p class="sm" style="color:rgba(255,255,255,0.55);margin-bottom:44px;">
-          The tools are easy to find. A Google search away.<br>
-          What's hard is the foundation.<br><br>
-          A solid base in software engineering still matters. Without it, ML becomes chaos — a mess of models that work in demos and break in real life.
-        </p>
-        <div class="quote">
-          "Most ML problems are people problems<br>wearing a technical costume."
-        </div>
-      </div>
-    </section>
+  <!-- S11 · Q&A -->
+  <section class="slide dark" id="s11" data-name="Q&A">
+    <div style="text-align:center;width:100%;">
+      <div class="tag" style="text-align:center;">08 · Open Forum</div>
+      <div id="qa-type"></div><span id="qa-cur"></span>
+      <p id="qa-sub">Ask anything.</p>
+      <p id="qa-contact">paolodomingo.com &nbsp;·&nbsp; domingopauljohn@gmail.com</p>
+    </div>
+  </section>
 
-    <!-- S8 · SKILLS -->
-    <section class="slide" id="s8" data-name="SKILLS">
-      <div style="width:100%;">
-        <span class="tag">05 · What Actually Matters</span>
-        <div class="grid-2" style="align-items:start;gap:80px;">
-          <div>
-            <h2 class="md" style="margin-bottom:10px;">
-              You can Google<br>the technical stuff.
-            </h2>
-            <p class="sm" style="font-style:italic;margin-bottom:36px;">Seriously. Just ChatGPT it.</p>
-            <h3 class="lg" style="color:var(--accent);line-height:0.95;">
-              Here's what<br>you can't.
-            </h3>
-          </div>
-          <div>
-            <div class="skill-row">
-              <div class="skill-n">01</div>
-              <div>
-                <div class="skill-title">Storytelling</div>
-                <div class="skill-sub">If you can't explain it to your lola, it doesn't matter.</div>
-              </div>
-            </div>
-            <div class="skill-row">
-              <div class="skill-n">02</div>
-              <div>
-                <div class="skill-title">Curiosity</div>
-                <div class="skill-sub">The willingness to be wrong — and be okay with it.</div>
-              </div>
-            </div>
-            <div class="skill-row">
-              <div class="skill-n">03</div>
-              <div>
-                <div class="skill-title">Communication</div>
-                <div class="skill-sub">Slack. Email. The meeting nobody wanted. These decide careers.</div>
-              </div>
-            </div>
-            <div class="skill-row">
-              <div class="skill-n">04</div>
-              <div>
-                <div class="skill-title">Patience with not knowing</div>
-                <div class="skill-sub">"I don't know yet" is a superpower, not a weakness.</div>
-              </div>
-            </div>
-            <div class="skill-row" style="border-bottom:none;">
-              <div class="skill-n">05</div>
-              <div>
-                <div class="skill-title">Asking better questions</div>
-                <div class="skill-sub">More valuable than knowing all the answers.</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+</div><!-- /wrap -->
 
-    <!-- S9 · ADVICE -->
-    <section class="slide" id="s9" data-name="ADVICE">
-      <div style="width:100%;">
-        <span class="tag">06 · What I'd Tell 18-Year-Old Me</span>
-        <div class="grid-2" style="align-items:start;gap:72px;">
-          <div>
-            <h3 class="md" style="margin-bottom:28px;">
-              For those who know<br>they want this.
-            </h3>
-            <div class="a-row">Start a project. This week. Not next semester.</div>
-            <div class="a-row">GitHub and Kaggle are your portfolio. Your GWA is not.</div>
-            <div class="a-row">Pick a problem you actually care about. Motivation outlasts discipline every time.</div>
-            <div class="a-row">You don't need to be ready. You just need to start.</div>
-          </div>
-          <div>
-            <h3 class="md" style="margin-bottom:28px;">
-              For those still<br>figuring it out.
-            </h3>
-            <div class="quote" style="margin-bottom:28px;font-size:clamp(18px,2.2vw,28px);">
-              "You don't need certainty.<br>You need curiosity."
-            </div>
-            <p class="sm">
-              ML touches everything — healthcare, music, agriculture, law, education. You don't need to be a pure engineer.<br><br>
-              Your biggest competition isn't your classmate. It's future-you who didn't start.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script>
+(() => {
+  'use strict';
 
-    <!-- S10 · THE FUTURE -->
-    <section class="slide" id="s10" data-name="THE FUTURE">
-      <div style="width:100%;">
-        <span class="tag">07 · What's Coming</span>
-        <h2 class="lg" style="margin-bottom:32px;">
-          The window is open<br><span class="accent">right now.</span>
-        </h2>
-        <div class="trends">
-          <div class="t-card">
-            <div class="t-n">01</div>
-            <div class="t-title">AI Agents</div>
-            <div class="t-desc">Systems that plan and act on their own. Already in production.</div>
-          </div>
-          <div class="t-card">
-            <div class="t-n">02</div>
-            <div class="t-title">Generative AI</div>
-            <div class="t-desc">Not just ChatGPT — it's inside your tools, your code, your workflow.</div>
-          </div>
-          <div class="t-card">
-            <div class="t-n">03</div>
-            <div class="t-title">Edge AI</div>
-            <div class="t-desc">ML running on your phone, not in the cloud. Faster. Smarter. More private.</div>
-          </div>
-          <div class="t-card">
-            <div class="t-n">04</div>
-            <div class="t-title">AI × Your Field</div>
-            <div class="t-desc">Doctor + AI. Lawyer + AI. Designer + AI. The combination is the career.</div>
-          </div>
-        </div>
-        <div class="quote">
-          "AI won't replace you. A person using AI well will. Be that person."
-        </div>
-      </div>
-    </section>
+  // ─── SETUP ───
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const TOTAL = slides.length;
+  const NAMES = slides.map(s => s.dataset.name);
+  let cur = 0, busy = false;
 
-    <!-- S11 · Q&A -->
-    <section class="slide dark" id="s11" data-name="Q&A">
-      <div style="text-align:center;width:100%;">
-        <div class="tag" style="text-align:center;color:rgba(255,75,31,0.6);">08 · Open Forum</div>
-        <div id="qa-big">Your<br>turn.</div>
-        <p style="font-size:18px;color:rgba(255,255,255,0.4);margin:28px 0 40px;">
-          Ask anything.
-        </p>
-        <p style="font-family:var(--mono);font-size:10px;color:rgba(255,255,255,0.25);letter-spacing:0.14em;text-transform:uppercase;line-height:2;">
-          paolodomingo.com &nbsp;·&nbsp; domingopauljohn@gmail.com
-        </p>
-      </div>
-    </section>
+  // Dots
+  const dw = document.getElementById('dnav');
+  NAMES.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' on' : '');
+    d.addEventListener('click', () => go(i));
+    dw.appendChild(d);
+  });
 
-  </div><!-- /wrap -->
+  function syncUI(i) {
+    document.querySelectorAll('.dot').forEach((d, j) => d.classList.toggle('on', j === i));
+    document.getElementById('cur').textContent = String(i + 1).padStart(2, '0');
+    document.getElementById('sname').textContent = NAMES[i];
+    document.getElementById('bp').disabled = i === 0;
+    document.getElementById('bn').disabled = i === TOTAL - 1;
+    document.getElementById('prog').style.width = (i / (TOTAL - 1) * 100) + '%';
+    const dark = slides[i].classList.contains('dark');
+    document.getElementById('bnav').style.color = dark ? '#fff' : '';
+    document.getElementById('tnav').style.color = dark ? 'rgba(255,255,255,.4)' : '';
+    document.getElementById('cur').style.color = dark ? 'rgba(255,75,31,.9)' : 'var(--accent)';
+  }
 
-  <!-- Three.js -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <!-- GSAP -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  // ─── TRANSITION ───
+  function go(target) {
+    if (busy || target === cur || target < 0 || target >= TOTAL) return;
+    busy = true;
+    const dir = target > cur ? 1 : -1;
+    const outEl = slides[cur], inEl = slides[target];
 
-  <script>
-  (() => {
-    'use strict';
+    resetSlide(target);
 
-    // ─── DATA ───
-    const slides = Array.from(document.querySelectorAll('.slide'));
-    const TOTAL = slides.length;
-    const NAMES = slides.map(s => s.dataset.name);
-    let cur = 0, busy = false;
+    // position incoming slide off-screen with no transition (instant)
+    inEl.style.transition = 'none';
+    inEl.style.opacity = '0';
+    inEl.style.transform = `translateX(${dir * 60}px)`;
+    inEl.style.visibility = 'visible';
+    inEl.classList.add('on');
 
-    // ─── DOTS ───
-    const dotWrap = document.getElementById('dot-nav');
-    NAMES.forEach((_, i) => {
-      const d = document.createElement('div');
-      d.className = 'dot' + (i === 0 ? ' active' : '');
-      d.addEventListener('click', () => go(i));
-      dotWrap.appendChild(d);
+    // slide current slide out
+    outEl.style.transition = 'opacity .38s ease, transform .38s ease';
+    outEl.style.opacity = '0';
+    outEl.style.transform = `translateX(${dir * -60}px)`;
+
+    // force synchronous reflow to commit initial state, then enable transition
+    void inEl.offsetHeight;
+    inEl.style.transition = 'opacity .42s ease, transform .42s ease';
+    inEl.style.opacity = '1';
+    inEl.style.transform = 'translateX(0)';
+
+    // clean up outgoing slide after its transition
+    setTimeout(() => {
+      outEl.style.visibility = 'hidden';
+      outEl.classList.remove('on');
+      outEl.style.transition = 'none';
+      outEl.style.opacity = '';
+      outEl.style.transform = '';
+    }, 420);
+
+    // release lock and trigger content animations
+    setTimeout(() => { busy = false; runAnim(target); }, 480);
+
+    cur = target;
+    syncUI(cur);
+  }
+
+  document.getElementById('bn').addEventListener('click', () => go(cur + 1));
+  document.getElementById('bp').addEventListener('click', () => go(cur - 1));
+  document.addEventListener('keydown', e => {
+    if (['ArrowRight','ArrowDown',' '].includes(e.key)) { e.preventDefault(); go(cur + 1); }
+    else if (['ArrowLeft','ArrowUp'].includes(e.key)) { e.preventDefault(); go(cur - 1); }
+  });
+  let wt;
+  document.addEventListener('wheel', e => {
+    clearTimeout(wt);
+    wt = setTimeout(() => { e.deltaY > 30 ? go(cur + 1) : e.deltaY < -30 && go(cur - 1); }, 60);
+  }, { passive: true });
+  let tx = 0;
+  document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+  document.addEventListener('touchend', e => {
+    const dx = tx - e.changedTouches[0].clientX;
+    if (Math.abs(dx) > 48) dx > 0 ? go(cur + 1) : go(cur - 1);
+  }, { passive: true });
+
+  // ─── PER-SLIDE RESET ───
+  function resetSlide(i) {
+    if (i === 1) { // S2 chips
+      document.querySelectorAll('#s2 .chip').forEach(c => { c.style.opacity = '0'; c.style.transform = 'translateY(-28px)'; });
+      gsap.set('#s2 .xl, #s2 .sm, #s2 .quote, #s2 .tag', { opacity: 0, y: 18 });
+    }
+    if (i === 2) { // S3 timeline
+      gsap.set('#tl-line', { width: '0%' });
+      gsap.set('#s3 .tr, #s3 .ta', { opacity: 0, scale: .8 });
+      gsap.set('#s3 .xl, #s3 .sm, #s3 .quote, #s3 .tag', { opacity: 0, y: 18 });
+    }
+    if (i === 3) { // S4 code
+      gsap.set('#scanner', { top: '14px' });
+      gsap.set('#ck1,#ck2,#ck3,#approved', { opacity: 0 });
+      gsap.set('#s4 .pn, #s4 .lg, #s4 .sm, #s4 .tag, #s4 .code-wrap', { opacity: 0, y: 18 });
+    }
+    if (i === 4) { // S5 chart
+      gsap.set('#s5 .b', { scaleY: 0 });
+      gsap.set('#chart-cap', { opacity: 0 });
+      gsap.set('#s5 .pn, #s5 .lg, #s5 .sm, #s5 .tag', { opacity: 0, y: 18 });
+    }
+    if (i === 5) { // S6 orbs
+      gsap.set('#s6 .orb', { opacity: 0, scale: 0 });
+      gsap.set('#s6 .pn, #s6 .lg, #s6 .sm, #s6 .tag', { opacity: 0, y: 18 });
+    }
+    if (i === 6) { // S7 typewriter
+      document.getElementById('tw').textContent = '';
+      document.getElementById('tw-cur').style.opacity = '1';
+      gsap.set('#s7-rest', { opacity: 0 });
+      gsap.set('#s7 .tag', { opacity: 0, y: 18 });
+    }
+    if (i === 7) { // S8 skills
+      document.querySelectorAll('#skill-list .sr-inner').forEach(el => gsap.set(el, { x: '-120%' }));
+      gsap.set('#s8 .md, #s8 .lg.ac, #s8 .sm, #s8 .tag', { opacity: 0, y: 18 });
+    }
+    if (i === 8) { // S9 advice
+      gsap.set('#adv-l .ar, #adv-r .ar', { opacity: 0, x: -16 });
+      gsap.set('#s9 .md, #s9 .tag', { opacity: 0, y: 18 });
+    }
+    if (i === 9) { // S10 trends
+      gsap.set('#trends .tc', { opacity: 0, scale: .96 });
+      gsap.set('#s10 .lg, #s10 .quote, #s10 .tag', { opacity: 0, y: 18 });
+    }
+    if (i === 10) { // S11 qa
+      document.getElementById('qa-type').textContent = '';
+      gsap.set('#qa-cur, #qa-sub, #qa-contact', { opacity: 0 });
+      gsap.set('#s11 .tag', { opacity: 0, y: 18 });
+    }
+  }
+
+  // ─── PER-SLIDE ANIMATIONS ───
+  function runAnim(i) {
+    const fns = [animS1, animS2, animS3, animS4, animS5, animS6, animS7, animS8, animS9, animS10, animS11];
+    if (fns[i]) fns[i]();
+  }
+
+  function animS1() { /* handled at load */ }
+
+  function animS2() {
+    const tl = gsap.timeline();
+    tl.to('#s2 .tag', { opacity: 1, y: 0, duration: .4, ease: 'power2.out' })
+      .to('#s2 .xl',  { opacity: 1, y: 0, duration: .55, ease: 'power3.out' }, '-=.1')
+      .to('#s2 .sm',  { opacity: 1, y: 0, duration: .4 }, '-=.1');
+    // chips drop like notifications
+    document.querySelectorAll('#s2 .chip').forEach((c, i) => {
+      gsap.to(c, { opacity: 1, y: 0, duration: .38, ease: 'back.out(1.4)', delay: .65 + i * .14 });
     });
+    gsap.to('#s2 .quote', { opacity: 1, y: 0, duration: .5, delay: 1.4 });
+  }
 
-    // ─── SYNC UI ───
-    function syncUI(idx) {
-      document.querySelectorAll('.dot').forEach((d, i) => {
-        d.classList.toggle('active', i === idx);
-      });
-      document.getElementById('cur').textContent = String(idx + 1).padStart(2, '0');
-      document.getElementById('slide-name').textContent = NAMES[idx];
-      document.getElementById('btn-prev').disabled = idx === 0;
-      document.getElementById('btn-next').disabled = idx === TOTAL - 1;
-      document.getElementById('progress').style.width =
-        ((idx / (TOTAL - 1)) * 100) + '%';
+  function animS3() {
+    const tl = gsap.timeline({ delay: .1 });
+    tl.to('#s3 .tag', { opacity: 1, y: 0, duration: .4 })
+      .to('#s3 .xl',  { opacity: 1, y: 0, duration: .6, ease: 'power3.out' }, '-=.1')
+      .to('#s3 .sm',  { opacity: 1, y: 0, duration: .4 }, '-=.1')
+      // draw the orange underline
+      .to('#tl-line', { width: '100%', duration: .7, ease: 'power2.inOut' }, '+=.05')
+      // role boxes pop in
+      .to('#s3 .tr, #s3 .ta', { opacity: 1, scale: 1, duration: .2, stagger: .06, ease: 'back.out(1.2)' }, '-=.45')
+      .to('#s3 .quote', { opacity: 1, y: 0, duration: .5 }, '-=.1')
+      .to('#s3 .quote ~ p', { opacity: 1, y: 0, duration: .4 }, '-=.1');
+  }
 
-      // Dark slide → white controls
-      const dark = slides[idx].classList.contains('dark');
-      const bn = document.getElementById('bottom-nav');
-      const tn = document.getElementById('top-nav');
-      bn.style.color = dark ? '#fff' : '';
-      tn.style.color = dark ? 'rgba(255,255,255,0.4)' : '';
-      document.getElementById('cur').style.color =
-        dark ? 'rgba(255,75,31,0.9)' : 'var(--accent)';
-    }
+  function animS4() {
+    const tl = gsap.timeline({ delay: .1 });
+    tl.to('#s4 .tag', { opacity: 1, y: 0, duration: .4 })
+      .to('#s4 .pn',  { opacity: 1, y: 0, duration: .5 }, '-=.1')
+      .to('#s4 .lg',  { opacity: 1, y: 0, duration: .5 }, '-=.2')
+      .to('#s4 .sm',  { opacity: 1, y: 0, duration: .4, stagger: .1 }, '-=.1')
+      .to('#s4 .code-wrap', { opacity: 1, y: 0, duration: .5 }, '-=.2')
+      // scanner moves down through code
+      .to('#scanner', { top: '72%', duration: 1.4, ease: 'power1.inOut' }, '-=.1')
+      // checkmarks appear as scanner passes each line
+      .to('#ck1', { opacity: 1, duration: .2 }, '-=1.1')
+      .to('#ck2', { opacity: 1, duration: .2 }, '-=.75')
+      .to('#ck3', { opacity: 1, duration: .2 }, '-=.42')
+      .to('#approved', { opacity: 1, duration: .3 });
+  }
 
-    // ─── ANIMATE CONTENT IN ───
-    function animIn(idx) {
-      const s = slides[idx];
-      const els = s.querySelectorAll(
-        '.tag, .xl, .lg, .md, .sm, .quote, .timeline, .chips, ' +
-        '.proj-num, .proj-wrap>div:last-child, .skill-row, .a-row, ' +
-        '.trends, .t-card, #hero-inner>*, #qa-big, p, h2, h3'
-      );
-      gsap.fromTo(els,
-        { opacity: 0, y: 22 },
-        { opacity: 1, y: 0, duration: 0.55, stagger: 0.055,
-          ease: 'power2.out', delay: 0.18 }
-      );
-    }
+  function animS5() {
+    const tl = gsap.timeline({ delay: .1 });
+    tl.to('#s5 .tag', { opacity: 1, y: 0, duration: .4 })
+      .to('#s5 .pn',  { opacity: 1, y: 0, duration: .5 }, '-=.1')
+      .to('#s5 .lg',  { opacity: 1, y: 0, duration: .5 }, '-=.2')
+      .to('#s5 .sm',  { opacity: 1, y: 0, duration: .4, stagger: .1 }, '-=.1')
+      // bars rise
+      .to('#s5 .b', { scaleY: 1, duration: .6, stagger: .08, ease: 'power3.out' }, '-=.1')
+      .to('#chart-cap', { opacity: 1, duration: .4 });
+  }
 
-    // ─── TRANSITION ───
-    function go(target) {
-      if (busy || target === cur || target < 0 || target >= TOTAL) return;
-      busy = true;
-      const dir = target > cur ? 1 : -1;
-      const outEl = slides[cur];
-      const inEl  = slides[target];
+  function animS6() {
+    // orbs bloom in pride colors
+    const orbs = document.querySelectorAll('#s6 .orb');
+    const tl = gsap.timeline({ delay: .1 });
+    tl.to('#s6 .tag', { opacity: 1, y: 0, duration: .4 })
+      .to('#s6 .pn',  { opacity: 1, y: 0, duration: .5 }, '-=.1')
+      .to('#s6 .lg',  { opacity: 1, y: 0, duration: .5 }, '-=.2')
+      .to('#s6 .sm',  { opacity: 1, y: 0, duration: .4, stagger: .08 }, '-=.1');
+    orbs.forEach((o, i) => {
+      gsap.to(o, { opacity: .55, scale: 1, duration: .7, ease: 'back.out(1.4)', delay: .3 + i * .1 });
+      // gentle float loop
+      gsap.to(o, { y: -20 + Math.random() * 40, x: -15 + Math.random() * 30, duration: 3 + i, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: i * .2 });
+    });
+  }
 
-      inEl.style.visibility = 'visible';
-      inEl.style.opacity = '0';
-
-      gsap.to(outEl, {
-        opacity: 0, x: dir * -55, duration: 0.38, ease: 'power2.in',
-        onComplete() {
-          outEl.style.visibility = 'hidden';
-          outEl.classList.remove('active');
-          gsap.set(outEl, { x: 0 });
-        }
-      });
-
-      gsap.fromTo(inEl,
-        { opacity: 0, x: dir * 55 },
-        {
-          opacity: 1, x: 0, duration: 0.45, ease: 'power2.out', delay: 0.22,
-          onStart() {
-            inEl.classList.add('active');
-            animIn(target);
-          },
-          onComplete() { busy = false; }
-        }
-      );
-
-      cur = target;
-      syncUI(cur);
-    }
-
-    // ─── CONTROLS ───
-    document.getElementById('btn-next').addEventListener('click', () => go(cur + 1));
-    document.getElementById('btn-prev').addEventListener('click', () => go(cur - 1));
-
-    document.addEventListener('keydown', e => {
-      if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
-        e.preventDefault(); go(cur + 1);
-      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-        e.preventDefault(); go(cur - 1);
+  function animS7() {
+    const txt = "AI is only as good as the person building it.";
+    const el = document.getElementById('tw');
+    const cursor = document.getElementById('tw-cur');
+    el.textContent = '';
+    let i = 0;
+    const timer = setInterval(() => {
+      if (i < txt.length) { el.textContent += txt[i++]; }
+      else {
+        clearInterval(timer);
+        setTimeout(() => {
+          cursor.style.animationIterationCount = '3';
+          setTimeout(() => {
+            gsap.to(cursor, { opacity: 0, duration: .3 });
+            gsap.to('#s7-rest', { opacity: 1, y: 0, duration: .6 });
+          }, 800);
+        }, 200);
       }
+    }, 38);
+  }
+
+  function animS8() {
+    const tl = gsap.timeline({ delay: .1 });
+    tl.to('#s8 .tag', { opacity: 1, y: 0, duration: .4 })
+      .to('#s8 .md', { opacity: 1, y: 0, duration: .5 }, '-=.1')
+      .to('#s8 .sm', { opacity: 1, y: 0, duration: .4 }, '-=.1')
+      .to('#s8 h3', { opacity: 1, y: 0, duration: .5 }, '-=.1');
+    // skill rows slide in from left
+    document.querySelectorAll('#skill-list .sr-inner').forEach((el, i) => {
+      gsap.to(el, { x: 0, duration: .5, ease: 'power3.out', delay: .5 + i * .1 });
     });
+  }
 
-    let wt;
-    document.addEventListener('wheel', e => {
-      clearTimeout(wt);
-      wt = setTimeout(() => {
-        if (e.deltaY > 30) go(cur + 1);
-        else if (e.deltaY < -30) go(cur - 1);
-      }, 60);
-    }, { passive: true });
-
-    let tx = 0;
-    document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
-    document.addEventListener('touchend', e => {
-      const dx = tx - e.changedTouches[0].clientX;
-      if (Math.abs(dx) > 48) { dx > 0 ? go(cur + 1) : go(cur - 1); }
-    }, { passive: true });
-
-    // ─── THREE.JS HERO ───
-    const canvas = document.getElementById('canvas3d');
-    const W = () => window.innerWidth;
-    const H = () => window.innerHeight;
-
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
-    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-    renderer.setSize(W(), H());
-    renderer.setClearColor(0xFFFFFF, 1);
-
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(55, W() / H(), 0.1, 80);
-    camera.position.z = 7;
-
-    // Shapes
-    const geos = [
-      new THREE.IcosahedronGeometry(0.65, 0),
-      new THREE.OctahedronGeometry(0.55, 0),
-      new THREE.TetrahedronGeometry(0.65, 0),
-      new THREE.IcosahedronGeometry(0.42, 0),
-      new THREE.OctahedronGeometry(0.72, 0),
-      new THREE.TetrahedronGeometry(0.48, 0),
-      new THREE.IcosahedronGeometry(0.32, 0),
-      new THREE.OctahedronGeometry(0.38, 0),
-    ];
-
-    const objs = geos.map((g, i) => {
-      const mat = new THREE.MeshBasicMaterial({ color: 0xE2E1DC, wireframe: true });
-      const m = new THREE.Mesh(g, mat);
-      m.position.set(
-        (Math.random() - 0.5) * 12,
-        (Math.random() - 0.5) * 7,
-        (Math.random() - 0.5) * 4 - 1
-      );
-      m.rotation.set(Math.random() * 6.28, Math.random() * 6.28, Math.random() * 6.28);
-      scene.add(m);
-      return {
-        mesh: m,
-        rx: (Math.random() - 0.5) * 0.004,
-        ry: (Math.random() - 0.5) * 0.004,
-        fy: Math.random() * 6.28,
-        fs: 0.003 + Math.random() * 0.005,
-        fa: 0.12 + Math.random() * 0.22,
-        oy: m.position.y
-      };
+  function animS9() {
+    const tl = gsap.timeline({ delay: .1 });
+    tl.to('#s9 .tag', { opacity: 1, y: 0, duration: .4 })
+      .to('#s9 .md',  { opacity: 1, y: 0, duration: .5, stagger: .12 }, '-=.1');
+    // left advice items
+    document.querySelectorAll('#adv-l .ar').forEach((el, i) => {
+      gsap.to(el, { opacity: 1, x: 0, duration: .4, ease: 'power2.out', delay: .5 + i * .13 });
     });
-
-    let mx = 0, my = 0;
-    window.addEventListener('mousemove', e => {
-      mx = (e.clientX / W() - 0.5) * 2;
-      my = (e.clientY / H() - 0.5) * 2;
+    // right advice items
+    document.querySelectorAll('#adv-r .ar').forEach((el, i) => {
+      gsap.to(el, { opacity: 1, x: 0, duration: .4, ease: 'power2.out', delay: .7 + i * .13 });
     });
+  }
 
-    window.addEventListener('resize', () => {
-      camera.aspect = W() / H();
-      camera.updateProjectionMatrix();
-      renderer.setSize(W(), H());
+  function animS10() {
+    const tl = gsap.timeline({ delay: .1 });
+    tl.to('#s10 .tag', { opacity: 1, y: 0, duration: .4 })
+      .to('#s10 .lg',  { opacity: 1, y: 0, duration: .55 }, '-=.1')
+      .to('#trends .tc', { opacity: 1, scale: 1, duration: .4, stagger: .09, ease: 'back.out(1.2)' })
+      .to('#s10 .quote', { opacity: 1, y: 0, duration: .5 });
+    // pulse dots
+    ['pd1','pd2','pd3','pd4'].forEach((id, i) => {
+      gsap.to('#' + id, { scale: 1.6, opacity: .4, duration: .7, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: i * .2 });
     });
+  }
 
-    function tick() {
-      requestAnimationFrame(tick);
-      if (cur !== 0) return;
+  function animS11() {
+    const words = ['Your\n', 'turn.'];
+    const el = document.getElementById('qa-type');
+    const cursor = document.getElementById('qa-cur');
+    el.textContent = '';
+    gsap.to('#s11 .tag', { opacity: 1, y: 0, duration: .4 });
+    gsap.to(cursor, { opacity: 1, duration: .1, delay: .4 });
+    let txt = '';
+    const full = 'Your\nturn.';
+    let i = 0;
+    const timer = setInterval(() => {
+      if (i < full.length) {
+        txt += full[i++];
+        el.innerHTML = txt.replace('\n', '<br>');
+      } else {
+        clearInterval(timer);
+        setTimeout(() => {
+          gsap.to('#qa-sub', { opacity: 1, duration: .5 });
+          gsap.to('#qa-contact', { opacity: 1, duration: .5, delay: .3 });
+        }, 600);
+      }
+    }, 70);
+  }
 
-      objs.forEach(o => {
-        o.mesh.rotation.x += o.rx;
-        o.mesh.rotation.y += o.ry;
-        o.fy += o.fs;
-        o.mesh.position.y = o.oy + Math.sin(o.fy) * o.fa;
-      });
+  // ─── THREE.JS HERO ───
+  const canvas = document.getElementById('canvas3d');
+  const W = () => window.innerWidth, H = () => window.innerHeight;
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.setSize(W(), H());
+  renderer.setClearColor(0xFFFFFF, 1);
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(55, W() / H(), .1, 80);
+  camera.position.z = 7;
 
-      camera.position.x += (mx * 0.35 - camera.position.x) * 0.04;
-      camera.position.y += (-my * 0.22 - camera.position.y) * 0.04;
+  const geos = [
+    new THREE.IcosahedronGeometry(.65, 0), new THREE.OctahedronGeometry(.55, 0),
+    new THREE.TetrahedronGeometry(.65, 0), new THREE.IcosahedronGeometry(.42, 0),
+    new THREE.OctahedronGeometry(.72, 0), new THREE.TetrahedronGeometry(.48, 0),
+    new THREE.IcosahedronGeometry(.32, 0), new THREE.OctahedronGeometry(.38, 0),
+  ];
+  const objs = geos.map(g => {
+    const m = new THREE.Mesh(g, new THREE.MeshBasicMaterial({ color: 0xE2E1DC, wireframe: true }));
+    m.position.set((Math.random()-.5)*12, (Math.random()-.5)*7, (Math.random()-.5)*4-1);
+    m.rotation.set(Math.random()*6.28, Math.random()*6.28, Math.random()*6.28);
+    scene.add(m);
+    return { m, rx:(Math.random()-.5)*.004, ry:(Math.random()-.5)*.004, fy:Math.random()*6.28, fs:.003+Math.random()*.005, fa:.12+Math.random()*.22, oy:m.position.y };
+  });
 
-      renderer.render(scene, camera);
-    }
-    tick();
+  let mx = 0, my = 0;
+  window.addEventListener('mousemove', e => { mx = (e.clientX/W()-.5)*2; my = (e.clientY/H()-.5)*2; });
+  window.addEventListener('resize', () => { camera.aspect=W()/H(); camera.updateProjectionMatrix(); renderer.setSize(W(),H()); });
 
-    // ─── HERO ENTRANCE ───
-    gsap.fromTo('#hero-eye',    { opacity:0, y:8  }, { opacity:1, y:0, duration:0.7, delay:0.4 });
-    gsap.fromTo('#hero-title',  { opacity:0, y:36 }, { opacity:1, y:0, duration:1.0, delay:0.6, ease:'power3.out' });
-    gsap.fromTo('#hero-foot',   { opacity:0, y:16 }, { opacity:1, y:0, duration:0.7, delay:1.0 });
-
-    // Init
-    syncUI(0);
-
+  (function tick() {
+    requestAnimationFrame(tick);
+    if (cur !== 0) return;
+    objs.forEach(o => {
+      o.m.rotation.x += o.rx; o.m.rotation.y += o.ry;
+      o.fy += o.fs; o.m.position.y = o.oy + Math.sin(o.fy) * o.fa;
+    });
+    camera.position.x += (mx*.35 - camera.position.x) * .04;
+    camera.position.y += (-my*.22 - camera.position.y) * .04;
+    renderer.render(scene, camera);
   })();
-  </script>
+
+  // ─── HERO ENTRANCE ───
+  gsap.fromTo('#h-eye',   { opacity:0, y:8  }, { opacity:1, y:0, duration:.7, delay:.4 });
+  gsap.fromTo('#h-title', { opacity:0, y:36 }, { opacity:1, y:0, duration:1,  delay:.6, ease:'power3.out' });
+  gsap.fromTo('#h-foot',  { opacity:0, y:16 }, { opacity:1, y:0, duration:.7, delay:1  });
+
+  slides[0].style.opacity = '1';
+  syncUI(0);
+})();
+</script>
 </body>
 </html>
