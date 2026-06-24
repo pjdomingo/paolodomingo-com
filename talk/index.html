@@ -179,6 +179,23 @@
     #qa-sub { font-size:18px; color:rgba(255,255,255,.4); margin:28px 0 36px; opacity:0; }
     #qa-contact { font-family:var(--mono); font-size:10px; color:rgba(255,255,255,.22); letter-spacing:.14em; text-transform:uppercase; line-height:2.2; opacity:0; }
 
+    /* ── S15 MINDSET ── */
+    .mi { display:flex; gap:22px; align-items:flex-start; padding:13px 0; border-bottom:1px solid rgba(255,255,255,.08); opacity:0; transform:translateX(-20px); }
+    .mi:last-child { border-bottom:none; }
+    .mi-n { font-family:var(--mono); font-size:10px; color:var(--accent); min-width:22px; padding-top:3px; flex-shrink:0; }
+    .mi-t { font-size:clamp(15px,1.65vw,21px); font-weight:700; color:var(--white); margin-bottom:3px; line-height:1.15; }
+    .mi-d { font-size:12px; color:rgba(255,255,255,.45); line-height:1.5; }
+
+    /* ── S16 AGENT LOOP ── */
+    #loop-track { stroke-dasharray:629; stroke-dashoffset:629; }
+
+    /* ── S17 START STEPS ── */
+    .ss { display:flex; gap:18px; align-items:flex-start; padding:10px 0; border-bottom:1px solid var(--light); opacity:0; transform:translateY(16px); }
+    .ss:last-child { border-bottom:none; }
+    .ss-n { font-family:var(--mono); font-size:10px; color:var(--accent); min-width:20px; padding-top:3px; flex-shrink:0; }
+    .ss-t { font-size:clamp(13px,1.4vw,18px); font-weight:700; margin-bottom:2px; }
+    .ss-d { font-size:11px; color:var(--gray); line-height:1.45; }
+
     /* ── PROJ LAYOUT ── */
     .proj-grid { display:grid; grid-template-columns:1fr 1fr; gap:52px; width:100%; align-items:center; }
     .pn { font-size:clamp(100px,14vw,210px); font-weight:700; line-height:1; letter-spacing:-.05em; color:var(--light); user-select:none; margin-bottom:0; }
@@ -190,7 +207,7 @@
 
 <div id="tnav">
   <div id="tnav-l">Paul John Domingo<br>PLM · Machine Learning Applications</div>
-  <div id="tnav-r"><span class="n" id="cur">01</span>of 14</div>
+  <div id="tnav-r"><span class="n" id="cur">01</span>of 17</div>
 </div>
 
 <div id="dnav"></div>
@@ -458,6 +475,76 @@
     </div>
   </section>
 
+  <!-- S15 · MINDSET -->
+  <section class="slide dark" id="s15" data-name="THE MINDSET">
+    <div style="width:100%;max-width:860px;">
+      <span class="tag">05.1 · Before You Build</span>
+      <h2 class="lg" style="color:var(--white);margin-bottom:28px;">The builder's<br><span style="color:var(--accent);">mindset.</span></h2>
+      <div id="mindset-list">
+        <div class="mi"><div class="mi-n">01</div><div><div class="mi-t">Problem first.</div><div class="mi-d">What repetitive task is annoying you right now? That's your first agent.</div></div></div>
+        <div class="mi"><div class="mi-n">02</div><div><div class="mi-t">Done &gt; perfect.</div><div class="mi-d">A working, ugly agent beats a flawless one that doesn't exist yet.</div></div></div>
+        <div class="mi"><div class="mi-n">03</div><div><div class="mi-t">Use it manually first.</div><div class="mi-d">Do the task by hand once. Then you'll know exactly what to automate.</div></div></div>
+        <div class="mi"><div class="mi-n">04</div><div><div class="mi-t">Define "done" before you code.</div><div class="mi-d">"What does a good output look like?" If you can't answer this, don't touch a keyboard yet.</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S16 · AGENT LOOP -->
+  <section class="slide" id="s16" data-name="THE AGENT LOOP">
+    <div style="width:100%;display:flex;align-items:center;gap:64px;">
+      <div style="flex:1;min-width:0;">
+        <span class="tag">05.2 · How It Thinks</span>
+        <h2 class="lg" style="margin-bottom:16px;">Every agent<br>runs a loop.</h2>
+        <p class="sm" style="margin-bottom:12px;">Input arrives. It reasons. It acts. It checks the result. Repeat.</p>
+        <p class="sm" style="color:var(--accent);font-weight:600;margin-bottom:0;">That's it. That's the whole architecture.</p>
+      </div>
+      <div style="flex:0 0 260px;">
+        <svg viewBox="0 0 280 280" width="260" height="260" id="agent-loop-svg" style="display:block;">
+          <circle cx="140" cy="140" r="100" fill="none" stroke="#E5E4DF" stroke-width="2.5" id="loop-track" transform="rotate(-90 140 140)"/>
+          <!-- TRIGGER · top (140,40) -->
+          <circle cx="140" cy="40" r="28" fill="var(--black)" id="ln1" opacity="0"/>
+          <text x="140" y="37" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-weight="700" font-size="8.5" fill="white" opacity="0" id="lt1a">TRIGGER</text>
+          <text x="140" y="48" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-size="7.5" fill="rgba(255,255,255,.55)" opacity="0" id="lt1b">/ INPUT</text>
+          <!-- THINK · right (240,140) -->
+          <circle cx="240" cy="140" r="28" fill="var(--accent)" id="ln2" opacity="0"/>
+          <text x="240" y="137" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-weight="700" font-size="8.5" fill="white" opacity="0" id="lt2a">THINK</text>
+          <text x="240" y="148" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-size="7.5" fill="rgba(255,255,255,.7)" opacity="0" id="lt2b">/ LLM</text>
+          <!-- ACT · bottom (140,240) -->
+          <circle cx="140" cy="240" r="28" fill="var(--black)" id="ln3" opacity="0"/>
+          <text x="140" y="237" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-weight="700" font-size="8.5" fill="white" opacity="0" id="lt3a">ACT</text>
+          <text x="140" y="248" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-size="7.5" fill="rgba(255,255,255,.55)" opacity="0" id="lt3b">/ TOOL</text>
+          <!-- OBSERVE · left (40,140) -->
+          <circle cx="40" cy="140" r="28" fill="var(--black)" id="ln4" opacity="0"/>
+          <text x="40" y="137" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-weight="700" font-size="8.5" fill="white" opacity="0" id="lt4a">OBSERVE</text>
+          <text x="40" y="148" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-size="7.5" fill="rgba(255,255,255,.55)" opacity="0" id="lt4b">/ CHECK</text>
+          <!-- center -->
+          <text x="140" y="136" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-weight="700" font-size="11" fill="#8C8C8C" opacity="0" id="lc1">AGENT</text>
+          <text x="140" y="152" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-size="9" fill="#8C8C8C" opacity="0" id="lc2">↺ REPEAT</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- S17 · START NOW -->
+  <section class="slide" id="s17" data-name="START NOW">
+    <div style="width:100%;">
+      <span class="tag">05.3 · Your First Agent</span>
+      <div class="g2" style="gap:64px;align-items:start;">
+        <div>
+          <h2 class="lg" style="margin-bottom:12px;">Start this<br><span style="color:var(--accent);">week.</span></h2>
+          <p class="sm" style="margin-bottom:0;">5 steps. Free tools.<br>One free afternoon.</p>
+        </div>
+        <div id="start-steps">
+          <div class="ss"><div class="ss-n">01</div><div><div class="ss-t">Pick your annoying task</div><div class="ss-d">Scheduling. Summarizing. Replying to the same email. Just pick one.</div></div></div>
+          <div class="ss"><div class="ss-n">02</div><div><div class="ss-t">Get an API key</div><div class="ss-d">OpenAI, Anthropic Claude, or Google Gemini — all have free tiers.</div></div></div>
+          <div class="ss"><div class="ss-n">03</div><div><div class="ss-t">Write the prompt first</div><div class="ss-d">Before any code — describe what you want in plain English. That IS the logic.</div></div></div>
+          <div class="ss"><div class="ss-n">04</div><div><div class="ss-t">Add one action</div><div class="ss-d">Send an email, search the web, read a file. One tool. That's your first agent.</div></div></div>
+          <div class="ss"><div class="ss-n">05</div><div><div class="ss-t">Run it on real data</div><div class="ss-d">Not test data. Real. If it breaks, that's the lesson.</div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- S9 · ADVICE -->
   <section class="slide" id="s9" data-name="ADVICE">
     <div style="width:100%;">
@@ -676,23 +763,36 @@
       document.querySelectorAll('#skill-list .sr-inner').forEach(el => gsap.set(el, { x: '-120%' }));
       gsap.set('#s8 .md, #s8 .lg.ac, #s8 .sm, #s8 .tag', { opacity: 0, y: 18 });
     }
-    if (i === 9) { // S9 advice
+    if (i === 9) { // S15 mindset
+      document.querySelectorAll('#mindset-list .mi').forEach(el => { el.style.opacity = '0'; el.style.transform = 'translateX(-20px)'; });
+      gsap.set('#s15 .lg, #s15 .tag', { opacity: 0, y: 18 });
+    }
+    if (i === 10) { // S16 agent loop
+      gsap.set('#loop-track', { attr: { 'stroke-dashoffset': 629 } });
+      gsap.set('#ln1,#ln2,#ln3,#ln4,#lt1a,#lt1b,#lt2a,#lt2b,#lt3a,#lt3b,#lt4a,#lt4b,#lc1,#lc2', { opacity: 0 });
+      gsap.set('#s16 .lg, #s16 .sm, #s16 .tag', { opacity: 0, y: 18 });
+    }
+    if (i === 11) { // S17 start steps
+      document.querySelectorAll('#start-steps .ss').forEach(el => { el.style.opacity = '0'; el.style.transform = 'translateY(16px)'; });
+      gsap.set('#s17 .lg, #s17 .sm, #s17 .tag', { opacity: 0, y: 18 });
+    }
+    if (i === 12) { // S9 advice
       gsap.set('#adv-l .ar, #adv-r .ar', { opacity: 0, x: -16 });
       gsap.set('#s9 .md, #s9 .tag', { opacity: 0, y: 18 });
     }
-    if (i === 10) { // S11 breakthroughs
+    if (i === 13) { // S11 breakthroughs
       gsap.set('#bc-grid .bc', { opacity: 0, scale: .96 });
       gsap.set('#s11 .lg, #s11 .tag', { opacity: 0, y: 18 });
     }
-    if (i === 11) { // S12 cracks
+    if (i === 14) { // S12 cracks
       document.querySelectorAll('#cracks .cr').forEach(el => { el.style.opacity = '0'; el.style.transform = 'translateX(-20px)'; });
       gsap.set('#s12 .lg, #s12 .tag', { opacity: 0, y: 18 });
     }
-    if (i === 12) { // S13 trends
+    if (i === 15) { // S13 trends
       gsap.set('#trends .tc', { opacity: 0, scale: .96 });
       gsap.set('#s13 .lg, #s13 .quote, #s13 .tag', { opacity: 0, y: 18 });
     }
-    if (i === 13) { // S14 qa
+    if (i === 16) { // S14 qa
       document.getElementById('qa-type').textContent = '';
       gsap.set('#qa-cur, #qa-sub, #qa-contact', { opacity: 0 });
       gsap.set('#s14 .tag', { opacity: 0, y: 18 });
@@ -701,7 +801,7 @@
 
   // ─── PER-SLIDE ANIMATIONS ───
   function runAnim(i) {
-    const fns = [animS1, animS2, animS3, animS10, animS4, animS5, animS6, animS7, animS8, animS9, animS11, animS12, animS13, animS14];
+    const fns = [animS1, animS2, animS3, animS10, animS4, animS5, animS6, animS7, animS8, animS15, animS16, animS17, animS9, animS11, animS12, animS13, animS14];
     if (fns[i]) fns[i]();
   }
 
@@ -804,6 +904,40 @@
     // skill rows slide in from left
     document.querySelectorAll('#skill-list .sr-inner').forEach((el, i) => {
       gsap.to(el, { x: 0, duration: .5, ease: 'power3.out', delay: .5 + i * .1 });
+    });
+  }
+
+  function animS15() {
+    const tl = gsap.timeline({ delay: .1 });
+    tl.to('#s15 .tag', { opacity: 1, y: 0, duration: .4 })
+      .to('#s15 .lg',  { opacity: 1, y: 0, duration: .55, ease: 'power3.out' }, '-=.1');
+    document.querySelectorAll('#mindset-list .mi').forEach((el, i) => {
+      gsap.to(el, { opacity: 1, x: 0, duration: .45, ease: 'power2.out', delay: .45 + i * .14 });
+    });
+  }
+
+  function animS16() {
+    const tl = gsap.timeline({ delay: .1 });
+    tl.to('#s16 .tag', { opacity: 1, y: 0, duration: .4 })
+      .to('#s16 .lg',  { opacity: 1, y: 0, duration: .5, ease: 'power3.out' }, '-=.1')
+      .to('#s16 .sm',  { opacity: 1, y: 0, duration: .4, stagger: .1 }, '-=.1');
+    // draw the loop circle starting from top (TRIGGER)
+    gsap.to('#loop-track', { attr: { 'stroke-dashoffset': 0 }, duration: 1.5, ease: 'power2.inOut', delay: .65 });
+    // nodes fade in as the line passes each one
+    gsap.to(['#ln1','#lt1a','#lt1b'], { opacity: 1, duration: .3, delay: .65 });
+    gsap.to(['#ln2','#lt2a','#lt2b'], { opacity: 1, duration: .3, delay: 1.05 });
+    gsap.to(['#ln3','#lt3a','#lt3b'], { opacity: 1, duration: .3, delay: 1.4 });
+    gsap.to(['#ln4','#lt4a','#lt4b'], { opacity: 1, duration: .3, delay: 1.75 });
+    gsap.to(['#lc1','#lc2'], { opacity: 1, duration: .4, delay: 2.1 });
+  }
+
+  function animS17() {
+    const tl = gsap.timeline({ delay: .1 });
+    tl.to('#s17 .tag', { opacity: 1, y: 0, duration: .4 })
+      .to('#s17 .lg',  { opacity: 1, y: 0, duration: .55, ease: 'power3.out' }, '-=.1')
+      .to('#s17 .sm',  { opacity: 1, y: 0, duration: .4 }, '-=.1');
+    document.querySelectorAll('#start-steps .ss').forEach((el, i) => {
+      gsap.to(el, { opacity: 1, y: 0, duration: .4, ease: 'power2.out', delay: .5 + i * .12 });
     });
   }
 
