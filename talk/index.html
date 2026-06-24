@@ -140,8 +140,21 @@
     .tt { font-size:clamp(15px,1.6vw,21px); font-weight:600; margin-bottom:5px; }
     .td { font-size:13px; color:var(--gray); line-height:1.45; }
 
-    /* ── S11 Q&A ── */
-    #s11 { flex-direction:column; justify-content:center; text-align:center; }
+    /* ── S10 BREAKTHROUGHS ── */
+    .bc-grid { display:grid; grid-template-columns:1fr 1fr; gap:2px; width:100%; margin:28px 0; }
+    .bc { background:var(--off); padding:22px 26px; opacity:0; transform:scale(.96); }
+    .bc-num { font-family:var(--mono); font-size:10px; color:var(--accent); letter-spacing:.1em; text-transform:uppercase; margin-bottom:8px; }
+    .bc-title { font-size:clamp(16px,1.7vw,22px); font-weight:700; margin-bottom:6px; }
+    .bc-body { font-size:12px; color:var(--gray); line-height:1.55; }
+
+    /* ── S11 CRACKS ── */
+    .cr { display:flex; gap:24px; align-items:flex-start; padding:16px 0; border-bottom:1px solid rgba(255,255,255,.08); opacity:0; transform:translateX(-20px); }
+    .cr:last-child { border-bottom:none; }
+    .cr-label { font-family:var(--mono); font-size:10px; color:var(--accent); letter-spacing:.1em; text-transform:uppercase; min-width:110px; padding-top:2px; flex-shrink:0; }
+    .cr-body { font-size:clamp(13px,1.35vw,16px); color:rgba(255,255,255,.65); line-height:1.55; }
+
+    /* ── S13 Q&A ── */
+    #s13 { flex-direction:column; justify-content:center; text-align:center; }
     #qa-type { font-size:clamp(80px,13vw,190px); font-weight:700; line-height:.85; letter-spacing:-.05em; color:var(--white); }
     #qa-cur { display:inline-block; width:4px; height:.78em; background:var(--accent); vertical-align:-.02em; margin-left:4px; animation:blink 1s step-end infinite; opacity:0; }
     #qa-sub { font-size:18px; color:rgba(255,255,255,.4); margin:28px 0 36px; opacity:0; }
@@ -158,7 +171,7 @@
 
 <div id="tnav">
   <div id="tnav-l">Paul John Domingo<br>PLM · Machine Learning Applications</div>
-  <div id="tnav-r"><span class="n" id="cur">01</span>of 11</div>
+  <div id="tnav-r"><span class="n" id="cur">01</span>of 13</div>
 </div>
 
 <div id="dnav"></div>
@@ -394,10 +407,38 @@
     </div>
   </section>
 
-  <!-- S10 · FUTURE -->
-  <section class="slide" id="s10" data-name="THE FUTURE">
+  <!-- S10 · BREAKTHROUGHS -->
+  <section class="slide" id="s10" data-name="BREAKTHROUGHS">
     <div style="width:100%;">
-      <span class="tag">07 · What's Coming</span>
+      <span class="tag">08 · In The Wild</span>
+      <h2 class="lg" style="margin-bottom:28px;">ML that actually <span class="ac">changed things.</span></h2>
+      <div class="bc-grid" id="bc-grid">
+        <div class="bc"><div class="bc-num">AlphaFold · DeepMind</div><div class="bc-title">Protein Folding — Solved</div><div class="bc-body">Scientists spent 50 years on this. DeepMind's AI mapped 200M+ protein structures in under a year. Every future drug starts here.</div></div>
+        <div class="bc"><div class="bc-num">Google · Rural India</div><div class="bc-title">The AI Eye Doctor</div><div class="bc-body">Their model detects diabetic retinopathy as accurately as a specialist — deployed in areas with zero ophthalmologists. ML as equity.</div></div>
+        <div class="bc"><div class="bc-num">GraphCast · Google</div><div class="bc-title">Weather, 10 Days Out</div><div class="bc-body">Predicted Cyclone Freddy's path when traditional models failed. Faster, more accurate, and running on a laptop. Lives saved by an algorithm.</div></div>
+        <div class="bc"><div class="bc-num">Waymo · USA</div><div class="bc-title">No Driver. No Error.</div><div class="bc-body">250,000+ robotaxi rides per week. Fully driverless. Statistically safer than a human on those same routes. Already happening.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S11 · THE CRACKS (DARK) -->
+  <section class="slide dark" id="s11" data-name="THE CRACKS">
+    <div style="width:100%;">
+      <span class="tag">09 · The Other Side</span>
+      <h2 class="lg" style="margin-bottom:32px;color:var(--white);">It's not <span class="ac">all good.</span></h2>
+      <div id="cracks">
+        <div class="cr"><div class="cr-label">Hallucinations</div><div class="cr-body">A US lawyer cited ChatGPT-invented court cases in a real filing. The judge found out. The lawyer was sanctioned and publicly shamed.</div></div>
+        <div class="cr"><div class="cr-label">Deepfakes</div><div class="cr-body">A Hong Kong company wired $25M USD to scammers who used AI-generated video to impersonate their CFO on a live call.</div></div>
+        <div class="cr"><div class="cr-label">Bias</div><div class="cr-body">Amazon's internal hiring AI downgraded resumes mentioning "women's" organizations — trained on 10 years of male-dominated hires.</div></div>
+        <div class="cr"><div class="cr-label">Energy Cost</div><div class="cr-body">Training one large model emits ~300 tons of CO₂ — equivalent to 125 round-trip NYC–San Francisco flights. The bigger the model, the bigger the footprint.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S12 · FUTURE -->
+  <section class="slide" id="s12" data-name="THE FUTURE">
+    <div style="width:100%;">
+      <span class="tag">10 · What's Coming</span>
       <h2 class="lg" style="margin-bottom:28px;">The window is open <span class="ac">right now.</span></h2>
       <div class="trends" id="trends">
         <div class="tc"><div class="tn"><span class="pdot" id="pd1"></span>01</div><div class="tt">AI Agents</div><div class="td">Systems that plan and act on their own. Already in production.</div></div>
@@ -409,10 +450,10 @@
     </div>
   </section>
 
-  <!-- S11 · Q&A -->
-  <section class="slide dark" id="s11" data-name="Q&A">
+  <!-- S13 · Q&A -->
+  <section class="slide dark" id="s13" data-name="Q&A">
     <div style="text-align:center;width:100%;">
-      <div class="tag" style="text-align:center;">08 · Open Forum</div>
+      <div class="tag" style="text-align:center;">11 · Open Forum</div>
       <div id="qa-type"></div><span id="qa-cur"></span>
       <p id="qa-sub">Ask anything.</p>
       <p id="qa-contact">paolodomingo.com &nbsp;·&nbsp; domingopauljohn@gmail.com</p>
@@ -555,20 +596,28 @@
       gsap.set('#adv-l .ar, #adv-r .ar', { opacity: 0, x: -16 });
       gsap.set('#s9 .md, #s9 .tag', { opacity: 0, y: 18 });
     }
-    if (i === 9) { // S10 trends
-      gsap.set('#trends .tc', { opacity: 0, scale: .96 });
-      gsap.set('#s10 .lg, #s10 .quote, #s10 .tag', { opacity: 0, y: 18 });
+    if (i === 9) { // S10 breakthroughs
+      gsap.set('#bc-grid .bc', { opacity: 0, scale: .96 });
+      gsap.set('#s10 .lg, #s10 .tag', { opacity: 0, y: 18 });
     }
-    if (i === 10) { // S11 qa
+    if (i === 10) { // S11 cracks
+      document.querySelectorAll('#cracks .cr').forEach(el => { el.style.opacity = '0'; el.style.transform = 'translateX(-20px)'; });
+      gsap.set('#s11 .lg, #s11 .tag', { opacity: 0, y: 18 });
+    }
+    if (i === 11) { // S12 trends
+      gsap.set('#trends .tc', { opacity: 0, scale: .96 });
+      gsap.set('#s12 .lg, #s12 .quote, #s12 .tag', { opacity: 0, y: 18 });
+    }
+    if (i === 12) { // S13 qa
       document.getElementById('qa-type').textContent = '';
       gsap.set('#qa-cur, #qa-sub, #qa-contact', { opacity: 0 });
-      gsap.set('#s11 .tag', { opacity: 0, y: 18 });
+      gsap.set('#s13 .tag', { opacity: 0, y: 18 });
     }
   }
 
   // ─── PER-SLIDE ANIMATIONS ───
   function runAnim(i) {
-    const fns = [animS1, animS2, animS3, animS4, animS5, animS6, animS7, animS8, animS9, animS10, animS11];
+    const fns = [animS1, animS2, animS3, animS4, animS5, animS6, animS7, animS8, animS9, animS10, animS11, animS12, animS13];
     if (fns[i]) fns[i]();
   }
 
@@ -692,20 +741,34 @@
     const tl = gsap.timeline({ delay: .1 });
     tl.to('#s10 .tag', { opacity: 1, y: 0, duration: .4 })
       .to('#s10 .lg',  { opacity: 1, y: 0, duration: .55 }, '-=.1')
+      .to('#bc-grid .bc', { opacity: 1, scale: 1, duration: .45, stagger: .1, ease: 'back.out(1.2)' });
+  }
+
+  function animS11() {
+    const tl = gsap.timeline({ delay: .1 });
+    tl.to('#s11 .tag', { opacity: 1, y: 0, duration: .4 })
+      .to('#s11 .lg',  { opacity: 1, y: 0, duration: .55 }, '-=.1');
+    document.querySelectorAll('#cracks .cr').forEach((el, i) => {
+      gsap.to(el, { opacity: 1, x: 0, duration: .45, ease: 'power2.out', delay: .5 + i * .13 });
+    });
+  }
+
+  function animS12() {
+    const tl = gsap.timeline({ delay: .1 });
+    tl.to('#s12 .tag', { opacity: 1, y: 0, duration: .4 })
+      .to('#s12 .lg',  { opacity: 1, y: 0, duration: .55 }, '-=.1')
       .to('#trends .tc', { opacity: 1, scale: 1, duration: .4, stagger: .09, ease: 'back.out(1.2)' })
-      .to('#s10 .quote', { opacity: 1, y: 0, duration: .5 });
-    // pulse dots
+      .to('#s12 .quote', { opacity: 1, y: 0, duration: .5 });
     ['pd1','pd2','pd3','pd4'].forEach((id, i) => {
       gsap.to('#' + id, { scale: 1.6, opacity: .4, duration: .7, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: i * .2 });
     });
   }
 
-  function animS11() {
-    const words = ['Your\n', 'turn.'];
+  function animS13() {
     const el = document.getElementById('qa-type');
     const cursor = document.getElementById('qa-cur');
     el.textContent = '';
-    gsap.to('#s11 .tag', { opacity: 1, y: 0, duration: .4 });
+    gsap.to('#s13 .tag', { opacity: 1, y: 0, duration: .4 });
     gsap.to(cursor, { opacity: 1, duration: .1, delay: .4 });
     let txt = '';
     const full = 'Your\nturn.';
