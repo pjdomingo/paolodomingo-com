@@ -328,7 +328,15 @@
       margin-top:14px; padding-top:12px;
       border-top:1px solid var(--border);
       font-size:10px; color:var(--muted); text-align:center; letter-spacing:0.3px;
+      display:flex; flex-direction:column; gap:4px;
     }
+    .sc-foot-promo {
+      margin-top:4px; padding-top:6px;
+      border-top:1px dashed var(--border);
+      color:var(--text); font-weight:700; font-size:10px;
+      letter-spacing:0.1px;
+    }
+    .sc-foot-email { color:var(--red); font-weight:700; }
 
     /* ── Action buttons ── */
     .btn-pair {
@@ -696,7 +704,14 @@
         <div class="sc-msg" id="sc-msg"></div>
         <div class="sc-sender" id="sc-sender">— Paolo</div>
 
-        <div class="sc-foot">ayoko.app · para hindi "kahit saan" ang sagot</div>
+        <div class="sc-foot">
+          <div>ayoko.app · paolodomingo.com/apps/ayoko</div>
+          <div>Made with love by Paolo Domingo</div>
+          <div class="sc-foot-promo">
+            Wanna build fun apps together? Let's connect!<br>
+            <span class="sc-foot-email">domingopauljohn@gmail.com</span>
+          </div>
+        </div>
       </div>
 
       <!-- Other pwede options -->
