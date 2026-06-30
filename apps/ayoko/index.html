@@ -27,6 +27,7 @@
       font-family: var(--font);
       background: var(--bg);
       color: var(--text);
+      min-height: 100vh;
       min-height: 100dvh;
       display: flex;
       justify-content: center;
@@ -36,6 +37,7 @@
     .app {
       width: 100%;
       max-width: 430px;
+      min-height: 100vh;
       min-height: 100dvh;
       display: flex;
       flex-direction: column;
@@ -228,6 +230,7 @@
       font-size:15px; font-weight:800; cursor:pointer;
       display:flex; align-items:center; justify-content:center; gap:8px;
       transition:opacity .15s, transform .1s;
+      touch-action:manipulation; -webkit-tap-highlight-color:transparent;
     }
     .btn-nope:active  { transform:scale(0.96); opacity:.85; }
     .btn-maybe {
@@ -237,6 +240,7 @@
       font-size:15px; font-weight:800; cursor:pointer;
       display:flex; align-items:center; justify-content:center; gap:8px;
       transition:background .15s, transform .1s;
+      touch-action:manipulation; -webkit-tap-highlight-color:transparent;
     }
     .btn-maybe:active { transform:scale(0.96); background:var(--bg2); }
 
@@ -653,7 +657,7 @@
           <rect x="10" y="12" width="2" height="8"  rx="1" fill="white"/>
           <rect x="16" y="12" width="2" height="8"  rx="1" fill="white"/>
         </svg>
-        Ayaw ko
+        Ayoko
       </button>
       <button class="btn-maybe" onclick="vote('maybe')">
         <!-- Fork pointing UP = I'll eat this -->
@@ -764,7 +768,7 @@
         <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
           <path d="M10 2C7.24 2 5 4.24 5 7C5 10.75 10 18 10 18C10 18 15 10.75 15 7C15 4.24 12.76 2 10 2ZM10 9C8.9 9 8 8.1 8 7C8 5.9 8.9 5 10 5C11.1 5 12 5.9 12 7C12 8.1 11.1 9 10 9Z" fill="white"/>
         </svg>
-        Hanapin ang malapit na kainan
+        Find nearby restos
       </button>
 
       <div id="nearby-panel" class="nearby-panel" style="display:none;">
@@ -1031,7 +1035,7 @@ async function fetchNearby(lat,lon) {
 
 function showNearby(spots,mapsUrl,winner) {
   const btn=document.getElementById('btn-nearby');
-  btn.innerHTML=`${PIN_ICON} Hanapin ang malapit na kainan`; btn.disabled=false;
+  btn.innerHTML=`${PIN_ICON} Find nearby restos`; btn.disabled=false;
   const panel=document.getElementById('nearby-panel');
   const sub=document.getElementById('nearby-sub');
   const list=document.getElementById('nearby-list');
@@ -1052,7 +1056,7 @@ function showNearby(spots,mapsUrl,winner) {
 
 function openMaps(lat,lon) {
   const btn=document.getElementById('btn-nearby');
-  btn.innerHTML=`${PIN_ICON} Hanapin ang malapit na kainan`; btn.disabled=false;
+  btn.innerHTML=`${PIN_ICON} Find nearby restos`; btn.disabled=false;
   const q=`cheap+${encodeURIComponent(S.winner.search)}+restaurant`;
   window.open(lat?`https://www.google.com/maps/search/${q}/@${lat},${lon},14z`:`https://www.google.com/maps/search/${q}+near+me`,'_blank');
 }
@@ -1062,11 +1066,11 @@ function hav(la1,lo1,la2,lo2){const R=6371,d=(v)=>v*Math.PI/180,a=Math.sin(d(la2
 function spawnQuip(t,c){const e=document.createElement('div');e.className='quip';e.textContent=t;e.style.color=c;e.style.left=(30+Math.random()*40)+'%';e.style.top='40%';document.body.appendChild(e);setTimeout(()=>e.remove(),700);}
 function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2600);}
 function confetti(){const c=['#FF2525','#FF6B6B','#FFFFFF','#FFCACA','#111'];for(let i=0;i<50;i++)setTimeout(()=>{const e=document.createElement('div');e.className='bit';e.style.cssText=`left:${Math.random()*100}vw;top:-10px;background:${c[Math.floor(Math.random()*c.length)]};animation-duration:${.9+Math.random()*1.4}s;animation-delay:${Math.random()*.4}s;transform:rotate(${Math.random()*360}deg);border-radius:${Math.random()>.5?'50%':'2px'};`;document.body.appendChild(e);setTimeout(()=>e.remove(),2500)},i*30);}
-function restart(){document.getElementById('nearby-panel').style.display='none';document.getElementById('other-opts-section').style.display='none';const btn=document.getElementById('btn-nearby');btn.innerHTML=`${PIN_ICON} Hanapin ang malapit na kainan`;btn.disabled=false;showScreen('screen-welcome');}
+function restart(){document.getElementById('nearby-panel').style.display='none';document.getElementById('other-opts-section').style.display='none';const btn=document.getElementById('btn-nearby');btn.innerHTML=`${PIN_ICON} Find nearby restos`;btn.disabled=false;showScreen('screen-welcome');}
 function showModal(id){document.getElementById(id).classList.add('open');}
 function closeModal(id){document.getElementById(id).classList.remove('open');}
 function closeModalOutside(e,id){if(e.target===document.getElementById(id))closeModal(id);}
-function checkShowGCash(){const n=parseInt(localStorage.getItem('ayoko_n')||'0')+1;localStorage.setItem('ayoko_n',n);if(n%2===0)setTimeout(()=>showModal('gcash-modal'),1600);}
+function checkShowGCash(){try{const n=parseInt(localStorage.getItem('ayoko_n')||'0')+1;localStorage.setItem('ayoko_n',n);if(n%2===0)setTimeout(()=>showModal('gcash-modal'),1600);}catch(e){}}
 document.addEventListener('keydown',e=>{if(document.getElementById('screen-elimination').classList.contains('active')&&!S.busy){if(e.key==='ArrowLeft'||e.key==='n')vote('nope');if(e.key==='ArrowRight'||e.key==='m')vote('maybe');}});
 </script>
 </body>
