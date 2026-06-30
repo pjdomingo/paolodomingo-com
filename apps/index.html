@@ -116,6 +116,32 @@
     .card-url { font-family:'Plus Jakarta Sans',sans-serif; font-size:0.72rem; font-weight:600; color:var(--muted); letter-spacing:0.04em; }
     .card-arrow { font-size:1.1rem; opacity:0; transform:translate(-4px,4px); transition:all 0.2s; }
 
+    /* AYOKO thumb */
+    .t-ayoko {
+      background: #FF2525;
+    }
+    .t-ayoko-inner {
+      display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
+    }
+    .t-ayoko-logo {
+      width: 52px; height: 52px; background: white; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .t-ayoko-name {
+      color: white; font-family:'Plus Jakarta Sans',sans-serif; font-weight:900;
+      font-size: 1.4rem; letter-spacing: -0.04em;
+    }
+    .t-ayoko-chips { display:flex; gap:6px; flex-wrap:wrap; justify-content:center; }
+    .t-ayoko-chip {
+      background: rgba(255,255,255,0.2); color: white;
+      font-family:'Plus Jakarta Sans',sans-serif; font-size:0.65rem; font-weight:700;
+      padding: 3px 10px; border-radius: 100px; text-decoration: line-through;
+      text-decoration-color: rgba(255,255,255,0.5);
+    }
+    .t-ayoko-chip.winner {
+      background: white; color: #FF2525; text-decoration: none;
+    }
+
     /* ── COMING SOON CARD ─────────────────────────────── */
     .app-card-soon {
       border: 2px dashed var(--border); background: transparent;
@@ -223,6 +249,42 @@
           <div class="card-desc">Slide your way along the spectrum and discover your Sexual Orientation, Gender Identity, and Expression. Shareable card included. Even you have a SOGIE.</div>
           <div class="card-footer">
             <span class="card-url">paolodomingo.com/apps/sogie</span>
+            <span class="card-arrow">↗</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- AYOKO App -->
+      <a class="app-card" href="/apps/ayoko/">
+        <div class="card-thumb t-ayoko">
+          <div class="t-ayoko-inner">
+            <div class="t-ayoko-logo">
+              <svg width="28" height="28" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="4"  y="2" width="2" height="7" rx="1" fill="#FF2525"/>
+                <rect x="10" y="2" width="2" height="7" rx="1" fill="#FF2525"/>
+                <rect x="16" y="2" width="2" height="7" rx="1" fill="#FF2525"/>
+                <rect x="4"  y="8.5" width="14" height="2" rx="1" fill="#FF2525"/>
+                <rect x="10" y="10" width="2" height="10" rx="1" fill="#FF2525"/>
+              </svg>
+            </div>
+            <div class="t-ayoko-name">Ayoko</div>
+            <div class="t-ayoko-chips">
+              <span class="t-ayoko-chip">Pizza</span>
+              <span class="t-ayoko-chip">Sushi</span>
+              <span class="t-ayoko-chip winner">Silog Meals ✓</span>
+              <span class="t-ayoko-chip">Burger</span>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-badge badge-free">Free</span>
+            <span class="card-badge" style="background:#FFF0F0;color:#FF2525;">Filipino</span>
+          </div>
+          <div class="card-title">Ayoko</div>
+          <div class="card-desc">Para hindi "kahit saan" ang sagot. I-nope ang mga ayaw mo, pipiliin namin ang kain. May shareable card, nearby resto finder, at Taglish sass. Shutaca.</div>
+          <div class="card-footer">
+            <span class="card-url">paolodomingo.com/apps/ayoko</span>
             <span class="card-arrow">↗</span>
           </div>
         </div>
